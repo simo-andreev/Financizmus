@@ -12,14 +12,6 @@ public interface RowDisplayable {
 
     int getIconId();
 
-    double getSum();
-
-    boolean getIsFavourite();
-
-    void setUserFk(long userId);
-
-    void setId(long l);
-
     void setName(String newName);
 
     void setIconId(int newIconId);

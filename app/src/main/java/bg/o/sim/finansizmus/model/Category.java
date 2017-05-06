@@ -1,59 +1,30 @@
 package bg.o.sim.finansizmus.model;
 
-public abstract class Category implements RowDisplayable {
+import android.support.annotation.NonNull;
 
+import java.io.Serializable;
+
+public class Category implements RowDisplayable, Serializable {
     public enum Type {INCOME, EXPENSE}
 
-    private Type type;
-    private String name;
     private long id;
-    private int iconId;
-    private double sum;
     private long userFk;
 
-    public Category(Type type, String name,int iconId) {
+    private String name;
+    private Type type;
+    private boolean isFavourite;
+    private int iconId;
+
+    public Category(@NonNull String name, int iconId, long id, long userFk, boolean isFavourite, Type type) {
+        //TODO - VALIDATION!
+        this.name = name;
         this.type = type;
-        this.name = name;
         this.iconId = iconId;
-        this.sum = 0.0d;
-    }
+        this.isFavourite = isFavourite;
 
-    public long getUserFk() {
-        return userFk;
-    }
-
-    public void setUserFk(long userFk) {
-        this.userFk = userFk;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public double getSum() { return sum; }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(long id) {
         this.id = id;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setIconId(int iconId) {
-        this.iconId = iconId;
-    }
-
-    public int getIconId() {
-        return iconId;
+        this.userFk = userFk;
+        this.isFavourite = isFavourite;
     }
 
     @Override
@@ -64,11 +35,24 @@ public abstract class Category implements RowDisplayable {
         Category category = (Category) o;
 
         return name.equals(category.name);
-
     }
-
     @Override
-    public int hashCode() {
-        return name.hashCode();
+    public int hashCode() {return name.hashCode();}
+    @Override
+    public long getId() {return id;}
+    @Override
+    public String getName() {return name;}
+    @Override
+    public int getIconId() {return iconId;}
+    @Override
+    public void setName(String newName) {
+        //TODO
+    }
+    @Override
+    public void setIconId(int newIconId) {
+        //TODO
+    }
+    public Type getType() {
+        return type;
     }
 }
