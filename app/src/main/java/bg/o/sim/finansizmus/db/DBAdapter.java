@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.message.Message;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.model.CategoryExpense;
@@ -29,6 +28,7 @@ import bg.o.sim.finansizmus.model.Manager;
 import bg.o.sim.finansizmus.model.RowDisplayable;
 import bg.o.sim.finansizmus.model.Transaction;
 import bg.o.sim.finansizmus.model.User;
+import bg.o.sim.finansizmus.utils.Util;
 
 /**
  * Created by vladimircvetanov on 04.04.17.
@@ -400,7 +400,7 @@ public class DBAdapter {
 
             @Override
             protected void onPostExecute(Void integer) {
-                Message.message(context, "Account deleted!");
+                Util.toastLong(context, "Account deleted!");
             }
         }.execute();
         return count[0];
@@ -622,7 +622,7 @@ public class DBAdapter {
 
             @Override
             protected void onPostExecute(Void integer) {
-                Message.message(context, "Category deleted!");
+                Util.toastLong(context, "Category deleted!");
             }
         }.execute();
         return count[0];
@@ -767,7 +767,7 @@ public class DBAdapter {
                     }
                 }
 
-                Message.message(context, "Category deleted!");
+                Util.toastLong(context, "Category deleted!");
 
             }
         }.execute();
@@ -807,7 +807,7 @@ public class DBAdapter {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                Message.message(context, "Transaction added successfully.");
+                Util.toastLong(context, "Transaction added successfully.");
                 Log.wtf("LOAD TRANSACTIONS:", " LOADED ");
             }
         }.execute();
@@ -907,7 +907,7 @@ public class DBAdapter {
 
             @Override
             protected void onPostExecute(Void integer) {
-                Message.message(context, "Transaction deleted!");
+                Util.toastLong(context, "Transaction deleted!");
             }
         }.execute();
         return count[0];
@@ -1076,7 +1076,7 @@ public class DBAdapter {
             /**
              * If the SQL statement is invalid it throws an exception.
              */ catch (SQLException e) {
-                Message.message(context, "" + e);
+                Util.toastLong(context, "" + e);
             }
         }
 
@@ -1113,7 +1113,7 @@ public class DBAdapter {
             /**
              * If the SQL statement is invalid it throws an exception.
              */ catch (SQLException e) {
-                Message.message(context, "" + e);
+                Util.toastLong(context, "" + e);
 
             }
         }

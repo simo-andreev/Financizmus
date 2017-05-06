@@ -9,9 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import bg.o.sim.finansizmus.db.DBAdapter;
-import bg.o.sim.finansizmus.message.Message;
 import bg.o.sim.finansizmus.model.Manager;
 import bg.o.sim.finansizmus.model.User;
+import bg.o.sim.finansizmus.utils.Util;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -84,10 +84,10 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
-                    Message.message(LoginActivity.this,"Successful logged in.");
+                    Util.toastLong(LoginActivity.this, "Successful logged in.");
 
                 } else{
-                    Message.message(LoginActivity.this,"Wrong email or password.");
+                    Util.toastLong(LoginActivity.this, "Wrong email or password.");
                 }
             }
         }.execute();

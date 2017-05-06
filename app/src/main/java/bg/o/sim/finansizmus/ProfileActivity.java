@@ -8,8 +8,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import bg.o.sim.finansizmus.db.DBAdapter;
-import bg.o.sim.finansizmus.message.Message;
 import bg.o.sim.finansizmus.model.Manager;
+import bg.o.sim.finansizmus.utils.Util;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -79,7 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
                     return;
                 }
                 if(adapter.existsUser(newEmail)){
-                    Message.message(ProfileActivity.this,"This username is taken by someone else.");
+                    Util.toastLong(ProfileActivity.this, "This username is taken by someone else.");
                     return;
                 }
 

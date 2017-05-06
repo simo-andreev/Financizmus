@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.db.DBAdapter;
-import bg.o.sim.finansizmus.message.Message;
 import bg.o.sim.finansizmus.model.CategoryExpense;
+import bg.o.sim.finansizmus.utils.Util;
 
 
 /**
@@ -63,10 +63,10 @@ public class AddToFavDeleteDialogFragment extends DialogFragment {
                         adapter.moveToFav(cat);
                         Toast.makeText(getActivity(), "Category added to favorites!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Message.message(getActivity(), "You can`t be without categories!");
+                        Util.toastLong(getActivity(), "You can`t be without categories!");
                     }
                 } else {
-                    Message.message(getActivity(), "This category is already in your favorites, or there is no more place!");
+                    Util.toastLong(getActivity(), "This category is already in your favorites, or there is no more place!");
                 }
                 dismiss();
             }
@@ -78,9 +78,9 @@ public class AddToFavDeleteDialogFragment extends DialogFragment {
                 if (adapter.getCachedExpenseCategories().size() > 1) {
                     adapter.deleteExpenseCategory(cat);
 
-                    Message.message(getActivity(), "Category deleted!");
+                    Util.toastLong(getActivity(), "Category deleted!");
                 } else {
-                    Message.message(getActivity(), "You can`t be without categories!");
+                    Util.toastLong(getActivity(), "You can`t be without categories!");
                 }
 
                 dismiss();

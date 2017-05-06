@@ -14,10 +14,10 @@ import android.widget.Toast;
 
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.db.DBAdapter;
-import bg.o.sim.finansizmus.message.Message;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.CategoryExpense;
 import bg.o.sim.finansizmus.model.Manager;
+import bg.o.sim.finansizmus.utils.Util;
 
 
 public class AddCategoryDialogFragment extends DialogFragment {
@@ -90,7 +90,7 @@ public class AddCategoryDialogFragment extends DialogFragment {
                                 adapter.addExpenseCategory(cat, Manager.getLoggedUser().getId());
                                 Toast.makeText(getActivity(), "Category created!", Toast.LENGTH_SHORT).show();
                             }else{
-                                Message.message(getActivity(),"This category already exists,please choose another name!");
+                                Util.toastLong(getActivity(),"This category already exists,please choose another name!");
                             }
                             break;
                         case "ACCOUNT":
@@ -99,7 +99,7 @@ public class AddCategoryDialogFragment extends DialogFragment {
                                 adapter.addAccount(ac, Manager.getLoggedUser().getId());
                                 Toast.makeText(getActivity(), "Account created!", Toast.LENGTH_SHORT).show();
                             }else{
-                                Message.message(getActivity(),"This account already exists,please choose another name!");
+                                Util.toastLong(getActivity(),"This account already exists,please choose another name!");
                             }
                             break;
                     }

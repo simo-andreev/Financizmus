@@ -18,10 +18,10 @@ import java.util.List;
 
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.db.DBAdapter;
-import bg.o.sim.finansizmus.message.Message;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.RowDisplayable;
 import bg.o.sim.finansizmus.reports.FilteredReportFragment;
+import bg.o.sim.finansizmus.utils.Util;
 
 public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.AccountViewHolder> {
 
@@ -72,7 +72,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
                                     accounts.remove(account);
                                     AccountsAdapter.this.notifyDataSetChanged();
                                 } else {
-                                    Message.message(context, "You can`t be without accounts!");
+                                    Util.toastLong(context, "You can`t be without accounts!");
                                 }
 
                             }

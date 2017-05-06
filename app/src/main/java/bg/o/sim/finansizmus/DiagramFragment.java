@@ -38,11 +38,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import bg.o.sim.finansizmus.db.DBAdapter;
-import bg.o.sim.finansizmus.message.Message;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.model.CategoryExpense;
 import bg.o.sim.finansizmus.model.Transaction;
 import bg.o.sim.finansizmus.transactionRelated.TransactionFragment;
+import bg.o.sim.finansizmus.utils.Util;
 
 public class DiagramFragment extends Fragment {
 
@@ -145,7 +145,7 @@ public class DiagramFragment extends Fragment {
         displayTotal(totalSumButton);
         if (transaction != null && colors.containsKey(transaction.getCategory().getIconId())) {
             addEntry(transaction);
-            Message.message(getActivity(), "Entry added to the diagram");
+            Util.toastLong(getActivity(), "Entry added to the diagram");
         }
     }
 

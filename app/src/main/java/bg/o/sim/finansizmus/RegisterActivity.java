@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import bg.o.sim.finansizmus.db.DBAdapter;
-import bg.o.sim.finansizmus.message.Message;
 import bg.o.sim.finansizmus.model.User;
+import bg.o.sim.finansizmus.utils.Util;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -93,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         }
         if(adapter.existsUser(username)){
-            Message.message(this,"User already exists");
+            Util.toastLong(this, "User already exists");
             return;
         }
 
@@ -111,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Boolean aBoolean) {
                 super.onPostExecute(aBoolean);
-                    Message.message(RegisterActivity.this, "User registered!");
+                Util.toastLong(RegisterActivity.this, "User registered!");
                     startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                     finish();
 

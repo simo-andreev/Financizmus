@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.db.DBAdapter;
-import bg.o.sim.finansizmus.message.Message;
 import bg.o.sim.finansizmus.model.RowDisplayable;
+import bg.o.sim.finansizmus.utils.Util;
 
 public class RowDisplayableAdapter extends RecyclerView.Adapter<RowDisplayableAdapter.IconViewHolder>{
 
@@ -65,7 +65,7 @@ public class RowDisplayableAdapter extends RecyclerView.Adapter<RowDisplayableAd
                             notifyItemRemoved(position);
 
                         } else{
-                            Message.message(context,"You can`t be without favourite categories!");
+                            Util.toastLong(context, "You can`t be without favourite categories!");
                         }
                     }
                 });

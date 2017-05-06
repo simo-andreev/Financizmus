@@ -30,11 +30,11 @@ import bg.o.sim.finansizmus.DiagramFragment;
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.date.DatePickerFragment;
 import bg.o.sim.finansizmus.db.DBAdapter;
-import bg.o.sim.finansizmus.message.Message;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.model.Manager;
 import bg.o.sim.finansizmus.model.Transaction;
+import bg.o.sim.finansizmus.utils.Util;
 
 public class TransactionFragment extends Fragment implements DatePickerDialog.OnDateSetListener, NoteInputFragment.NoteCommunicator {
 
@@ -210,7 +210,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             @Override
             public void onClick(View v) {
                 if (calculate(OPERATION_NONE) <= 0){
-                    Message.message(getActivity(), "Transactions must have a greater-than-zero value. Thank you :)");
+                    Util.toastLong(getActivity(), "Transactions must have a greater-than-zero value. Thank you :)");
                     return;
                 }
                 if (!startedWithCategory) {
@@ -426,7 +426,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         }
 
         if (temp > 999_999_999.99) {
-            Message.message(getActivity(), "Sorry, this app doesn't support transactions larger than $999,999,999.99");
+            Util.toastLong(getActivity(), "Sorry, this app doesn't support transactions larger than $999,999,999.99");
             storedNumber = 999_999_999.99;
         } else {
             storedNumber = temp;
