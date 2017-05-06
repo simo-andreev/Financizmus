@@ -9,8 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import bg.o.sim.finansizmus.dataManagment.DAO;
-import bg.o.sim.finansizmus.utils.Util;
 
+//TODO - DOCUMENTATION
+//TODO - add 'personal' name input.
+//TODO - extract strings
 
 public class RegisterActivity extends AppCompatActivity {
 

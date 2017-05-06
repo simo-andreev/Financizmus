@@ -1,35 +1,18 @@
 package bg.o.sim.finansizmus;
 
+
 import android.app.DatePickerDialog;
-import android.content.Intent;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import bg.o.sim.finansizmus.model.Manager;
-import bg.o.sim.finansizmus.accounts.AccountsFragment;
-import bg.o.sim.finansizmus.date.DatePickerFragment;
-import bg.o.sim.finansizmus.favourites.FavouritesFragment;
-import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.transactionRelated.NoteInputFragment;
-import bg.o.sim.finansizmus.transactionRelated.TransactionFragment;
-
-import org.joda.time.DateTime;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener, NoteInputFragment.NoteCommunicator {
 
@@ -58,16 +41,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.getFragments() == null || fragmentManager.getFragments().isEmpty()) {
-            fragmentManager.beginTransaction()
-                    .add(R.id.main_fragment_frame, new DiagramFragment(), getString(R.string.diagram_fragment_tag))
-                    .commit();
-        }
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
+
+        fragmentManager = getFragmentManager();
+
+        fragmentManager.beginTransaction().add(R.id.main_fragment_frame, new DiagramFragment(), getString(R.string.diagram_fragment_tag)).commit();
+
 
         headerView = navigationView.getHeaderView(0);
         userProfile = (TextView) headerView.findViewById(R.id.user_profile_link);

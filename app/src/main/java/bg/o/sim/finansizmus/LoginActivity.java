@@ -1,7 +1,6 @@
 package bg.o.sim.finansizmus;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,10 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import bg.o.sim.finansizmus.dataManagment.DAO;
-import bg.o.sim.finansizmus.model.Manager;
-import bg.o.sim.finansizmus.model.User;
-import bg.o.sim.finansizmus.utils.Util;
 
+//TODO - DOCUMENTATION
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,11 +34,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null){
-            if (extras.containsKey(getString(R.string.EXTRA_USERNAME))){
+        if (extras != null) {
+            if (extras.containsKey(getString(R.string.EXTRA_USERNAME))) {
                 //TODO
             }
-            if (extras.containsKey(getString(R.string.EXTRA_USERMAIL))){
+            if (extras.containsKey(getString(R.string.EXTRA_USERMAIL))) {
                 userEmail.setText(extras.getString(getString(R.string.EXTRA_USERMAIL), ""));
             }
         }
@@ -53,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                 switch (v.getId()) {
                     case R.id.loggin_loggin_button:
                         if (validateForm())
-                            dao.logInUser(userEmail.getText().toString(), userPass.getText().toString(),LoginActivity.this);
+                            dao.logInUser(userEmail.getText().toString(), userPass.getText().toString(), LoginActivity.this);
                         break;
                     case R.id.loggin_signup_button:
                         startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
@@ -67,13 +64,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean validateForm() {
-        if (userEmail.getText().length() < 4 || userEmail.getText().length() > 40){
+        if (userEmail.getText().length() < 4 || userEmail.getText().length() > 40) {
             userEmail.requestFocus();
             userEmail.setError(getString(R.string.error_invalid_email));
             return false;
         }
 
-        if (userPass.getText().length() < 4 || userPass.getText().length() > 40){
+        if (userPass.getText().length() < 4 || userPass.getText().length() > 40) {
             userPass.requestFocus();
             userPass.setError(getString(R.string.error_password_length));
             return false;

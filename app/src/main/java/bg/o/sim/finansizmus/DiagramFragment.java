@@ -37,16 +37,14 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Category;
-import bg.o.sim.finansizmus.model.CategoryExpense;
 import bg.o.sim.finansizmus.model.Transaction;
 import bg.o.sim.finansizmus.transactionRelated.TransactionFragment;
 import bg.o.sim.finansizmus.utils.Util;
 
 public class DiagramFragment extends Fragment {
 
-    private HashSet<CategoryExpense> displayedCategories;
+//    private HashSet<CategoryExpense> displayedCategories;
     private HashMap<Integer, Integer> colors;
 
     private PieChart pieChart;
@@ -56,7 +54,6 @@ public class DiagramFragment extends Fragment {
     private Button totalSumButton;
 
     private CircleLayout circleLayout;
-    private DBAdapter adapter;
 
     private View rootView;
     private Transaction transaction;
@@ -86,7 +83,6 @@ public class DiagramFragment extends Fragment {
         colors = new HashMap<>();
 
         totalSumButton = (Button) rootView.findViewById(R.id.total_sum_btn);
-        adapter = DBAdapter.getInstance(getActivity());
 
         args = getArguments();
         transaction = null;
