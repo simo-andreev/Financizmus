@@ -20,6 +20,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -69,49 +70,53 @@ public class DAO {
      */
     @Nullable
     public boolean logInUser(String mail, String password, final LoginActivity activity) {
-        if (mail != null && password != null && !mail.isEmpty() && !password.isEmpty()) {
+        if (mail == null || password == null || mail.isEmpty() || password.isEmpty())
+            return false;
 
-            String selection = h.USER_COLUMN_MAIL + " = ? AND " + h.USER_COLUMN_PASSWORD + " = ? ";
-            String[] selectionArgs = {mail, password};
+        String selection = h.USER_COLUMN_MAIL + " = ? AND " + h.USER_COLUMN_PASSWORD + " = ? ";
+        String[] selectionArgs = {mail, password};
 
-            Cursor cursor = h.getReadableDatabase().query(h.TABLE_USER, null, selection, selectionArgs, null, null, null);
-            if (cursor.moveToNext()) {
-                String name = cursor.getString(cursor.getColumnIndex(h.USER_COLUMN_NAME));
-                long id = cursor.getLong(cursor.getColumnIndex(h.USER_COLUMN_ID));
-                User user = new User(mail, name, id);
+        Cursor cursor = h.getReadableDatabase().query(h.TABLE_USER, null, selection, selectionArgs, null, null, null);
+        if (cursor.moveToNext()) {
+            String name = cursor.getString(cursor.getColumnIndex(h.USER_COLUMN_NAME));
+            long id = cursor.getLong(cursor.getColumnIndex(h.USER_COLUMN_ID));
+            User user = new User(mail, name, id);
 
-                new AsyncTask<User, Void, User>() {
+            new AsyncTask<User, Void, User>() {
 
-                    @Override
-                    protected void onPreExecute() {
-                        //TODO - display loading "circlet" in activity
-                    }
+                @Override
+                protected void onPreExecute() {
+                    //TODO - display loading "circlet" in activity
+                }
 
-                    @Override
-                    protected User doInBackground(User... params) {
-                        long id = params[0].getId();
+                @Override
+                protected User doInBackground(User... params) {
+                    long id = params[0].getId();
 
-                        loadUserAccounts(id);
-                        loadUserCategories(id);
-                        loadUserTransactions(id);
+                    loadUserAccounts(id);
+                    loadUserCategories(id);
+                    loadUserTransactions(id);
 
-                        return params[0];
-                    }
+                    return params[0];
+                }
 
-                    @Override
-                    protected void onPostExecute(User user) {
-                        cache.setLoggedUser(user);
-                        Intent i = new Intent(activity, MainActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        Util.toastLong(context, context.getString(R.string.welcome_message) + user.getName());
-                        activity.startActivity(i);
-                    }
+                @Override
+                protected void onPostExecute(User user) {
+                    cache.setLoggedUser(user);
+                    Intent i = new Intent(activity, MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    Util.toastLong(context, context.getString(R.string.welcome_message) + " " + user.getName());
+                    activity.startActivity(i);
+                    activity.finish();
+                }
+            }.execute(user);
 
-                }.execute(user);
-            }
+            return true;
+
+        } else {
+            Util.toastShort(context, context.getString(R.string.message_invalid_login));
+            return false;
         }
-        Util.toastShort(context, context.getString(R.string.message_ivalid_login));
-        return false;
     }
 
     /**
@@ -135,7 +140,17 @@ public class DAO {
                 values.put(h.USER_COLUMN_NAME, name);
                 values.put(h.USER_COLUMN_PASSWORD, password);
 
-                long id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_USER, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+                long id = -1;
+
+                try{
+                    id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_USER, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+                } catch (SQLiteException e){
+                    // From what I gather, insertWithOnConflict is 'obsolete' and doesn't work properly... since at-least 2010...
+                    // https://issuetracker.google.com/issues/36923483
+                    // but our overlords at Google decided that marking that in the method docs or a @Deprecated annot
+                    // would make life too easy I guess.
+                    // TODO - reconsider using plain .insert() or check if insertOrThrow() works.
+                }
 
                 if (id == -1) return null;
 
@@ -154,8 +169,9 @@ public class DAO {
                     cache.setLoggedUser(user);
                     Intent i = new Intent(activity, MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    Util.toastLong(context, context.getString(R.string.hello) + user.getName() + "!");
+                    Util.toastLong(context, context.getString(R.string.hello) + " " + user.getName() + "!");
                     activity.startActivity(i);
+                    activity.finish();
                 }
             }
         }.execute();
@@ -192,7 +208,13 @@ public class DAO {
         values.put(h.ACCOUNT_COLUMN_ICON_ID, iconId);
         values.put(h.ACCOUNT_COLUMN_USER_FK, userId);
 
-        long id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_ACCOUNT, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+        long id = -1;
+
+        try{
+            id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_ACCOUNT, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+        } catch (SQLiteException e){
+            //See @ previous use of insertWithOnConflict, for info, whi this try-catch is here.
+        }
         if (id < 0) return;
         Account acc = new Account(name, iconId, id, userId);
         cache.addAccount(acc);
@@ -208,7 +230,14 @@ public class DAO {
         values.put(h.CATEGORY_COLUMN_IS_EXPENSE, type == Category.Type.EXPENSE ? 1 : 0);
         values.put(h.CATEGORY_COLUMN_IS_FAVOURITE, isFavourite ? 1 : 0);
 
-        long id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_ACCOUNT, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+        long id = -1;
+
+        try {
+            id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_CATEGORY, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+        } catch (SQLiteException e) {
+            //See @ previous use of insertWithOnConflict, for info, whi this try-catch is here.
+        }
+
         if (id < 0) return;
         Category cat = new Category(name, iconId, id, userId, isFavourite, type);
         cache.addCategory(cat);
@@ -282,7 +311,7 @@ public class DAO {
                 h.TRANSACTION_COLUMN_NOTE,
                 h.TRANSACTION_COLUMN_SUM
         };
-        String selection = h.TRANSACTION_COLUMN_USER_FK + " = ? " + userId;
+        String selection = h.TRANSACTION_COLUMN_USER_FK + " = " + userId;
 
         Cursor c = h.getReadableDatabase().query(h.TABLE_TRANSACTION, columns, selection, null, null, null, null);
 
@@ -323,7 +352,7 @@ public class DAO {
     private static class DbHelper extends SQLiteOpenHelper {
 
         //DataBase version const:
-        private static final int DB_VERSION = 0;
+        private static final int DB_VERSION = 3;
 
         //DateBase name const
         private static final String DB_NAME = "finansizmus.db";
@@ -332,7 +361,7 @@ public class DAO {
         private static final String TABLE_USER = "user";
         private static final String TABLE_ACCOUNT = "account";
         private static final String TABLE_CATEGORY = "category";
-        private static final String TABLE_TRANSACTION = "transaction";
+        private static final String TABLE_TRANSACTION = "transaction_table"; //3 hours...... 3 FUCKING hours of debugging and repetitive head injuries, because 'transaction' is not a valid SQL table name. fml  (ノಠ益ಠ)ノ彡┻━┻
         private static final String[] TABLES = {TABLE_USER, TABLE_ACCOUNT, TABLE_CATEGORY, TABLE_TRANSACTION};
         //Common column name consts for easier editing
         private static final String COMMON_COLUMN_ID = "_id";
@@ -402,10 +431,12 @@ public class DAO {
                 TRANSACTION_COLUMN_USER_FK + " INTEGER, " +
                 TRANSACTION_COLUMN_ACCOUNT_FK + " INTEGER, " +
                 TRANSACTION_COLUMN_CATEGORY_FK + " INTEGER, " +
-                "FOREIGN KEY (" + TRANSACTION_COLUMN_USER_FK + ") REFERENCES " + TABLE_USER + "(" + USER_COLUMN_ID + ")" +
-                "FOREIGN KEY (" + TRANSACTION_COLUMN_ACCOUNT_FK + ") REFERENCES " + TABLE_ACCOUNT + "(" + ACCOUNT_COLUMN_ID + ")" +
-                "FOREIGN KEY (" + TRANSACTION_COLUMN_CATEGORY_FK + ") REFERENCES " + TABLE_CATEGORY + "(" + CATEGORY_COLUMN_ID + ")" +
+                "FOREIGN KEY (" + TRANSACTION_COLUMN_USER_FK + ") REFERENCES " + TABLE_USER + "(" + USER_COLUMN_ID + "), " +
+                "FOREIGN KEY (" + TRANSACTION_COLUMN_ACCOUNT_FK + ") REFERENCES " + TABLE_ACCOUNT + "(" + ACCOUNT_COLUMN_ID + "), " +
+                "FOREIGN KEY (" + TRANSACTION_COLUMN_CATEGORY_FK + ") REFERENCES " + TABLE_CATEGORY + "(" + CATEGORY_COLUMN_ID + ") " +
                 ");";
+        //TODO /\ foreign keys to different tables in SQLite, is it doable and if it is - how?
+
         private static final String[] CREATE_STATEMENTS = {CREATE_USER, CREATE_ACCOUNT, CREATE_CATEGORY, CREATE_TRANSACTION};
 
 
@@ -435,21 +466,26 @@ public class DAO {
         public void onCreate(SQLiteDatabase db) {
             try {
 
-                for (String s : CREATE_STATEMENTS)
-                    db.execSQL(s);
+                for (String s : CREATE_STATEMENTS) {
+                    db.execSQL(s+"S");
+                    Log.e("CREATED ",s);
+                }
 
-                db.execSQL("CREATE INDEX user_mail_index ON " + TABLE_USER + " (" + USER_COLUMN_MAIL + ");");
-                db.execSQL("CREATE INDEX acc_user_index ON " + TABLE_ACCOUNT + " (" + ACCOUNT_COLUMN_USER_FK + ");");
-                db.execSQL("CREATE INDEX cat_user_index ON " + TABLE_CATEGORY + " (" + CATEGORY_COLUMN_USER_FK + ");");
-                db.execSQL("CREATE INDEX trans_user_index ON " + TABLE_TRANSACTION + " (" + TRANSACTION_COLUMN_USER_FK + ");");
+                db.execSQL("CREATE INDEX user_mail_index ON " + TABLE_USER + " (" + USER_COLUMN_MAIL + ")");
+                db.execSQL("CREATE INDEX acc_user_index ON " + TABLE_ACCOUNT + " (" + ACCOUNT_COLUMN_USER_FK + ")");
+                db.execSQL("CREATE INDEX cat_user_index ON " + TABLE_CATEGORY + " (" + CATEGORY_COLUMN_USER_FK + ")");
+                db.execSQL("CREATE INDEX trans_user_index ON " + TABLE_TRANSACTION + " (" + TRANSACTION_COLUMN_USER_FK + ")");
+
 
             } catch (SQLiteException e) {
+                Log.e("ERROR: ", e.toString());
                 //In case of unsuccessful table creation, clear any created tables, display appropriate message and restart the app.
                 //Fingers crossed, that this Toast never sees the light of day =]
+                //TODO - THIS TOAST HAS SPAT EXCEPTIONS BEFORE. TEST THE HELL OUT OF IT.
+                // yes, I realize the irony in the error-message throwing an error, but whatyagonnado. The joys of a learning experience I guess =]
                 Util.toastLong(context, context.getString(R.string.sql_exception_message));
-
                 for (String s : TABLES)
-                    db.execSQL("DROP TABLE IF EXISTS " + s + " ;");
+                    db.execSQL("DROP TABLE IF EXISTS "+ s);
 
                 Intent intent = new Intent(context, LoginActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -463,6 +499,7 @@ public class DAO {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            //TODO keep data from old table.
             for (String s : TABLES)
                 db.execSQL("DROP TABLE IF EXISTS " + s + " ;");
             onCreate(db);

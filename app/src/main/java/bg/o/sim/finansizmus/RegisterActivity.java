@@ -8,8 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import bg.o.sim.finansizmus.dataManagment.DBAdapter;
-import bg.o.sim.finansizmus.model.User;
+import bg.o.sim.finansizmus.dataManagment.DAO;
 import bg.o.sim.finansizmus.utils.Util;
 
 
@@ -20,14 +19,13 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText confirmPass;
     private Button signUp;
     private Button cancel;
-    private DBAdapter adapter;
+
+    private DAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        adapter = DBAdapter.getInstance(this);
 
         userEmail = (EditText)findViewById(R.id.register_email_insert);
         userPass = (EditText)findViewById(R.id.register_pass_insert);
@@ -35,6 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         signUp = (Button)findViewById(R.id.register_reg_button);
         cancel = (Button)findViewById(R.id.register_cancel_button);
+
+        dao = DAO.getInstance(this);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,76 +51,47 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void signUp() {
+
         final String username = userEmail.getText().toString();
         final String pass = userPass.getText().toString();
         final String confirm = confirmPass.getText().toString();
-        final boolean[] flag = new boolean[1];
+
         if (username.isEmpty()) {
-            userEmail.setError("Empty email");
             userEmail.requestFocus();
+            userEmail.setError("Empty email");
             return;
         }
-        //if(!android.util.Patterns.EMAIL_ADDRESS.matcher(username).matches()){
         if (!username.matches("^(.+)@(.+)$")) {
+            userEmail.requestFocus();
             userEmail.setError("enter a valid email address");
             userEmail.setText("");
-            userEmail.requestFocus();
             return;
         }
         if (pass.isEmpty()) {
-            userPass.setError("Empty password");
             userPass.requestFocus();
+            userPass.setError("Empty password");
             return;
-
         }
         if (!pass.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*+=?-]).{8,30}$")) {
+            userPass.requestFocus();
             userPass.setError("Password should contain at least one digit," +
                     "one special symbol,one small letter,and should be between 8 and 30 symbols. ");
             return;
         }
         if (confirm.isEmpty()) {
-            confirmPass.setError("Empty confirmation");
             confirmPass.requestFocus();
+            confirmPass.setError("Empty confirmation");
             return;
-
         }
         if (!pass.equals(confirm)) {
-
+            confirmPass.requestFocus();
             confirmPass.setError("Different passwords");
             confirmPass.setText("");
-            confirmPass.requestFocus();
             return;
 
         }
-        if(adapter.existsUser(username)){
-            Util.toastLong(this, "User already exists");
-            return;
-        }
 
-        flag[0] = true;
-        new AsyncTask<Void,Void,Boolean>(){
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                if(flag[0] = true) {
-                    User u = new User(username, pass);
-                    long id = adapter.insertData(u);
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                Util.toastLong(RegisterActivity.this, "User registered!");
-                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                    finish();
-
-            }
-        }.execute();
-
-
-
-
+        dao.registerUser(username, username, pass, this);
     }
 
 }
