@@ -1,61 +1,32 @@
 package bg.o.sim.finansizmus.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-
-import bg.o.sim.finansizmus.model.Account;
 
 public class User implements Serializable {
 
     private String email;
-    private String password;
+    private String name;
     private long id;
-    public float totalSum;
-    public static HashSet<Account> accounts;
 
-
-
-    public User(String email, String password) {
-        if (email != null && !email.isEmpty()) {
-            this.email = email;
-        }
-        if (password != null && !password.isEmpty()) {
-            this.password = password;
-        }
-        totalSum = 0f;
-        accounts = new HashSet<>();
-
-
-
+    public User(String email, String name, long id) {
+        //TODO - VALIDATION
+        this.email = email;
+        this.name = name;
+        this.id = id;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setTotalSum(float totalSum) {
-        this.totalSum = totalSum;
+    public String getName() {
+        return name;
     }
 
     public long getId() {
         return id;
     }
+
 
 
 }
