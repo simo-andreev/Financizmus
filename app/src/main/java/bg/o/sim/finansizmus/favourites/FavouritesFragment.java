@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.db.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Manager;
 import bg.o.sim.finansizmus.accounts.RecyclerItemClickListener;
 import bg.o.sim.finansizmus.model.CategoryExpense;

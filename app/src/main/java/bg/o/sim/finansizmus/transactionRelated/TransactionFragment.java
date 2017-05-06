@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import bg.o.sim.finansizmus.DiagramFragment;
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.date.DatePickerFragment;
-import bg.o.sim.finansizmus.db.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.model.Manager;

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.db.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.model.Transaction;
 

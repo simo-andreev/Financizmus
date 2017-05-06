@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import bg.o.sim.finansizmus.db.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.model.CategoryExpense;
 import bg.o.sim.finansizmus.model.Transaction;
@@ -72,9 +72,10 @@ public class DiagramFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        try{
+        if (rootView == null)
             rootView = inflater.inflate(R.layout.fragment_diagram, container, false);
-        } catch (InflateException e){}
+
+
 
         circleLayout = (CircleLayout) rootView.findViewById(R.id.frame);
         pieChart = (PieChart) rootView.findViewById(R.id.pie_chart);

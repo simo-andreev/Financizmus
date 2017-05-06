@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.db.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.RowDisplayable;
 import bg.o.sim.finansizmus.reports.FilteredReportFragment;

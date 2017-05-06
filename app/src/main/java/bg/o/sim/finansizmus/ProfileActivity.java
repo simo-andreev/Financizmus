@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import bg.o.sim.finansizmus.db.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Manager;
 import bg.o.sim.finansizmus.utils.Util;
 

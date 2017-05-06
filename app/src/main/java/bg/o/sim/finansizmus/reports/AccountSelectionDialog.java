@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.db.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Account;
 
 public class AccountSelectionDialog extends DialogFragment {

@@ -1,4 +1,4 @@
-package bg.o.sim.finansizmus.db;
+package bg.o.sim.finansizmus.dataManagment;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,12 +7,16 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
+import java.text.DateFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -842,6 +846,8 @@ public class DBAdapter {
                     int userIndex = cursor.getColumnIndex(helper.TRANSACTIONS_COLUMN_USERFK);
                     int idIndex = cursor.getColumnIndex(helper.COLUMN_ID);
 
+                    long start = System.currentTimeMillis();
+                    Log.wtf("SIZE: ", String.valueOf(cursor.getCount()));
 
                     while (cursor.moveToNext()) {
 
@@ -855,11 +861,9 @@ public class DBAdapter {
                         long userFk = cursor.getLong(userIndex);
 
                         if (!(expenseCategories.containsKey(catFk) || favouriteCategories.containsKey(catFk) || incomeCategories.containsKey(catFk))) {
-                            Log.wtf("LOAD TRANSACTIONS:", " NO CATEGORY FOR THIS TRANSACTION!");
                             continue;
                         }
                         if (!accounts.containsKey(accFk)) {
-                            Log.wtf("LOAD TRANSACTIONS:", " NO ACCOUNT FOR THIS TRANSACTION!");
                             continue;
                         }
 
@@ -877,8 +881,10 @@ public class DBAdapter {
                         }
 
                         transactions.get(catFk).add(t);
-                        Log.wtf("LOAD TRANSACTIONS:", " LOADED " + cat.getName() + "   :   " + transactions.get(catFk).size());
                     }
+
+                    Log.wtf("END: ", String.valueOf(System.currentTimeMillis() - start));
+
                 } else {
 
                 }

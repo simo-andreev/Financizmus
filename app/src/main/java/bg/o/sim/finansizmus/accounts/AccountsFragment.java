@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.db.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.favourites.AddCategoryDialogFragment;
 import bg.o.sim.finansizmus.favourites.IconsAdapter;
 import bg.o.sim.finansizmus.model.Manager;

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.db.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.CategoryExpense;
 import bg.o.sim.finansizmus.model.Manager;

@@ -1,4 +1,4 @@
-package bg.o.sim.finansizmus.db;
+package bg.o.sim.finansizmus.dataManagment;
 
 //TODO - Currently the Db is structured to simulate a server-side Db on the device it is installed,
 //TODO - exemplī grātiā - it holds all Users' data, meaning all registrations and accounts are solely local.
@@ -12,20 +12,206 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import bg.o.sim.finansizmus.LoginActivity;
+import bg.o.sim.finansizmus.MainActivity;
 import bg.o.sim.finansizmus.R;
+import bg.o.sim.finansizmus.model.Account;
+import bg.o.sim.finansizmus.model.Category;
+import bg.o.sim.finansizmus.model.CategoryExpense;
+import bg.o.sim.finansizmus.model.CategoryIncome;
+import bg.o.sim.finansizmus.model.Transaction;
+import bg.o.sim.finansizmus.model.User;
 import bg.o.sim.finansizmus.utils.Util;
 
 /**
- * Data Access Singleton Object for the device's SQLite Db.
+ * Data Access Singleton Object for the app's's SQLite Db.
  */
 public class DAO {
 
+    private static DAO instance;
+    private DbHelper h;
+    private Context context;
+    private CacheManager cache;
+
+    private DAO(@NonNull Context context) {
+        if (context == null)
+            throw new IllegalArgumentException("Context MUST ne non-null!!!");
+        this.h = new DbHelper(context);
+        this.cache = CacheManager.getInstance();
+        this.context = context;
+
+    }
+
+    public static DAO getInstance(Context context) {
+        if (instance == null)
+            instance = new DAO(context);
+        return instance;
+    }
+
+    /**
+     * Checks the SQLite Db for a {@link User} entry, matching the parameters.
+     *
+     * @param mail     User e-mail
+     * @param password User password
+     * @return User object corresponding to the e-mail and password if found. Returns <b><code>null</code></b> if no row matches the data!
+     */
+    @Nullable
+    public User logIn(String mail, String password) {
+        User u = null;
+
+        String selection = h.USER_COLUMN_MAIL + " = ? AND " + h.USER_COLUMN_PASSWORD + " = ? ";
+        String[] selectionArgs = {mail, password};
+
+        Cursor cursor = h.getReadableDatabase().query(h.TABLE_USER, null, selection, selectionArgs, null, null, null);
+        if (cursor.moveToNext()) {
+            u = new User(mail, password);
+            u.setId(cursor.getInt(cursor.getColumnIndex(h.USER_COLUMN_ID)));
+        }
+        return u;
+    }
+
+    public void loadUserData(final User user, final LoginActivity activity) {
+        new AsyncTask<User, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(User... params) {
+                long id = user.getId();
+
+                loadUserAccounts(id);
+                loadUserCategories(id);
+                loadUserTransactions(id);
+
+                return null;
+            }
+
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                Intent i = new Intent(activity, MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                activity.startActivity(i);
+            }
+        }.execute(user);
+    }
+
+    private void loadUserAccounts(long userId) {
+
+        String[] columns = {h.ACCOUNT_COLUMN_ID, h.ACCOUNT_COLUMN_ICON_ID, h.ACCOUNT_COLUMN_NAME};
+        String selection = h.ACCOUNT_COLUMN_USER_FK + " = " + userId;
+
+        Cursor c = h.getReadableDatabase().query(h.TABLE_ACCOUNT, columns, selection, null, null, null, null);
+
+        int indxId = c.getColumnIndex(h.ACCOUNT_COLUMN_ID);
+        int indxIcon = c.getColumnIndex(h.ACCOUNT_COLUMN_ICON_ID);
+        int indxName = c.getColumnIndex(h.ACCOUNT_COLUMN_NAME);
+
+
+        while (c.moveToNext()) {
+            long id = c.getLong(indxId);
+            int icon = c.getInt(indxIcon);
+            String name = c.getString(indxName);
+
+            Account acc = new Account(name, icon);
+            acc.setId(id);
+            cache.addAccount(acc);
+        }
+    }
+
+    private void loadUserCategories(long userId) {
+
+        String[] columns = {h.CATEGORY_COLUMN_ID, h.CATEGORY_COLUMN_ICON_ID, h.CATEGORY_COLUMN_NAME, h.CATEGORY_COLUMN_IS_EXPENSE, h.CATEGORY_COLUMN_IS_FAVOURITE};
+        String selection = h.CATEGORY_COLUMN_USER_FK + " = " + userId;
+
+        Cursor c = h.getReadableDatabase().query(h.TABLE_CATEGORY, columns, selection, null, null, null, null);
+
+        int indxId = c.getColumnIndex(h.CATEGORY_COLUMN_ID);
+        int indxIcon = c.getColumnIndex(h.CATEGORY_COLUMN_ICON_ID);
+        int indxName = c.getColumnIndex(h.CATEGORY_COLUMN_NAME);
+        int indxIsExp = c.getColumnIndex(h.CATEGORY_COLUMN_IS_EXPENSE);
+        int indxIsFav = c.getColumnIndex(h.CATEGORY_COLUMN_IS_FAVOURITE);
+
+        while (c.moveToNext()) {
+
+            long id = c.getLong(indxId);
+            int icon = c.getInt(indxIcon);
+            String name = c.getString(indxName);
+            Boolean isExpense = c.getInt(indxIsExp) == 1;
+            Boolean isFavourite = c.getInt(indxIsFav) == 1;
+
+            Category cat;
+
+            if (isExpense)
+                cat = new CategoryExpense(name, isFavourite, icon);
+            else
+                cat = new CategoryIncome(name, icon);
+
+            cat.setId(id);
+
+            cache.addCategory(cat);
+        }
+
+    }
+
+    private void loadUserTransactions(long userId) {
+
+        String[] columns = {
+                h.TRANSACTION_COLUMN_ACCOUNT_FK,
+                h.TRANSACTION_COLUMN_CATEGORY_FK,
+                h.TRANSACTION_COLUMN_ID,
+                h.TRANSACTION_COLUMN_DATE,
+                h.TRANSACTION_COLUMN_NOTE,
+                h.TRANSACTION_COLUMN_SUM
+        };
+        String selection = h.TRANSACTION_COLUMN_USER_FK + " = ? " + userId;
+
+        Cursor c = h.getReadableDatabase().query(h.TABLE_TRANSACTION, columns, selection, null, null, null, null);
+
+        int indxAccId = c.getColumnIndex(h.TRANSACTION_COLUMN_ACCOUNT_FK);
+        int indxCatId = c.getColumnIndex(h.TRANSACTION_COLUMN_CATEGORY_FK);
+        int indxId = c.getColumnIndex(h.TRANSACTION_COLUMN_ID);
+        int indxDate = c.getColumnIndex(h.TRANSACTION_COLUMN_DATE);
+        int indxNote = c.getColumnIndex(h.TRANSACTION_COLUMN_NOTE);
+        int indxSum = c.getColumnIndex(h.TRANSACTION_COLUMN_SUM);
+
+        Account acc = null;
+        Category cat = null;
+
+        while (c.moveToNext()) {
+
+            long accFk = c.getLong(indxAccId);
+            if ((acc = cache.getAccout(accFk)) == null) continue;
+
+            long catFk = c.getLong(indxCatId);
+            if ((cat = cache.getCategory(catFk)) == null) continue;
+
+            double sum = c.getDouble(indxSum);
+            String note = c.getString(indxNote);
+
+            long timestamp = c.getLong(indxDate);
+            DateTime date = new DateTime(timestamp, DateTimeZone.UTC);
+
+            Transaction t = new Transaction(date, sum, note, acc, cat);
+            t.setId(c.getLong(indxId));
+
+            cache.addTransaction(t);
+        }
+    }
+
+
+    /**
+     * Singleton {@link SQLiteOpenHelper} implementation class.
+     */
     private static class DbHelper extends SQLiteOpenHelper {
 
         //DataBase version const:
@@ -39,7 +225,7 @@ public class DAO {
         private static final String TABLE_ACCOUNT = "account";
         private static final String TABLE_CATEGORY = "category";
         private static final String TABLE_TRANSACTION = "transaction";
-        private static final String[] TABLES = { TABLE_USER, TABLE_ACCOUNT, TABLE_CATEGORY, TABLE_TRANSACTION };
+        private static final String[] TABLES = {TABLE_USER, TABLE_ACCOUNT, TABLE_CATEGORY, TABLE_TRANSACTION};
         //Common column name consts for easier editing
         private static final String COMMON_COLUMN_ID = "_id";
         private static final String COMMON_COLUMN_USER_FK = "userFK";
@@ -71,6 +257,7 @@ public class DAO {
         private static final String TRANSACTION_COLUMN_ACCOUNT_FK = "accountFK";
         private static final String TRANSACTION_COLUMN_DATE = "date";
         private static final String TRANSACTION_COLUMN_NOTE = "note";
+        private static final String TRANSACTION_COLUMN_SUM = "sum";
 
         //CREATE TABLE statements
         private static final String CREATE_USER = "CREATE TABLE " + TABLE_USER +
@@ -80,7 +267,7 @@ public class DAO {
                 USER_COLUMN_NAME + " VARCHAR(80) NOT NULL, " +
                 USER_COLUMN_PASSWORD + " VARCHAR(80) NOT NULL" +
                 ");";
-        private static final String CREATE_ACCOUNT =  "CREATE TABLE " + TABLE_ACCOUNT +
+        private static final String CREATE_ACCOUNT = "CREATE TABLE " + TABLE_ACCOUNT +
                 " ( " +
                 ACCOUNT_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ACCOUNT_COLUMN_USER_FK + " INTEGER, " +
@@ -88,7 +275,7 @@ public class DAO {
                 ACCOUNT_COLUMN_NAME + " VARCHAR(40), " +
                 "FOREIGN KEY (" + ACCOUNT_COLUMN_USER_FK + ") REFERENCES " + TABLE_USER + "(" + USER_COLUMN_ID + ")" +
                 ");";
-        private static final String CREATE_CATEGORY =  "CREATE TABLE " + TABLE_CATEGORY +
+        private static final String CREATE_CATEGORY = "CREATE TABLE " + TABLE_CATEGORY +
                 " ( " +
                 CATEGORY_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 CATEGORY_COLUMN_USER_FK + " INTEGER, " +
@@ -98,11 +285,12 @@ public class DAO {
                 CATEGORY_COLUMN_IS_FAVOURITE + " INTEGER, " +
                 "FOREIGN KEY (" + CATEGORY_COLUMN_USER_FK + ") REFERENCES " + TABLE_USER + "(" + USER_COLUMN_ID + ")" +
                 ");";
-        private static final String CREATE_TRANSACTION =  "CREATE TABLE " + TABLE_TRANSACTION +
+        private static final String CREATE_TRANSACTION = "CREATE TABLE " + TABLE_TRANSACTION +
                 " ( " +
                 TRANSACTION_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TRANSACTION_COLUMN_DATE + " INTEGER, " +
                 TRANSACTION_COLUMN_NOTE + " VARCHAR(255), " +
+                TRANSACTION_COLUMN_SUM + " REAL, " +
                 TRANSACTION_COLUMN_USER_FK + " INTEGER, " +
                 TRANSACTION_COLUMN_ACCOUNT_FK + " INTEGER, " +
                 TRANSACTION_COLUMN_CATEGORY_FK + " INTEGER, " +
@@ -121,11 +309,13 @@ public class DAO {
             this.context = context;
         }
 
-        /**Singleton instance getter.
+        /**
+         * Singleton instance getter.
+         *
          * @param context Context instance required for SQLiteOpenHelper constructor.
          * @return Singleton instance of the DbHelper.
          */
-        private static DbHelper getInstance(@NonNull Context context){
+        private static DbHelper getInstance(@NonNull Context context) {
             if (context == null)
                 throw new IllegalArgumentException("Context MUST ne non-null!!!");
             if (instance == null)
@@ -135,11 +325,17 @@ public class DAO {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            try{
+            try {
+
                 for (String s : CREATE_STATEMENTS)
                     db.execSQL(s);
+
                 db.execSQL("CREATE INDEX user_mail_index ON " + TABLE_USER + " (" + USER_COLUMN_MAIL + ");");
-            } catch (SQLiteException e){
+                db.execSQL("CREATE INDEX acc_user_index ON " + TABLE_ACCOUNT + " (" + ACCOUNT_COLUMN_USER_FK + ");");
+                db.execSQL("CREATE INDEX cat_user_index ON " + TABLE_CATEGORY + " (" + CATEGORY_COLUMN_USER_FK + ");");
+                db.execSQL("CREATE INDEX trans_user_index ON " + TABLE_TRANSACTION + " (" + TRANSACTION_COLUMN_USER_FK + ");");
+
+            } catch (SQLiteException e) {
                 //In case of unsuccessful table creation, clear any created tables, display appropriate message and restart the app.
                 //Fingers crossed, that this Toast never sees the light of day =]
                 Util.toastLong(context, context.getString(R.string.sql_exception_message));

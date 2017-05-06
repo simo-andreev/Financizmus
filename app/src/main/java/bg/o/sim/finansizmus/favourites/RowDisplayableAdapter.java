@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.db.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.RowDisplayable;
 import bg.o.sim.finansizmus.utils.Util;
 
