@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import bg.o.sim.finansizmus.dataManagment.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DAO;
 import bg.o.sim.finansizmus.model.Manager;
 import bg.o.sim.finansizmus.model.User;
 import bg.o.sim.finansizmus.utils.Util;
@@ -21,75 +21,64 @@ public class LoginActivity extends AppCompatActivity {
     private Button logIn;
     private Button signUp;
 
-    private DBAdapter adapter;
+    private DAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userEmail = (EditText)findViewById(R.id.loggin_email_insert);
-        userPass = (EditText)findViewById(R.id.loggin_pass_insert);
-        logIn = (Button)findViewById(R.id.loggin_loggin_button);
-        signUp = (Button)findViewById(R.id.loggin_signup_button);
+        dao = DAO.getInstance(this);
 
-        adapter = DBAdapter.getInstance(this);
+        userEmail = (EditText) findViewById(R.id.loggin_email_insert);
+        userPass = (EditText) findViewById(R.id.loggin_pass_insert);
+        logIn = (Button) findViewById(R.id.loggin_loggin_button);
+        signUp = (Button) findViewById(R.id.loggin_signup_button);
+
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            if (extras.containsKey(getString(R.string.EXTRA_USERNAME))){
+                //TODO
+            }
+            if (extras.containsKey(getString(R.string.EXTRA_USERMAIL))){
+                userEmail.setText(extras.getString(getString(R.string.EXTRA_USERMAIL), ""));
+            }
+        }
+
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()){
+                switch (v.getId()) {
                     case R.id.loggin_loggin_button:
-                        logIn();
+                        if (validateForm())
+                            dao.logInUser(userEmail.getText().toString(), userPass.getText().toString(),LoginActivity.this);
                         break;
                     case R.id.loggin_signup_button:
-                        startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+                        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                         break;
                 }
             }
         };
+
         logIn.setOnClickListener(listener);
         signUp.setOnClickListener(listener);
     }
 
-    private void logIn() {
-       final   String email = userEmail.getText().toString();
-       final  String pass = userPass.getText().toString();
-        final User u = new User(email, pass);
-        final boolean[] flag = new boolean[1];
-        new AsyncTask<Void,Void,Void>(){
+    private boolean validateForm() {
+        if (userEmail.getText().length() < 4 || userEmail.getText().length() > 40){
+            userEmail.requestFocus();
+            userEmail.setError(getString(R.string.error_invalid_email));
+            return false;
+        }
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                flag[0] = adapter.getUser(email, pass);
-                if(flag[0]){
+        if (userPass.getText().length() < 4 || userPass.getText().length() > 40){
+            userPass.requestFocus();
+            userPass.setError(getString(R.string.error_password_length));
+            return false;
+        }
 
-                    Manager.setLoggedUser(u);
-                    Manager.getLoggedUser().setId(adapter.getId(u.getEmail()));
-
-                    adapter.clearCache();
-                    adapter.loadAccounts();
-                    adapter.loadIncomeCategories();
-                    adapter.loadExpenseCategories();
-                    adapter.loadFavouriteCategories();
-
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-
-                if(flag[0]){
-                    finish();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    Util.toastLong(LoginActivity.this, "Successful logged in.");
-
-                } else{
-                    Util.toastLong(LoginActivity.this, "Wrong email or password.");
-                }
-            }
-        }.execute();
+        return true;
     }
 }

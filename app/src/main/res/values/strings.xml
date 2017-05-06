@@ -109,4 +109,8 @@
     <string name="message_email_taken">Sorry, but this e-mail address is already taken. Please try another =]</string>
     <string name="hello">Welcome to Finansizums</string>
     <string name="message_ivalid_login">Wrong e-mail or password</string>
+    <string name="EXTRA_USERNAME">jsdkfnjksdf</string>
+    <string name="EXTRA_USERMAIL">dsafasdf</string>
+    <string name="error_invalid_email">That is not a valid e-mail address!</string>
+    <string name="error_password_length">Passwords must be between 5 and 40 characters!</string>
 </resources>
