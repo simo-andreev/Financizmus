@@ -104,4 +104,5 @@
     <string name="to_favorite_btn">TO FAVORITE</string>
     <string name="delete_btn">DELETE</string>
     <string name="add_or_delete_category_title">Add to favorite or delete category.</string>
+    <string name="sql_exception_message">An unexpected error occurred. The app will shortly restart. We are sorry for the inconvenience.</string>
 </resources>
