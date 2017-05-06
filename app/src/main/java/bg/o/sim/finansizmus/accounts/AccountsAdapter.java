@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.RowDisplayable;
 import bg.o.sim.finansizmus.reports.FilteredReportFragment;
@@ -56,7 +55,8 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
         final RowDisplayable account = accounts.get(position);
         holder.accountImage.setImageResource(account.getIconId());
         holder.accountName.setText(account.getName());
-        holder.accountSum.setText(String.format("%.2f", account.getSum()));
+        //TODO                       v
+        holder.accountSum.setText("TEMP");
         holder.accountDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

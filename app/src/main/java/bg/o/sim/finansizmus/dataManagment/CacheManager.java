@@ -2,6 +2,7 @@ package bg.o.sim.finansizmus.dataManagment;
 
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import bg.o.sim.finansizmus.model.Account;
@@ -21,13 +22,18 @@ public class CacheManager {
     private ConcurrentHashMap<Long, Account> accounts;
     private ConcurrentHashMap<Long, Category> incomeCategories;
     private ConcurrentHashMap<Long, Category> expenseCategories;
-    private ConcurrentHashMap<Long, Transaction> transactions;
+
+    //Using 2 collections might be redundant 'double' storage of data,
+    //but is should make it easier to fetch data for a single Category OR a single Account
+    private ConcurrentHashMap<Long, ArrayList<Transaction>> accountTransactions;  //<AccountId - Transactions>
+    private ConcurrentHashMap<Long, ArrayList<Transaction>> categoryTransactions; //<CategoryId - Transactions>
 
     private CacheManager() {
         this.accounts = new ConcurrentHashMap<>();
         this.incomeCategories = new ConcurrentHashMap<>();
         this.expenseCategories = new ConcurrentHashMap<>();
-        this.transactions = new ConcurrentHashMap<>();
+        this.accountTransactions = new ConcurrentHashMap<>();
+        this.categoryTransactions = new ConcurrentHashMap<>();
     }
 
     public static CacheManager getInstance() {
@@ -74,14 +80,26 @@ public class CacheManager {
         return expenseCategories.get(catFk);
     }
 
-    public Account getAccout(long accFk) {
+    public Account getAccount(long accFk) {
         return accounts.get(accFk);
     }
 
     public boolean addTransaction(Transaction t) {
-        if (t == null || transactions.containsKey(t.getId()))
-            return false;
-        transactions.put(t.getId(), t);
+        if (t == null) return false;
+
+        accountTransactions.putIfAbsent(t.getAccount().getId(), new ArrayList<Transaction>()).add(t);
+        categoryTransactions.putIfAbsent(t.getAccount().getId(), new ArrayList<Transaction>()).add(t);
+
+        //TODO - as-is this returns true without actually verifying that the Transaction was successfully added.
         return true;
+    }
+
+    /**Empty all cache collections.*/
+    public void clearCache(){
+        this.accounts = new ConcurrentHashMap<>();
+        this.incomeCategories = new ConcurrentHashMap<>();
+        this.expenseCategories = new ConcurrentHashMap<>();
+        this.accountTransactions = new ConcurrentHashMap<>();
+        this.categoryTransactions = new ConcurrentHashMap<>();
     }
 }

@@ -10,6 +10,7 @@ package bg.o.sim.finansizmus.dataManagment;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -26,10 +27,9 @@ import org.joda.time.DateTimeZone;
 import bg.o.sim.finansizmus.LoginActivity;
 import bg.o.sim.finansizmus.MainActivity;
 import bg.o.sim.finansizmus.R;
+import bg.o.sim.finansizmus.RegisterActivity;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;
-import bg.o.sim.finansizmus.model.CategoryExpense;
-import bg.o.sim.finansizmus.model.CategoryIncome;
 import bg.o.sim.finansizmus.model.Transaction;
 import bg.o.sim.finansizmus.model.User;
 import bg.o.sim.finansizmus.utils.Util;
@@ -60,54 +60,168 @@ public class DAO {
     }
 
     /**
-     * Checks the SQLite Db for a {@link User} entry, matching the parameters.
+     * Checks the SQLite Db for a {@link User} entry, matching the parameters. If one is found, it loads the user's data and proceeds to MainActivity.
      *
-     * @param mail     User e-mail
-     * @param password User password
-     * @return User object corresponding to the e-mail and password if found. Returns <b><code>null</code></b> if no row matches the data!
+     * @param mail     User e-mail.
+     * @param password User password.
+     * @param activity LogInActivity instance for visualizations.
+     * @return <code>true</code> if logIn successful. <code>false</code> if logIn fails.
      */
     @Nullable
-    public User logIn(String mail, String password) {
-        User u = null;
+    public boolean logInUser(String mail, String password, final LoginActivity activity) {
+        if (mail != null && password != null && !mail.isEmpty() && !password.isEmpty()) {
 
-        String selection = h.USER_COLUMN_MAIL + " = ? AND " + h.USER_COLUMN_PASSWORD + " = ? ";
-        String[] selectionArgs = {mail, password};
+            String selection = h.USER_COLUMN_MAIL + " = ? AND " + h.USER_COLUMN_PASSWORD + " = ? ";
+            String[] selectionArgs = {mail, password};
 
-        Cursor cursor = h.getReadableDatabase().query(h.TABLE_USER, null, selection, selectionArgs, null, null, null);
-        if (cursor.moveToNext()) {
-            u = new User(mail, password);
-            u.setId(cursor.getInt(cursor.getColumnIndex(h.USER_COLUMN_ID)));
+            Cursor cursor = h.getReadableDatabase().query(h.TABLE_USER, null, selection, selectionArgs, null, null, null);
+            if (cursor.moveToNext()) {
+                String name = cursor.getString(cursor.getColumnIndex(h.USER_COLUMN_NAME));
+                long id = cursor.getLong(cursor.getColumnIndex(h.USER_COLUMN_ID));
+                User user = new User(mail, name, id);
+
+                new AsyncTask<User, Void, User>() {
+
+                    @Override
+                    protected void onPreExecute() {
+                        //TODO - display loading "circlet" in activity
+                    }
+
+                    @Override
+                    protected User doInBackground(User... params) {
+                        long id = params[0].getId();
+
+                        loadUserAccounts(id);
+                        loadUserCategories(id);
+                        loadUserTransactions(id);
+
+                        return params[0];
+                    }
+
+                    @Override
+                    protected void onPostExecute(User user) {
+                        cache.setLoggedUser(user);
+                        Intent i = new Intent(activity, MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        Util.toastLong(context, context.getString(R.string.welcome_message) + user.getName());
+                        activity.startActivity(i);
+                    }
+
+                }.execute(user);
+            }
         }
-        return u;
+        Util.toastShort(context, context.getString(R.string.message_ivalid_login));
+        return false;
     }
 
-    public void loadUserData(final User user, final LoginActivity activity) {
-        new AsyncTask<User, Void, Void>() {
+    /**
+     * If no previous {@link User} entry with the same e-mail exists, adds a new User to the Db.
+     * @param name User's personal name.
+     * @param mail User's e-mail. <b>Must be unique.</b>
+     * @param password User's password.
+     * @return <code>false</code> if e-mail is already taken, <code>true</code> otherwise.
+     */
+    @Nullable
+    public boolean registerUser(final String name, final String mail, final String password, final RegisterActivity activity){
+        if (name == null || mail == null || password == null || name.isEmpty() || mail.isEmpty() || password.isEmpty())
+            return false;
+
+        new AsyncTask<Void, Void, User>(){
 
             @Override
-            protected Void doInBackground(User... params) {
-                long id = user.getId();
+            protected User doInBackground(Void... params) {
+                ContentValues values = new ContentValues(3);
+                values.put(h.USER_COLUMN_MAIL, mail);
+                values.put(h.USER_COLUMN_NAME, name);
+                values.put(h.USER_COLUMN_PASSWORD, password);
 
-                loadUserAccounts(id);
-                loadUserCategories(id);
-                loadUserTransactions(id);
+                long id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_USER, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
 
-                return null;
+                if (id == -1) return null;
+
+                User u = new User(mail, name, id);
+
+                addDefaultEntries(u);
+
+                return u;
             }
-
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                Intent i = new Intent(activity, MainActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                activity.startActivity(i);
+            protected void onPostExecute(User user) {
+                if (user == null)
+                    Util.toastLong(activity, activity.getString(R.string.message_email_taken));
+                else{
+                    cache.setLoggedUser(user);
+                    Intent i = new Intent(activity, MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    Util.toastLong(context, context.getString(R.string.hello) + user.getName() + "!");
+                    activity.startActivity(i);
+                }
             }
-        }.execute(user);
+        }.execute();
+        return true;
+    }
+
+    private void addDefaultEntries(User u) {
+        long id = u.getId();
+        addCategory("Vehicle", R.mipmap.car, id, Category.Type.INCOME, false);
+        addCategory("Clothes", R.mipmap.clothes,  id, Category.Type.INCOME, false);
+        addCategory("Health", R.mipmap.heart,  id, Category.Type.INCOME, false);
+        addCategory("Travel", R.mipmap.plane,  id, Category.Type.INCOME, false);
+        addCategory("House", R.mipmap.home,  id, Category.Type.INCOME, false);
+        addCategory("Sport", R.mipmap.swimming,  id, Category.Type.INCOME, false);
+        addCategory("Food", R.mipmap.restaurant,  id, Category.Type.INCOME, false);
+        addCategory("Transport", R.mipmap.train,  id, Category.Type.INCOME, false);
+        addCategory("Entertainment", R.mipmap.cocktail,  id, Category.Type.INCOME, false);
+        addCategory("Phone", R.mipmap.phone,  id, Category.Type.INCOME, false);
+
+        addAccount("Cash", R.mipmap.cash, id);
+        addAccount("Debit", R.mipmap.visa, id);
+        addAccount("Credit", R.mipmap.mastercard, id);
+
+        addCategory("Salary", R.mipmap.coins,   id, Category.Type.INCOME, false);
+        addCategory("Savings", R.mipmap.money_box,   id, Category.Type.INCOME, false);
+        addCategory("Other", R.mipmap.money_bag,   id, Category.Type.INCOME, false);
+    }
+
+    private void addAccount(String name, int iconId, long userId) {
+        if (name == null || name.isEmpty() || iconId <= 0 || userId < 0) return;
+
+        ContentValues values = new ContentValues(3);
+        values.put(h.ACCOUNT_COLUMN_NAME, name);
+        values.put(h.ACCOUNT_COLUMN_ICON_ID, iconId);
+        values.put(h.ACCOUNT_COLUMN_USER_FK, userId);
+
+        long id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_ACCOUNT, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+        if (id < 0) return;
+        Account acc = new Account(name, iconId, id, userId);
+        cache.addAccount(acc);
+    }
+
+    private void addCategory(String name, int iconId, long userId, Category.Type type, boolean isFavourite) {
+        if (name == null || name.isEmpty() || iconId <= 0 || userId < 0 || type == null) return;
+
+        ContentValues values = new ContentValues(5);
+        values.put(h.CATEGORY_COLUMN_NAME, name);
+        values.put(h.CATEGORY_COLUMN_ICON_ID, iconId);
+        values.put(h.CATEGORY_COLUMN_USER_FK, userId);
+        values.put(h.CATEGORY_COLUMN_IS_EXPENSE, type == Category.Type.EXPENSE ? 1 : 0);
+        values.put(h.CATEGORY_COLUMN_IS_FAVOURITE, isFavourite ? 1 : 0);
+
+        long id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_ACCOUNT, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+        if (id < 0) return;
+        Category cat = new Category(name, iconId, id, userId, isFavourite, type);
+        cache.addCategory(cat);
     }
 
     private void loadUserAccounts(long userId) {
 
-        String[] columns = {h.ACCOUNT_COLUMN_ID, h.ACCOUNT_COLUMN_ICON_ID, h.ACCOUNT_COLUMN_NAME};
+        String[] columns = {
+                h.ACCOUNT_COLUMN_ID,
+                h.ACCOUNT_COLUMN_ICON_ID,
+                h.ACCOUNT_COLUMN_NAME
+        };
+
         String selection = h.ACCOUNT_COLUMN_USER_FK + " = " + userId;
 
         Cursor c = h.getReadableDatabase().query(h.TABLE_ACCOUNT, columns, selection, null, null, null, null);
@@ -116,21 +230,25 @@ public class DAO {
         int indxIcon = c.getColumnIndex(h.ACCOUNT_COLUMN_ICON_ID);
         int indxName = c.getColumnIndex(h.ACCOUNT_COLUMN_NAME);
 
-
         while (c.moveToNext()) {
             long id = c.getLong(indxId);
             int icon = c.getInt(indxIcon);
             String name = c.getString(indxName);
 
-            Account acc = new Account(name, icon);
-            acc.setId(id);
+            Account acc = new Account(name, icon, id, userId);
             cache.addAccount(acc);
         }
     }
-
     private void loadUserCategories(long userId) {
 
-        String[] columns = {h.CATEGORY_COLUMN_ID, h.CATEGORY_COLUMN_ICON_ID, h.CATEGORY_COLUMN_NAME, h.CATEGORY_COLUMN_IS_EXPENSE, h.CATEGORY_COLUMN_IS_FAVOURITE};
+        String[] columns = {
+                h.CATEGORY_COLUMN_ID,
+                h.CATEGORY_COLUMN_ICON_ID,
+                h.CATEGORY_COLUMN_NAME,
+                h.CATEGORY_COLUMN_IS_EXPENSE,
+                h.CATEGORY_COLUMN_IS_FAVOURITE
+        };
+
         String selection = h.CATEGORY_COLUMN_USER_FK + " = " + userId;
 
         Cursor c = h.getReadableDatabase().query(h.TABLE_CATEGORY, columns, selection, null, null, null, null);
@@ -146,23 +264,14 @@ public class DAO {
             long id = c.getLong(indxId);
             int icon = c.getInt(indxIcon);
             String name = c.getString(indxName);
-            Boolean isExpense = c.getInt(indxIsExp) == 1;
+            Category.Type type = c.getInt(indxIsExp) == 1 ? Category.Type.EXPENSE : Category.Type.INCOME;
             Boolean isFavourite = c.getInt(indxIsFav) == 1;
 
-            Category cat;
-
-            if (isExpense)
-                cat = new CategoryExpense(name, isFavourite, icon);
-            else
-                cat = new CategoryIncome(name, icon);
-
-            cat.setId(id);
+            Category cat = new Category(name, icon, id, userId, isFavourite, type);
 
             cache.addCategory(cat);
         }
-
     }
-
     private void loadUserTransactions(long userId) {
 
         String[] columns = {
@@ -190,7 +299,7 @@ public class DAO {
         while (c.moveToNext()) {
 
             long accFk = c.getLong(indxAccId);
-            if ((acc = cache.getAccout(accFk)) == null) continue;
+            if ((acc = cache.getAccount(accFk)) == null) continue;
 
             long catFk = c.getLong(indxCatId);
             if ((cat = cache.getCategory(catFk)) == null) continue;
@@ -207,7 +316,6 @@ public class DAO {
             cache.addTransaction(t);
         }
     }
-
 
     /**
      * Singleton {@link SQLiteOpenHelper} implementation class.

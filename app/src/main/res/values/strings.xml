@@ -105,4 +105,8 @@
     <string name="delete_btn">DELETE</string>
     <string name="add_or_delete_category_title">Add to favorite or delete category.</string>
     <string name="sql_exception_message">An unexpected error occurred. The app will shortly restart. We are sorry for the inconvenience.</string>
+    <string name="welcome_message">Welcome back</string>
+    <string name="message_email_taken">Sorry, but this e-mail address is already taken. Please try another =]</string>
+    <string name="hello">Welcome to Finansizums</string>
+    <string name="message_ivalid_login">Wrong e-mail or password</string>
 </resources>
