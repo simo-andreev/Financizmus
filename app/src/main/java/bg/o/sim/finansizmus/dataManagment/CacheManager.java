@@ -3,6 +3,8 @@ package bg.o.sim.finansizmus.dataManagment;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import bg.o.sim.finansizmus.model.Account;
@@ -101,5 +103,13 @@ public class CacheManager {
         this.expenseCategories = new ConcurrentHashMap<>();
         this.accountTransactions = new ConcurrentHashMap<>();
         this.categoryTransactions = new ConcurrentHashMap<>();
+    }
+
+    public ArrayList<Category> getCachedExpenseCategories() {
+        return new ArrayList<>(expenseCategories.values());
+    }
+
+    public ArrayList<Transaction> getCategoryTransactions(Category category) {
+        return new ArrayList<>(categoryTransactions.get(category.getId()));
     }
 }
