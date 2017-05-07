@@ -1,9 +1,9 @@
 package bg.o.sim.finansizmus.reports;
 
 import android.app.DatePickerDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +32,8 @@ import java.util.Comparator;
 import java.util.HashSet;
 
 import bg.o.sim.finansizmus.R;
+import bg.o.sim.finansizmus.dataManagment.CacheManager;
+import bg.o.sim.finansizmus.dataManagment.DAO;
 import bg.o.sim.finansizmus.date.DatePickerFragment;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;
@@ -40,6 +42,9 @@ import bg.o.sim.finansizmus.model.Transaction;
 public class FilteredReportFragment extends Fragment implements AccountSelectionDialog.Communicator, Serializable {
     private static final DateTimeFormatter LONG_DATE_FORMAT = DateTimeFormat.forPattern("d MMMM, YYYY");
     private static final DateTimeFormatter SHORT_DATE_FORMAT = DateTimeFormat.forPattern("d MMM, YYYY");
+
+    private DAO dao;
+    private CacheManager cache;
 
     private Button filterButton;
     private Spinner sortSpinner;
@@ -69,6 +74,9 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_filtered_report, container, false);
+
+        dao = DAO.getInstance(getActivity());
+        cache = CacheManager.getInstance();
 
         Log.e("ASDDDDDDDDDDDD", "onCreateView: " + (selectedAccounts == null));
         adapter = new ExpandableAccountAdapter(getActivity(), selectedAccounts);
@@ -207,7 +215,7 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
             title.setText(acc.getName());
 
             double accSum = 0.0;
-            for (Transaction t : acc.getTransactions())
+            for (Transaction t : cache.getAccountTransactions(acc))
                 if (t.getDate().isAfter(startDate) && t.getDate().isBefore(endDate))
                     accSum += t.getSum() * (t.getCategory().getType() == Category.Type.EXPENSE ? -1 : 1);
             sum.setText("$ " + accSum);
@@ -268,7 +276,7 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
             for (Account acc : selectedAccounts) {
                 ArrayList<Transaction> transactions = new ArrayList<>();
 
-                for (Transaction t : acc.getTransactions())
+                for (Transaction t : cache.getAccountTransactions(acc))
                     if (t.getDate().isAfter(startDate) && t.getDate().isBefore(endDate))
                         transactions.add(t);
 

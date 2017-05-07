@@ -1,12 +1,12 @@
 package bg.o.sim.finansizmus.dataManagment;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.model.Transaction;
@@ -19,7 +19,7 @@ public class CacheManager {
 
     private static CacheManager instance;
 
-    private User loggedUser;
+    private static User loggedUser;
 
     private ConcurrentHashMap<Long, Account> accounts;
     private ConcurrentHashMap<Long, Category> incomeCategories;
@@ -30,12 +30,23 @@ public class CacheManager {
     private ConcurrentHashMap<Long, ArrayList<Transaction>> accountTransactions;  //<AccountId - Transactions>
     private ConcurrentHashMap<Long, ArrayList<Transaction>> categoryTransactions; //<CategoryId - Transactions>
 
+
+    //TODO - if I ever get to the point of optimizing this thing: int[]s should provide better performance than Integer ArrLists.
+    /* A collection that maintains a list of all Sections (both Income and Expense) and distributes input accordingly. */
+    private ArrayList<Integer> expenseIcons;
+    private ArrayList<Integer> accountIcons;
+
     private CacheManager() {
         this.accounts = new ConcurrentHashMap<>();
         this.incomeCategories = new ConcurrentHashMap<>();
         this.expenseCategories = new ConcurrentHashMap<>();
         this.accountTransactions = new ConcurrentHashMap<>();
         this.categoryTransactions = new ConcurrentHashMap<>();
+
+        this.accountIcons = new ArrayList<>();
+        this.expenseIcons = new ArrayList<>();
+
+        loadIcons();
     }
 
     public static CacheManager getInstance() {
@@ -55,7 +66,10 @@ public class CacheManager {
     }
 
     protected boolean addCategory(Category category) {
-        if (category == null) return false;
+        if (category == null){
+            Log.e("CACHE ADD CATEGORY: ", "CATEGORY == NULL");
+            return false;
+        }
 
         if (category.getType() == Category.Type.INCOME && !incomeCategories.containsKey(category.getId())) {
             incomeCategories.put(category.getId(), category);
@@ -96,8 +110,10 @@ public class CacheManager {
         return true;
     }
 
-    /**Empty all cache collections.*/
-    public void clearCache(){
+    /**
+     * Empty all cache collections.
+     */
+    public void clearCache() {
         this.accounts = new ConcurrentHashMap<>();
         this.incomeCategories = new ConcurrentHashMap<>();
         this.expenseCategories = new ConcurrentHashMap<>();
@@ -105,11 +121,94 @@ public class CacheManager {
         this.categoryTransactions = new ConcurrentHashMap<>();
     }
 
-    public ArrayList<Category> getCachedExpenseCategories() {
+    public ArrayList<Account> getAllAccounts() {
+        return new ArrayList<>(accounts.values());
+    }
+
+    public ArrayList<Category> getAllExpenseCategories() {
         return new ArrayList<>(expenseCategories.values());
     }
 
+    public ArrayList<Category> getAllIncomeCategories() {
+        return new ArrayList<>(incomeCategories.values());
+    }
+
+    public ArrayList<Transaction> getAccountTransactions(Account account) {
+        accountTransactions.putIfAbsent(account.getId(), new ArrayList<Transaction>());
+        return accountTransactions.get(account.getId());
+    }
+
     public ArrayList<Transaction> getCategoryTransactions(Category category) {
+        categoryTransactions.putIfAbsent(category.getId(), new ArrayList<Transaction>());
         return new ArrayList<>(categoryTransactions.get(category.getId()));
+    }
+
+
+    public ArrayList<Integer> getExpenseIcons() {
+        return expenseIcons;
+    }
+
+    public ArrayList<Integer> getAccountIcons() {
+        return accountIcons;
+    }
+
+
+    private void loadIcons() {
+        expenseIcons.add(R.mipmap.car);
+        expenseIcons.add(R.mipmap.clothes);
+        expenseIcons.add(R.mipmap.heart);
+        expenseIcons.add(R.mipmap.plane);
+        expenseIcons.add(R.mipmap.home);
+        expenseIcons.add(R.mipmap.swimming);
+        expenseIcons.add(R.mipmap.restaurant);
+        expenseIcons.add(R.mipmap.train);
+        expenseIcons.add(R.mipmap.cocktail);
+        expenseIcons.add(R.mipmap.phone);
+        expenseIcons.add(R.mipmap.books);
+        expenseIcons.add(R.mipmap.cafe);
+        expenseIcons.add(R.mipmap.cats);
+        expenseIcons.add(R.mipmap.household);
+        expenseIcons.add(R.mipmap.food_and_wine);
+        expenseIcons.add(R.mipmap.wifi);
+        expenseIcons.add(R.mipmap.flowers);
+        expenseIcons.add(R.mipmap.gas);
+        expenseIcons.add(R.mipmap.cleaning);
+        expenseIcons.add(R.mipmap.gifts);
+        expenseIcons.add(R.mipmap.kids);
+        expenseIcons.add(R.mipmap.makeup);
+        expenseIcons.add(R.mipmap.music);
+        expenseIcons.add(R.mipmap.gamming);
+        expenseIcons.add(R.mipmap.hair);
+        expenseIcons.add(R.mipmap.car_service);
+        expenseIcons.add(R.mipmap.doctor);
+        expenseIcons.add(R.mipmap.art);
+        expenseIcons.add(R.mipmap.beach);
+        expenseIcons.add(R.mipmap.bicycle);
+        expenseIcons.add(R.mipmap.bowling);
+        expenseIcons.add(R.mipmap.football);
+        expenseIcons.add(R.mipmap.bus);
+        expenseIcons.add(R.mipmap.taxi);
+        expenseIcons.add(R.mipmap.games);
+        expenseIcons.add(R.mipmap.fitness);
+        expenseIcons.add(R.mipmap.shoes);
+        expenseIcons.add(R.mipmap.dancing);
+        expenseIcons.add(R.mipmap.shopping_bag);
+        expenseIcons.add(R.mipmap.shopping_cart);
+        expenseIcons.add(R.mipmap.tennis);
+        expenseIcons.add(R.mipmap.tent);
+        expenseIcons.add(R.mipmap.hotel);
+        expenseIcons.add(R.mipmap.ping_pong);
+        expenseIcons.add(R.mipmap.rollerblade);
+
+        accountIcons.add(R.mipmap.money_box);
+        accountIcons.add(R.mipmap.gift_card);
+        accountIcons.add(R.drawable.accounts);
+        accountIcons.add(R.mipmap.funding);
+        accountIcons.add(R.mipmap.mattress);
+        accountIcons.add(R.mipmap.paypal);
+        accountIcons.add(R.drawable.calculator);
+        accountIcons.add(R.mipmap.safe);
+        accountIcons.add(R.mipmap.coins);
+        accountIcons.add(R.drawable.income);
     }
 }

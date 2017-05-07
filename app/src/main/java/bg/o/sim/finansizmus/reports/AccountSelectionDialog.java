@@ -1,8 +1,8 @@
 package bg.o.sim.finansizmus.reports;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.dataManagment.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.CacheManager;
 import bg.o.sim.finansizmus.model.Account;
 
 public class AccountSelectionDialog extends DialogFragment {
@@ -78,7 +78,7 @@ public class AccountSelectionDialog extends DialogFragment {
 
     class CustomListAdapter extends BaseAdapter {
 
-        ArrayList<Account> data = new ArrayList<Account>(DBAdapter.getInstance(getActivity()).getCachedAccounts().values());
+        ArrayList<Account> data = new ArrayList<Account>(CacheManager.getInstance().getAllAccounts());
         private LayoutInflater inflater;
 
         @Override

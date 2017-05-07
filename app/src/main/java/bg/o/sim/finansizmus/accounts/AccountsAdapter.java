@@ -1,8 +1,8 @@
 package bg.o.sim.finansizmus.accounts;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import bg.o.sim.finansizmus.R;
+import bg.o.sim.finansizmus.dataManagment.CacheManager;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.RowDisplayable;
 import bg.o.sim.finansizmus.reports.FilteredReportFragment;
@@ -28,7 +29,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
     private Context context;
     private FragmentManager fm;
 
-    AccountsAdapter(ArrayList<RowDisplayable> accountsList, Context context, FragmentManager fm) {
+    AccountsAdapter(ArrayList<Account> accountsList, Context context, FragmentManager fm) {
         this.context = context;
         this.accounts = new ArrayList<RowDisplayable>(accountsList);
         this.fm = fm;
@@ -67,8 +68,9 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if (DBAdapter.getInstance(context).getCachedAccounts().size() > 1) {
-                                    DBAdapter.getInstance(context).deleteAccount(account);
+                                if (!CacheManager.getInstance().getAllAccounts().isEmpty()) {
+                                    //TODO !!! DELETE QUERIES IN DAO !!! *note: check details on SQL cascading delete.
+//                                    DAO.getInstance(context).deleteAccount(account);
                                     accounts.remove(account);
                                     AccountsAdapter.this.notifyDataSetChanged();
                                 } else {

@@ -1,8 +1,8 @@
 package bg.o.sim.finansizmus.favourites;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.dataManagment.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.DAO;
 import bg.o.sim.finansizmus.model.Account;
-import bg.o.sim.finansizmus.model.CategoryExpense;
-import bg.o.sim.finansizmus.model.Manager;
 import bg.o.sim.finansizmus.utils.Util;
 
 
@@ -28,7 +26,7 @@ public class AddCategoryDialogFragment extends DialogFragment {
     private Button addCategory;
     private Button cancel;
 
-    private DBAdapter adapter;
+    private DAO dao;
 
     @Nullable
     @Override
@@ -41,7 +39,7 @@ public class AddCategoryDialogFragment extends DialogFragment {
         cancel = (Button) view.findViewById(R.id.cancel_addition);
         addCategory = (Button) view.findViewById(R.id.start_addition);
 
-        adapter = DBAdapter.getInstance(getActivity());
+        dao = DAO.getInstance(getActivity());
         Bundle b = getArguments();
         String iconKey = "KEY_ICON".toString();
         String listKey = "ROW_DISPLAYABLE_TYPE";
@@ -84,24 +82,25 @@ public class AddCategoryDialogFragment extends DialogFragment {
 
                 } else {
                     switch (tempList) {
-                        case "CATEGORY":
-                            CategoryExpense cat = new CategoryExpense(nameStr, false, finalIconId);
-                            if(!adapter.getCachedExpenseCategories().containsValue(cat) && !adapter.getCachedFavCategories().containsValue(cat)) {
-                                adapter.addExpenseCategory(cat, Manager.getLoggedUser().getId());
-                                Toast.makeText(getActivity(), "Category created!", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Util.toastLong(getActivity(),"This category already exists,please choose another name!");
-                            }
-                            break;
-                        case "ACCOUNT":
-                            Account ac = new Account(nameStr, finalIconId);
-                            if(!adapter.getCachedAccounts().containsValue(ac)) {
-                                adapter.addAccount(ac, Manager.getLoggedUser().getId());
-                                Toast.makeText(getActivity(), "Account created!", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Util.toastLong(getActivity(),"This account already exists,please choose another name!");
-                            }
-                            break;
+                        //TODO - this bit needs re-modeling to fit new model (tbh, I'm not sure it really fits the old model either);
+//                        case "CATEGORY":
+//                            CategoryExpense cat = new CategoryExpense(nameStr, false, finalIconId);
+//                            if(!dao.getCachedExpenseCategories().containsValue(cat) && !dao.getCachedFavCategories().containsValue(cat)) {
+//                                dao.addExpenseCategory(cat, Manager.getLoggedUser().getId());
+//                                Toast.makeText(getActivity(), "Category created!", Toast.LENGTH_SHORT).show();
+//                            }else{
+//                                Util.toastLong(getActivity(),"This category already exists,please choose another name!");
+//                            }
+//                            break;
+//                        case "ACCOUNT":
+//                            Account ac = new Account(nameStr, finalIconId);
+//                            if(!dao.getCachedAccounts().containsValue(ac)) {
+//                                dao.addAccount(ac, Manager.getLoggedUser().getId());
+//                                Toast.makeText(getActivity(), "Account created!", Toast.LENGTH_SHORT).show();
+//                            }else{
+//                                Util.toastLong(getActivity(),"This account already exists,please choose another name!");
+//                            }
+//                            break;
                     }
                     dismiss();
                 }

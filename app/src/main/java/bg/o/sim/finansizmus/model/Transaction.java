@@ -13,6 +13,7 @@ import java.util.Comparator;
  */
 public class Transaction implements Serializable {
 
+    public interface TransactionComparator extends Comparator<Transaction> {}
     private static ArrayList<TransactionComparator> sorters;
 
     private DateTime date;
@@ -25,15 +26,22 @@ public class Transaction implements Serializable {
     private Category category;
 
     public Transaction(DateTime date, double sum, String note, Account account, Category category) {
-
         this.date = date;
         this.sum = sum;
         this.note = note;
 
         this.account = account;
         this.category = category;
+    }
 
-        account.addTransaction(this);
+    public static ArrayList<TransactionComparator> getComparators() {
+        if (sorters == null || sorters.isEmpty()) {
+            sorters = new ArrayList<>();
+            sorters.add(new TransactionSumComparator());
+            sorters.add(new TransactionCategoryComparator());
+            sorters.add(new TransactionDateComparator());
+        }
+        return sorters;
     }
 
     public DateTime getDate() {
@@ -83,7 +91,7 @@ public class Transaction implements Serializable {
 
         @Override
         public int compare(Transaction o1, Transaction o2) {
-            if (o1.date.equals(o2.date)) return ((Double)o2.sum).compareTo((Double)o1.sum);
+            if (o1.date.equals(o2.date)) return ((Double) o2.sum).compareTo((Double) o1.sum);
             return o2.date.compareTo(o1.date);
         }
 
@@ -98,7 +106,7 @@ public class Transaction implements Serializable {
         @Override
         public int compare(Transaction o1, Transaction o2) {
             if (o1.sum == o2.sum) return o2.date.compareTo(o1.date);
-            return ((Double)o2.sum).compareTo((Double)o1.sum);
+            return ((Double) o2.sum).compareTo((Double) o1.sum);
         }
 
         @Override
@@ -111,9 +119,9 @@ public class Transaction implements Serializable {
 
         @Override
         public int compare(Transaction o1, Transaction o2) {
-            if (o1.category.equals(o2.category)){
+            if (o1.category.equals(o2.category)) {
                 if (o1.date.equals(o2.date))
-                    return ((Double)o2.sum).compareTo((Double)o1.sum);
+                    return ((Double) o2.sum).compareTo((Double) o1.sum);
                 return o2.date.compareTo(o1.date);
             }
 
@@ -125,18 +133,6 @@ public class Transaction implements Serializable {
             return "SORT BY CATEGORY";
         }
     }
-
-    public static ArrayList<TransactionComparator> getComparators(){
-        if (sorters == null || sorters.isEmpty()) {
-            sorters = new ArrayList<>();
-            sorters.add(new TransactionSumComparator());
-            sorters.add(new TransactionCategoryComparator());
-            sorters.add(new TransactionDateComparator());
-        }
-        return sorters;
-    }
-
-    public interface TransactionComparator extends Comparator<Transaction>{}
 }
 
 

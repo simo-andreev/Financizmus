@@ -1,17 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/diagram_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainFragment">
+    android:orientation="vertical">
 
     <fragment
         android:id="@+id/main_chart"
+        android:name="bg.o.sim.finansizmus.PieChartFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:name="bg.o.sim.finansizmus.PieChartFragment"/>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/report_layout"

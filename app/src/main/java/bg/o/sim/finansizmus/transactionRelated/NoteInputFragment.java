@@ -1,9 +1,9 @@
 package bg.o.sim.finansizmus.transactionRelated;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +13,7 @@ import android.widget.EditText;
 import bg.o.sim.finansizmus.R;
 
 
-public class NoteInputFragment extends DialogFragment{
+public class NoteInputFragment extends DialogFragment {
 
     public interface NoteCommunicator{
         void setNote(String note);

@@ -51,7 +51,6 @@ public class DAO {
         this.h = new DbHelper(context);
         this.cache = CacheManager.getInstance();
         this.context = context;
-
     }
 
     public static DAO getInstance(Context context) {
@@ -266,6 +265,7 @@ public class DAO {
 
             Account acc = new Account(name, icon, id, userId);
             cache.addAccount(acc);
+            Log.wtf("LOADED ACC:", acc.getName());
         }
     }
     private void loadUserCategories(long userId) {
@@ -299,6 +299,8 @@ public class DAO {
             Category cat = new Category(name, icon, id, userId, isFavourite, type);
 
             cache.addCategory(cat);
+            Log.wtf("LOADED CAT:", cat.getName());
+
         }
     }
     private void loadUserTransactions(long userId) {

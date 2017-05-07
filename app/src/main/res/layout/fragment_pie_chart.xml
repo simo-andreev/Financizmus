@@ -19,46 +19,46 @@
         android:orientation="vertical">
 
         <LinearLayout style="@style/PieChartMenuRow">
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_0"/>
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_1"/>
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_2"/>
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_3"/>
         </LinearLayout>
 
         <LinearLayout style="@style/PieChartMenuRow">
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_4"/>
 
             <android.support.v4.widget.Space style="@style/PieChartMenuSpacer" />
             <android.support.v4.widget.Space style="@style/PieChartMenuSpacer" />
 
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_5"/>
         </LinearLayout>
 
         <LinearLayout style="@style/PieChartMenuRow">
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_6"/>
 
             <android.support.v4.widget.Space style="@style/PieChartMenuSpacer" />
             <android.support.v4.widget.Space style="@style/PieChartMenuSpacer" />
 
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_7"/>
         </LinearLayout>
 
         <LinearLayout style="@style/PieChartMenuRow">
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_8"/>
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_9"/>
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_10"/>
-            <ImageView style="@style/PieChartMenuItem"
+            <ImageButton style="@style/PieChartMenuItem"
                 android:id="@+id/pie_chart_menu_11"/>
         </LinearLayout>
 

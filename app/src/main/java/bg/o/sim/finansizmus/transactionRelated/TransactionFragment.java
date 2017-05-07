@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,22 +23,21 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.util.ArrayList;
-
 import bg.o.sim.finansizmus.MainFragment;
 import bg.o.sim.finansizmus.R;
+import bg.o.sim.finansizmus.dataManagment.CacheManager;
 import bg.o.sim.finansizmus.dataManagment.DAO;
 import bg.o.sim.finansizmus.date.DatePickerFragment;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;
-import bg.o.sim.finansizmus.model.Manager;
 import bg.o.sim.finansizmus.model.Transaction;
 import bg.o.sim.finansizmus.utils.Util;
 
 public class TransactionFragment extends Fragment implements DatePickerDialog.OnDateSetListener, NoteInputFragment.NoteCommunicator {
 
-    private static final int MAX_NUM_LENGTH = 9;
     private DAO dao;
+    private CacheManager cache;
+
     private boolean startedWithCategory;
 
     //Selection radio between income and expense;
@@ -63,6 +61,8 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
     private View rootView;
 
     //=======CALCULATOR==============//
+    private static final int MAX_NUM_LENGTH = 9;
+
     private View numDisplayBase;
     private TextView numDisplay;
     private ImageButton backspace;
@@ -106,18 +106,17 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_transaction, container, false);
+
         initializeUiObjects();
-        dao = DBAdapter.getInstance(this.getActivity());
+
+        dao = dao.getInstance(getActivity());
+        cache = CacheManager.getInstance();
 
         catTypeRadio.check(R.id.transaction_radio_expense);
         startedWithCategory = checkForCategoryExtra();
 
-        ArrayList<Category> expenseCategories = new ArrayList<>();
-        expenseCategories.addAll(dao.getCachedExpenseCategories().values());
-        expenseCategories.addAll(dao.getCachedFavCategories().values());
-
-        final RowViewAdapter<Category> expenseAdapter = new RowViewAdapter<>(inflater, expenseCategories);
-        final RowViewAdapter<Category> incomeAdapter = new RowViewAdapter<>(inflater, dao.getCachedIncomeCategories().values());
+        final RowViewAdapter<Category> expenseAdapter = new RowViewAdapter<>(inflater, cache.getAllExpenseCategories());
+        final RowViewAdapter<Category> incomeAdapter = new RowViewAdapter<>(inflater, cache.getAllIncomeCategories());
         categorySelection.setAdapter(expenseAdapter);
 
 
@@ -137,7 +136,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 break;
         }
 
-        accountSelection.setAdapter(new RowViewAdapter<>(inflater, dao.getCachedAccounts().values()));
+        accountSelection.setAdapter(new RowViewAdapter<>(inflater, cache.getAllAccounts()));
 
         //Show the current date in a "d MMMM, YYYY" format.
         date = DateTime.now();
@@ -186,7 +185,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         noteInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment inputFragment = new NoteInputFragment();
+                NoteInputFragment inputFragment = new NoteInputFragment();
                 String note = noteInput.getText().toString();
                 if (note != null && !note.isEmpty()) {
                     Bundle b = new Bundle();
@@ -319,7 +318,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
     /**
      * Checks if the Transaction input has been started from a specific category and adjusts UI and data accordingly.
      *
-     * @return <code>true</code> if the Fragment has been started <b>with</b> an implicit {@alink Category}.
+     * @return <code>true</code> if the Fragment has been started <b>with</b> an implicit {@link Category}.
      */
     private boolean checkForCategoryExtra() {
         Bundle args = getArguments();
@@ -385,7 +384,8 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         Category category = selectedCategory;
 
         Transaction transaction = new Transaction(date, sum, note, account, category);
-        dao.addTransaction(transaction, Manager.getLoggedUser().getId());
+        //TODO !!! INSERT METHODS IN DAO !!!
+//        dao.addTransaction(transaction, cache.getLoggedUser().getId());
 
         MainFragment fragment = new MainFragment();
         Bundle arguments = new Bundle();

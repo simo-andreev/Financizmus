@@ -11,14 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import bg.o.sim.finansizmus.R;
+import bg.o.sim.finansizmus.dataManagment.CacheManager;
+import bg.o.sim.finansizmus.dataManagment.DAO;
 import bg.o.sim.finansizmus.favourites.AddCategoryDialogFragment;
 import bg.o.sim.finansizmus.favourites.IconsAdapter;
-import bg.o.sim.finansizmus.model.Manager;
-import bg.o.sim.finansizmus.model.RowDisplayable;
-
-import java.util.ArrayList;
 
 public class AccountsFragment extends Fragment {
+
+    private DAO dao;
+    private CacheManager cache;
+    private Context context;
 
     private RecyclerView accountsList;
     private RecyclerView moreAccountIconsList;
@@ -26,26 +28,24 @@ public class AccountsFragment extends Fragment {
     private AccountsAdapter accountsAdapter;
     private IconsAdapter iconsAdapter;
 
-    private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_accounts, container, false);
 
-        adapter = DBAdapter.getInstance(getActivity());
         context = getActivity();
+        cache = CacheManager.getInstance();
+        dao = DAO.getInstance(context);
 
         accountsList = (RecyclerView) view.findViewById(R.id.accounts_list);
-        final ArrayList<RowDisplayable> accounts = new ArrayList<>();
-        accounts.addAll(adapter.getCachedAccounts().values());
 
-        accountsAdapter = new AccountsAdapter(accounts, getActivity(), getFragmentManager());
+        accountsAdapter = new AccountsAdapter(cache.getAllAccounts(), context, getFragmentManager());
         accountsList = (RecyclerView) view.findViewById(R.id.accounts_list);
         accountsList.setAdapter(accountsAdapter);
         accountsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        iconsAdapter = new IconsAdapter(Manager.getInstance().getAllAccountIcons(), getActivity());
+        iconsAdapter = new IconsAdapter(cache.getAccountIcons(), context);
         moreAccountIconsList = (RecyclerView) view.findViewById(R.id.accounts_icons_list);
         moreAccountIconsList.setAdapter(iconsAdapter);
         moreAccountIconsList.setLayoutManager(new GridLayoutManager(getActivity(), 5));
@@ -57,7 +57,7 @@ public class AccountsFragment extends Fragment {
 
                         AddCategoryDialogFragment dialog = new AddCategoryDialogFragment();
                         Bundle arguments = new Bundle();
-                        int iconId = Manager.getInstance().getAllAccountIcons().get(position);
+                        int iconId = cache.getAccountIcons().get(position);
 
                         arguments.putInt(getString(R.string.EXTRA_ICON), iconId);
                         arguments.putString("ROW_DISPLAYABLE_TYPE", "ACCOUNT");

@@ -1,9 +1,9 @@
 package bg.o.sim.finansizmus.reports;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,17 +13,19 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import java.util.ArrayList;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.dataManagment.DBAdapter;
+import bg.o.sim.finansizmus.dataManagment.CacheManager;
+import bg.o.sim.finansizmus.dataManagment.DAO;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.model.Transaction;
 
 public class ReportFragment extends Fragment {
 
-    private DBAdapter dbAdapter;
+    private DAO dao;
+    private CacheManager cache;
+
     private ExpandableListView expandableListView;
     private ExpandableListAdapter listAdapter;
 
@@ -32,20 +34,14 @@ public class ReportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_report, container, false);
 
-        dbAdapter = DBAdapter.getInstance(getActivity());
-        dbAdapter.loadTransactions();
+        dao = DAO.getInstance(getActivity());
+        cache = CacheManager.getInstance();
 
         expandableListView = (ExpandableListView) v.findViewById(R.id.inquiry_expandable_list);
 
-        ArrayList<Category> sections = new ArrayList<>();
-        sections.addAll(dbAdapter.getCachedFavCategories().values());
-        sections.addAll(dbAdapter.getCachedExpenseCategories().values());
-        sections.addAll(dbAdapter.getCachedIncomeCategories().values());
-
-        listAdapter = new ExpandableListAdapter(getContext());
+        listAdapter = new ExpandableListAdapter(getActivity());
         expandableListView.setAdapter(listAdapter);
         listAdapter.loadFromCache();
-
 
         return v;
     }
@@ -84,29 +80,29 @@ public class ReportFragment extends Fragment {
 
         @Override
         public int getChildrenCount(int groupPosition) {
-            long groupId = getGroupId(groupPosition);
-            return dbAdapter.getCachedTransactions().containsKey(groupId) ? dbAdapter.getCachedTransactions().get(groupId).size() : 0;
+            Category cat = getGroup(groupPosition);
+            return cache.getCategoryTransactions(cat).size();
         }
 
         @Override
-        public Object getGroup(int groupPosition) {
+        public Category getGroup(int groupPosition) {
             return groups.get(groupPosition);
         }
 
         @Override
-        public Object getChild(int groupPosition, int childPosition) {
-            long groupId = getGroupId(groupPosition);
-            return dbAdapter.getCachedTransactions().get(groupId).get(childPosition);
+        public Transaction getChild(int groupPosition, int childPosition) {
+            Category cat = getGroup(groupPosition);
+            return cache.getCategoryTransactions(cat).get(childPosition);
         }
 
         @Override
         public long getGroupId(int groupPosition) {
-            return ((Category)getGroup(groupPosition)).getId();
+            return getGroup(groupPosition).getId();
         }
 
         @Override
         public long getChildId(int groupPosition, int childPosition) {
-            return ((Transaction)getChild(groupPosition, childPosition)).getId();
+            return getChild(groupPosition, childPosition).getId();
         }
 
         @Override
@@ -128,13 +124,7 @@ public class ReportFragment extends Fragment {
             t1.setText(cat.getName());
 
             TextView t2 = (TextView) convertView.findViewById(R.id.report_group_sum);
-            double sum = 0.0;
-
-            if (dbAdapter.getCachedTransactions().containsKey(cat.getId()))
-                for (Transaction t : dbAdapter.getCachedTransactions().get(cat.getId()))
-                    sum += t.getSum();
-
-            t2.setText("$" + sum);
+            t2.setText("$" + cat.getSum());
 
             if (cat.getType() == Category.Type.EXPENSE)
                 t2.setTextColor(ContextCompat.getColor(context, R.color.colorOrange));
@@ -149,7 +139,7 @@ public class ReportFragment extends Fragment {
             if (convertView == null)
                 convertView = inflater.inflate(R.layout.report_list_item, parent, false);
 
-            final Transaction trans = (Transaction) getChild(groupPosition, childPosition);
+            final Transaction trans = getChild(groupPosition, childPosition);
 
             ImageView i = (ImageView) convertView.findViewById(R.id.report_item_icon);
             i.setImageResource(trans.getAccount().getIconId());
@@ -167,7 +157,7 @@ public class ReportFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     TransactionDetailsFragment fragment = TransactionDetailsFragment.newInstance(trans);
-                    fragment.show(getFragmentManager(),"TransactionDetails");
+                    fragment.show(getFragmentManager(), "TransactionDetails");
                 }
             });
 
@@ -179,12 +169,10 @@ public class ReportFragment extends Fragment {
             return false;
         }
 
-        protected void loadFromCache(){
+        protected void loadFromCache() {
             groups = new ArrayList<>();
-
-            groups.addAll(dbAdapter.getCachedExpenseCategories().values());
-            groups.addAll(dbAdapter.getCachedFavCategories().values());
-            groups.addAll(dbAdapter.getCachedIncomeCategories().values());
+            groups.addAll(cache.getAllExpenseCategories());
+            groups.addAll(cache.getAllIncomeCategories());
         }
 
         @Override

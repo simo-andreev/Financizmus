@@ -1,6 +1,6 @@
 package bg.o.sim.finansizmus.favourites;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,16 +17,16 @@ import bg.o.sim.finansizmus.R;
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconViewHolder>{
 
     private ArrayList<Integer> additionalIcons;
-    private Activity activity;
+    private Context context;
 
-    public IconsAdapter(ArrayList<Integer> allExpenseIcons, Activity activity) {
-        this.activity = activity;
+    public IconsAdapter(ArrayList<Integer> allExpenseIcons, Context context) {
+        this.context = context;
         additionalIcons = new ArrayList<Integer> (allExpenseIcons);
     }
 
     @Override
     public IconViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(activity);
+        LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.icons_list_item, parent, false);
         return new IconViewHolder(view);
     }
@@ -35,7 +35,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconViewHold
     public void onBindViewHolder(final IconViewHolder holder, final int position) {
         final Integer icon = additionalIcons.get(position);
         holder.image.setImageResource(icon);
-        holder.image.setBackground(ContextCompat.getDrawable(activity, R.drawable.unselected_icon_background));
+        holder.image.setBackground(ContextCompat.getDrawable(context, R.drawable.unselected_icon_background));
     }
 
     @Override
