@@ -1,22 +1,34 @@
 package bg.o.sim.finansizmus;
 
-
-import android.app.DatePickerDialog;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import bg.o.sim.finansizmus.transactionRelated.NoteInputFragment;
+import bg.o.sim.finansizmus.accounts.AccountsFragment;
+import bg.o.sim.finansizmus.dataManagment.CacheManager;
+import bg.o.sim.finansizmus.dataManagment.DAO;
+import bg.o.sim.finansizmus.favourites.FavouritesFragment;
+import bg.o.sim.finansizmus.model.Category;
+import bg.o.sim.finansizmus.transactionRelated.TransactionFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener, NoteInputFragment.NoteCommunicator {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Toolbar toolbar;
+    private DAO dao;
+    private CacheManager cache;
+
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
@@ -32,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -47,12 +59,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         fragmentManager = getFragmentManager();
 
-        fragmentManager.beginTransaction().add(R.id.main_fragment_frame, new DiagramFragment(), getString(R.string.diagram_fragment_tag)).commit();
+        fragmentManager.beginTransaction().add(R.id.main_fragment_frame, new MainFragment(), getString(R.string.diagram_fragment_tag)).commit();
 
 
         headerView = navigationView.getHeaderView(0);
         userProfile = (TextView) headerView.findViewById(R.id.user_profile_link);
-        userProfile.setText("Hi, " + Manager.getLoggedUser().getEmail());
+        userProfile.setText("Hi, " + cache.getLoggedUser().getEmail());
 
         LinearLayout header = (LinearLayout) headerView.findViewById(R.id.header);
         header.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.main_fragment_frame, new DiagramFragment(), getString(R.string.diagram_fragment_tag))
+                        .replace(R.id.main_fragment_frame, new MainFragment(), getString(R.string.diagram_fragment_tag))
                         .commit();
             }
         });
@@ -105,63 +117,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_accounts:
-                if (fragmentManager.getFragments() != null || !fragmentManager.getFragments().isEmpty()) {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.main_fragment_frame, new AccountsFragment(), getString(R.string.accounts_fragment_tag))
-                            .addToBackStack(getString(R.string.accounts_fragment_tag))
-                            .commit();
-                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_frame, new AccountsFragment(), getString(R.string.accounts_fragment_tag))
+                        .addToBackStack(getString(R.string.accounts_fragment_tag))
+                        .commit();
+
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
 
             case R.id.nav_favourites:
-                if (fragmentManager.getFragments() != null || !fragmentManager.getFragments().isEmpty()) {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.main_fragment_frame, new FavouritesFragment(), getString(R.string.favourites_fragment_tag))
-                            .addToBackStack(getString(R.string.transaction_fragment_tag))
-                            .commit();
-                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_frame, new FavouritesFragment(), getString(R.string.favourites_fragment_tag))
+                        .addToBackStack(getString(R.string.transaction_fragment_tag))
+                        .commit();
+
                 drawer.closeDrawer(GravityCompat.START);
                 return false;
 
             case R.id.nav_income:
-                if (fragmentManager.getFragments() != null || !fragmentManager.getFragments().isEmpty()) {
-                    TransactionFragment fragment = TransactionFragment.getNewInstance(Category.Type.INCOME);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.main_fragment_frame, fragment, getString(R.string.transaction_fragment_tag))
-                            .addToBackStack(getString(R.string.transaction_fragment_tag))
-                            .commit();
-                }
+                TransactionFragment fragment0 = TransactionFragment.getNewInstance(Category.Type.INCOME);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_frame, fragment0, getString(R.string.transaction_fragment_tag))
+                        .addToBackStack(getString(R.string.transaction_fragment_tag))
+                        .commit();
+
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
 
             case R.id.nav_expense:
-                if (fragmentManager.getFragments() != null || !fragmentManager.getFragments().isEmpty()) {
-                    TransactionFragment fragment = TransactionFragment.getNewInstance(Category.Type.EXPENSE);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.main_fragment_frame, fragment, getString(R.string.transaction_fragment_tag))
-                            .addToBackStack(getString(R.string.transaction_fragment_tag))
-                            .commit();
-                }
+                TransactionFragment fragment1 = TransactionFragment.getNewInstance(Category.Type.EXPENSE);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_frame, fragment1, getString(R.string.transaction_fragment_tag))
+                        .addToBackStack(getString(R.string.transaction_fragment_tag))
+                        .commit();
+
                 drawer.closeDrawer(GravityCompat.START);
                 return false;
 
             case R.id.nav_calendar:
-                DialogFragment datePicker = DatePickerFragment.newInstance(this, DateTime.now());
-                datePicker.show(getSupportFragmentManager(), getString(R.string.calendar_fragment_tag));
                 drawer.closeDrawer(GravityCompat.START);
                 return false;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {}
-
-    @Override
-    public void setNote(String note) {
-        TransactionFragment t = (TransactionFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.transaction_fragment_tag));
-        t.setNote(note);
     }
 }

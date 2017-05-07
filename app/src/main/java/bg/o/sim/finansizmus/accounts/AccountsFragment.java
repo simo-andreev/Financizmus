@@ -1,8 +1,8 @@
 package bg.o.sim.finansizmus.accounts;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.favourites.AddCategoryDialogFragment;
 import bg.o.sim.finansizmus.favourites.IconsAdapter;
 import bg.o.sim.finansizmus.model.Manager;
@@ -27,7 +26,6 @@ public class AccountsFragment extends Fragment {
     private AccountsAdapter accountsAdapter;
     private IconsAdapter iconsAdapter;
 
-    private DBAdapter adapter;
     private Context context;
 
     @Override

@@ -1,8 +1,8 @@
 package bg.o.sim.finansizmus.favourites;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,10 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Manager;
 import bg.o.sim.finansizmus.accounts.RecyclerItemClickListener;
-import bg.o.sim.finansizmus.model.CategoryExpense;
 import bg.o.sim.finansizmus.model.RowDisplayable;
 
 import java.util.ArrayList;
@@ -24,11 +22,6 @@ public class FavouritesFragment extends Fragment {
     private RecyclerView favouritesList;
     private RecyclerView additionalIconsList;
     private RecyclerView allCategoriesList;
-
-    private TextView moreIconsTitle;
-    private TextView favouritesTitle;
-    private TextView allCategoriesTitle;
-    private DBAdapter adapter;
 
     private RowDisplayableAdapter rowDisplayableAdapter;
     private IconsAdapter iconsAdapter;

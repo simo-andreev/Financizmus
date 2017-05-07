@@ -1,11 +1,11 @@
 package bg.o.sim.finansizmus.transactionRelated;
 
 import android.app.DatePickerDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,10 +26,10 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 
-import bg.o.sim.finansizmus.DiagramFragment;
+import bg.o.sim.finansizmus.MainFragment;
 import bg.o.sim.finansizmus.R;
+import bg.o.sim.finansizmus.dataManagment.DAO;
 import bg.o.sim.finansizmus.date.DatePickerFragment;
-import bg.o.sim.finansizmus.dataManagment.DBAdapter;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.model.Manager;
@@ -39,7 +39,7 @@ import bg.o.sim.finansizmus.utils.Util;
 public class TransactionFragment extends Fragment implements DatePickerDialog.OnDateSetListener, NoteInputFragment.NoteCommunicator {
 
     private static final int MAX_NUM_LENGTH = 9;
-    private DBAdapter dbAdapter;
+    private DAO dao;
     private boolean startedWithCategory;
 
     //Selection radio between income and expense;
@@ -107,17 +107,17 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_transaction, container, false);
         initializeUiObjects();
-        dbAdapter = DBAdapter.getInstance(this.getActivity());
+        dao = DBAdapter.getInstance(this.getActivity());
 
         catTypeRadio.check(R.id.transaction_radio_expense);
         startedWithCategory = checkForCategoryExtra();
 
         ArrayList<Category> expenseCategories = new ArrayList<>();
-        expenseCategories.addAll(dbAdapter.getCachedExpenseCategories().values());
-        expenseCategories.addAll(dbAdapter.getCachedFavCategories().values());
+        expenseCategories.addAll(dao.getCachedExpenseCategories().values());
+        expenseCategories.addAll(dao.getCachedFavCategories().values());
 
         final RowViewAdapter<Category> expenseAdapter = new RowViewAdapter<>(inflater, expenseCategories);
-        final RowViewAdapter<Category> incomeAdapter = new RowViewAdapter<>(inflater, dbAdapter.getCachedIncomeCategories().values());
+        final RowViewAdapter<Category> incomeAdapter = new RowViewAdapter<>(inflater, dao.getCachedIncomeCategories().values());
         categorySelection.setAdapter(expenseAdapter);
 
 
@@ -137,7 +137,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 break;
         }
 
-        accountSelection.setAdapter(new RowViewAdapter<>(inflater, dbAdapter.getCachedAccounts().values()));
+        accountSelection.setAdapter(new RowViewAdapter<>(inflater, dao.getCachedAccounts().values()));
 
         //Show the current date in a "d MMMM, YYYY" format.
         date = DateTime.now();
@@ -385,9 +385,9 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         Category category = selectedCategory;
 
         Transaction transaction = new Transaction(date, sum, note, account, category);
-        dbAdapter.addTransaction(transaction, Manager.getLoggedUser().getId());
+        dao.addTransaction(transaction, Manager.getLoggedUser().getId());
 
-        DiagramFragment fragment = new DiagramFragment();
+        MainFragment fragment = new MainFragment();
         Bundle arguments = new Bundle();
         arguments.putSerializable("TRANSACTION", transaction);
         fragment.setArguments(arguments);

@@ -40,6 +40,9 @@
 
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
+
+
     <style name="TransactionDetailsTitle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -58,6 +61,30 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:adjustViewBounds">true</item>
         <item name="android:src">@mipmap/ic_launcher_round</item>
+    </style>
+
+
+
+
+    <style name="PieChartMenuSpacer">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:clickable">false</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="PieChartMenuRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="PieChartMenuItem">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:adjustViewBounds">true</item>
     </style>
 
 </resources>
