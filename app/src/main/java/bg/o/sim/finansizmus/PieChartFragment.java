@@ -4,6 +4,7 @@ package bg.o.sim.finansizmus;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class PieChartFragment extends Fragment {
         chart = (PieChart) rootView.findViewById(R.id.pie_chart_chart);
 
         categoriesBySum = new ArrayList<>(cache.getAllExpenseCategories());
+
         Collections.sort(categoriesBySum, new Comparator<Category>() {
             @Override
             public int compare(Category o1, Category o2) {
@@ -57,7 +59,7 @@ public class PieChartFragment extends Fragment {
         for (byte i = 0; i < MENU_BUTTON_COUNT; i++) {
             menu[i] = (ImageButton) rootView.findViewById(getResources().getIdentifier("pie_chart_menu_" + i, "id", getActivity().getPackageName()));
             menu[i].setScaleType(ImageView.ScaleType.FIT_CENTER);
-            menu[i].setBackgroundColor(Color.argb(255, 0, 0, 0));
+            menu[i].setBackgroundColor(Color.argb(0, 0, 0, 0));
         }
 
         return rootView;

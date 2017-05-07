@@ -179,24 +179,24 @@ public class DAO {
 
     private void addDefaultEntries(User u) {
         long id = u.getId();
-        addCategory("Vehicle", R.mipmap.car, id, Category.Type.INCOME, false);
-        addCategory("Clothes", R.mipmap.clothes,  id, Category.Type.INCOME, false);
-        addCategory("Health", R.mipmap.heart,  id, Category.Type.INCOME, false);
-        addCategory("Travel", R.mipmap.plane,  id, Category.Type.INCOME, false);
-        addCategory("House", R.mipmap.home,  id, Category.Type.INCOME, false);
-        addCategory("Sport", R.mipmap.swimming,  id, Category.Type.INCOME, false);
-        addCategory("Food", R.mipmap.restaurant,  id, Category.Type.INCOME, false);
-        addCategory("Transport", R.mipmap.train,  id, Category.Type.INCOME, false);
-        addCategory("Entertainment", R.mipmap.cocktail,  id, Category.Type.INCOME, false);
-        addCategory("Phone", R.mipmap.phone,  id, Category.Type.INCOME, false);
+        addCategory("Vehicle", R.mipmap.car, id, Category.Type.EXPENSE);
+        addCategory("Clothes", R.mipmap.clothes,  id, Category.Type.EXPENSE);
+        addCategory("Health", R.mipmap.heart,  id, Category.Type.EXPENSE);
+        addCategory("Travel", R.mipmap.plane,  id, Category.Type.EXPENSE);
+        addCategory("House", R.mipmap.home,  id, Category.Type.EXPENSE);
+        addCategory("Sport", R.mipmap.swimming,  id, Category.Type.EXPENSE);
+        addCategory("Food", R.mipmap.restaurant,  id, Category.Type.EXPENSE);
+        addCategory("Transport", R.mipmap.train,  id, Category.Type.EXPENSE);
+        addCategory("Entertainment", R.mipmap.cocktail,  id, Category.Type.EXPENSE);
+        addCategory("Phone", R.mipmap.phone,  id, Category.Type.EXPENSE);
 
         addAccount("Cash", R.mipmap.cash, id);
         addAccount("Debit", R.mipmap.visa, id);
         addAccount("Credit", R.mipmap.mastercard, id);
 
-        addCategory("Salary", R.mipmap.coins,   id, Category.Type.INCOME, false);
-        addCategory("Savings", R.mipmap.money_box,   id, Category.Type.INCOME, false);
-        addCategory("Other", R.mipmap.money_bag,   id, Category.Type.INCOME, false);
+        addCategory("Salary", R.mipmap.coins,   id, Category.Type.INCOME);
+        addCategory("Savings", R.mipmap.money_box,   id, Category.Type.INCOME);
+        addCategory("Other", R.mipmap.money_bag,   id, Category.Type.INCOME);
     }
 
     private void addAccount(String name, int iconId, long userId) {
@@ -219,7 +219,7 @@ public class DAO {
         cache.addAccount(acc);
     }
 
-    private void addCategory(String name, int iconId, long userId, Category.Type type, boolean isFavourite) {
+    private void addCategory(String name, int iconId, long userId, Category.Type type) {
         if (name == null || name.isEmpty() || iconId <= 0 || userId < 0 || type == null) return;
 
         ContentValues values = new ContentValues(5);
@@ -227,7 +227,6 @@ public class DAO {
         values.put(h.CATEGORY_COLUMN_ICON_ID, iconId);
         values.put(h.CATEGORY_COLUMN_USER_FK, userId);
         values.put(h.CATEGORY_COLUMN_IS_EXPENSE, type == Category.Type.EXPENSE ? 1 : 0);
-        values.put(h.CATEGORY_COLUMN_IS_FAVOURITE, isFavourite ? 1 : 0);
 
         long id = -1;
 
@@ -238,7 +237,7 @@ public class DAO {
         }
 
         if (id < 0) return;
-        Category cat = new Category(name, iconId, id, userId, isFavourite, type);
+        Category cat = new Category(name, iconId, id, userId, type);
         cache.addCategory(cat);
     }
 
@@ -274,8 +273,7 @@ public class DAO {
                 h.CATEGORY_COLUMN_ID,
                 h.CATEGORY_COLUMN_ICON_ID,
                 h.CATEGORY_COLUMN_NAME,
-                h.CATEGORY_COLUMN_IS_EXPENSE,
-                h.CATEGORY_COLUMN_IS_FAVOURITE
+                h.CATEGORY_COLUMN_IS_EXPENSE
         };
 
         String selection = h.CATEGORY_COLUMN_USER_FK + " = " + userId;
@@ -286,7 +284,6 @@ public class DAO {
         int indxIcon = c.getColumnIndex(h.CATEGORY_COLUMN_ICON_ID);
         int indxName = c.getColumnIndex(h.CATEGORY_COLUMN_NAME);
         int indxIsExp = c.getColumnIndex(h.CATEGORY_COLUMN_IS_EXPENSE);
-        int indxIsFav = c.getColumnIndex(h.CATEGORY_COLUMN_IS_FAVOURITE);
 
         while (c.moveToNext()) {
 
@@ -294,13 +291,11 @@ public class DAO {
             int icon = c.getInt(indxIcon);
             String name = c.getString(indxName);
             Category.Type type = c.getInt(indxIsExp) == 1 ? Category.Type.EXPENSE : Category.Type.INCOME;
-            Boolean isFavourite = c.getInt(indxIsFav) == 1;
 
-            Category cat = new Category(name, icon, id, userId, isFavourite, type);
-
-            cache.addCategory(cat);
+            Category cat = new Category(name, icon, id, userId, type);
             Log.wtf("LOADED CAT:", cat.getName());
 
+            cache.addCategory(cat);
         }
     }
     private void loadUserTransactions(long userId) {
@@ -354,7 +349,7 @@ public class DAO {
     private static class DbHelper extends SQLiteOpenHelper {
 
         //DataBase version const:
-        private static final int DB_VERSION = 3;
+        private static final int DB_VERSION = 5;
 
         //DateBase name const
         private static final String DB_NAME = "finansizmus.db";
@@ -388,7 +383,6 @@ public class DAO {
         private static final String CATEGORY_COLUMN_ICON_ID = COMMON_COLUMN_ICON_ID;
         private static final String CATEGORY_COLUMN_NAME = COMMON_COLUMN_NAME;
         private static final String CATEGORY_COLUMN_IS_EXPENSE = "isExpense";
-        private static final String CATEGORY_COLUMN_IS_FAVOURITE = "isFavourite";
         //TRANSACTION columns:
         private static final String TRANSACTION_COLUMN_ID = COMMON_COLUMN_ID;
         private static final String TRANSACTION_COLUMN_USER_FK = COMMON_COLUMN_USER_FK;
@@ -421,7 +415,6 @@ public class DAO {
                 CATEGORY_COLUMN_ICON_ID + " INTEGER, " +
                 CATEGORY_COLUMN_NAME + " VARCHAR(40), " +
                 CATEGORY_COLUMN_IS_EXPENSE + " INTEGER, " +
-                CATEGORY_COLUMN_IS_FAVOURITE + " INTEGER, " +
                 "FOREIGN KEY (" + CATEGORY_COLUMN_USER_FK + ") REFERENCES " + TABLE_USER + "(" + USER_COLUMN_ID + ")" +
                 ");";
         private static final String CREATE_TRANSACTION = "CREATE TABLE " + TABLE_TRANSACTION +

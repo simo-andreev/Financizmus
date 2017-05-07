@@ -35,6 +35,8 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+
+
         totalSumButton = (Button) rootView.findViewById(R.id.total_sum_btn);
 
         /* Animator for the Report Drawer */

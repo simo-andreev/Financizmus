@@ -14,19 +14,16 @@ public class Category implements RowDisplayable, Serializable {
 
     private String name;
     private Type type;
-    private boolean isFavourite;
     private int iconId;
 
-    public Category(@NonNull String name, int iconId, long id, long userFk, boolean isFavourite, Type type) {
+    public Category(@NonNull String name, int iconId, long id, long userFk, Type type) {
         //TODO - VALIDATION!
         this.name = name;
         this.type = type;
         this.iconId = iconId;
-        this.isFavourite = isFavourite;
 
         this.id = id;
         this.userFk = userFk;
-        this.isFavourite = isFavourite;
     }
 
     @Override

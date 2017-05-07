@@ -73,10 +73,12 @@ public class CacheManager {
 
         if (category.getType() == Category.Type.INCOME && !incomeCategories.containsKey(category.getId())) {
             incomeCategories.put(category.getId(), category);
+            Log.e("CACHED CAT:", category.getName() + " IN INCOME");
             return true;
         }
         if (category.getType() == Category.Type.EXPENSE && !expenseCategories.containsKey(category.getId())) {
             expenseCategories.put(category.getId(), category);
+            Log.e("CACHED CAT:", category.getName() + " IN EXPENSE");
             return true;
         }
 
@@ -91,8 +93,6 @@ public class CacheManager {
     }
 
     public Category getCategory(long catFk) {
-        if (incomeCategories.containsKey(catFk))
-            return incomeCategories.get(catFk);
         return expenseCategories.get(catFk);
     }
 
