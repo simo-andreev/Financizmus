@@ -46,7 +46,7 @@
 
     <Button
         android:id="@+id/cancel_category_button"
-        android:text="@string/cancel_button"
+        android:text="@string/cancel"
         android:background="@drawable/balance_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -92,7 +92,7 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
             @Override
             public void onClick(View v) {
                 DatePickerFragment datePicker = DatePickerFragment.newInstance(startDateListener, startDate);
-                datePicker.show(getFragmentManager(), getString(R.string.calendar_fragment_tag));
+                datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
             }
         });
         endDateView = (TextView) rootView.findViewById(R.id.filtered_report_date_end);
@@ -101,7 +101,7 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
             @Override
             public void onClick(View v) {
                 DatePickerFragment datePicker = DatePickerFragment.newInstance(endDateListener, endDate);
-                datePicker.show(getFragmentManager(), getString(R.string.calendar_fragment_tag));
+                datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
             }
         });
 

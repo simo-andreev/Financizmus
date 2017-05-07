@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import bg.o.sim.finansizmus.MainActivity;
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.dataManagment.CacheManager;
 import bg.o.sim.finansizmus.dataManagment.DAO;
@@ -63,11 +64,17 @@ public class AccountsFragment extends Fragment {
                         arguments.putString("ROW_DISPLAYABLE_TYPE", "ACCOUNT");
 
                         dialog.setArguments(arguments);
-                        dialog.show(getFragmentManager(), String.valueOf(R.string.add_category_dialog));
+                        dialog.show(getFragmentManager(), String.valueOf(R.string.tag_dialog_add_category));
 
                     }
                 })
         );
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).setDrawerCheck(R.id.nav_accounts);
     }
 }

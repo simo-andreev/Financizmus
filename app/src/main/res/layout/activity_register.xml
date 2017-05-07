@@ -129,7 +129,7 @@
             android:id="@+id/register_reg_button"
             android:layout_width="187dp"
             android:layout_height="wrap_content"
-            android:text="@string/register_btn"
+            android:text="@string/register"
             android:background="@drawable/balance_button"
             android:textSize="20sp"
             android:textColor="@color/colorWhite"/>
@@ -138,7 +138,7 @@
             android:id="@+id/register_cancel_button"
             android:layout_width="187dp"
             android:layout_height="wrap_content"
-            android:text="@string/cancel_btn"
+            android:text="@string/cancel"
             android:layout_marginTop="10dp"
             android:background="@drawable/balance_button"
             android:textSize="20sp"

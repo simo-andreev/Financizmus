@@ -1,22 +1,25 @@
 <resources>
     <string name="app_name">Finansizmus</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- TODO - CLEAN STRINGS -->
 
     <!-- TOOLBAR MENU -->
     <string name="currency">Currency</string>
     <string name="settings">Settings</string>
 
     <!-- EXTRA'S KEYS -->
-    <string name="EXTRA_SECTION">KEY_CATEGORY</string>
-    <string name="EXTRA_DATE">KEY_DATE</string>
-    <string name="EXTRA_ICON">KEY_ICON</string>
-    <string name="EXTRA_LIST">KEY_LIST</string>
-    <string name="EXTRA_NOTE">temp</string>
-    <string name="EXTRA_ACCOUNT">ACCOUNT</string>
-    <string name="EXTRA_CATEGORY">CATEGORY</string>
+    <string name="EXTRA_SECTION">EXTRA_SECTION</string>
+    <string name="EXTRA_DATE">EXTRA_DATE</string>
+    <string name="EXTRA_ICON">EXTRA_ICON</string>
+    <string name="EXTRA_LIST">EXTRA_LIST</string>
+    <string name="EXTRA_NOTE">EXTRA_NOTE</string>
+    <string name="EXTRA_ACCOUNT">EXTRA_ACCOUNT</string>
+    <string name="EXTRA_CATEGORY">EXTRA_CATEGORY</string>
     <string name="ROW_DISPLAYABLE_TYPE">ROW_DISPLAYABLE_TYPE</string>
-    <string name="EXTRA_DATE_NAME">KEY_DATE_NAME</string>
-    <string name="EXTRA_TRANSACTION">TRANSACTION</string>
+    <string name="EXTRA_DATE_NAME">EXTRA_DATE_NAME</string>
+    <string name="EXTRA_TRANSACTION">EXTRA_TRANSACTION</string>
+    <string name="EXTRA_USERNAME">EXTRA_USERNAME</string>
+    <string name="EXTRA_USERMAIL">EXTRA_USERMAIL</string>
 
     <!-- NAVIGATION ITEMS -->
     <string name="nav_item_accounts">Accounts</string>
@@ -29,8 +32,8 @@
     <string name="nav_item_week">Week</string>
     <string name="nav_item_month">Month</string>
     <string name="nav_item_year">Year</string>
+    <string name="nav_item_expense">Expense</string>
     <string name="email">Hi, [email address]</string>
-    <string name="nav_expense">Expense</string>
 
     <!-- TRANSACTION RADIO BUTTONS -->
     <string name="income">income</string>
@@ -40,27 +43,28 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- BUTTONS -->
-    <string name="cancel_button">Cancel</string>
-    <string name="logout_button">Log out</string>
-    <string name="add_category_button">Add category</string>
+    <!-- BUTTONS && GENERAL -->
+    <string name="cancel">Cancel</string>
+    <string name="login">Log-in</string>
+    <string name="logout">Log-out</string>
+    <string name="register">Register</string>
+    <string name="add_category">Add category</string>
     <string name="submit">submit</string>
-    <string name="transaction_select_section">SELECT SECTION</string>
-    <string name="transaction_add_to">ADD TO</string>
+    <string name="capitalized_select_section">SELECT SECTION</string>
+    <string name="capitalized_add_to">ADD TO</string>
     <string name="add">Add</string>
-    <string name="sign_up_btn">Sign up</string>
     <string name="total_value_btn">Total: 0.00</string>
-    <string name="register_btn">Register</string>
-    <string name="cancel_btn">Cancel</string>
-    <string name="login_btn">Login</string>
 
     <!-- FRAGMENT TAGS -->
-    <string name="transaction_fragment_tag">Transaction Fragment</string>
-    <string name="diagram_fragment_tag">Diagram Fragment</string>
-    <string name="favourites_fragment_tag">Favourites Fragment</string>
-    <string name="calendar_fragment_tag">Calendar</string>
-    <string name="accounts_fragment_tag">Accounts Fragment</string>
-    <string name="add_category_dialog">Add Category Dialog</string>
+    <string name="tag_dialog_date_picker">tag_fragment_date_picker</string>
+    <string name="tag_dialog_add_category">tag_dialog_add_category</string>
+    <string name="tag_fragment_home">tag_fragment_home</string>
+    <string name="tag_fragment_home_chart">tag_fragment_home_chart</string>
+    <string name="tag_fragment_home_report">tag_fragment_home_report</string>
+    <string name="tag_fragment_accounts">tag_fragment_accounts</string>
+    <string name="tag_fragment_favourites">tag_fragment_favourites</string>
+    <string name="tag_fragment_transaction">tag_fragment_transaction</string>
+
 
     <!-- MESSAGES -->
     <string name="transaction_success">Transaction successful!</string>
@@ -109,8 +113,15 @@
     <string name="message_email_taken">Sorry, but this e-mail address is already taken. Please try another =]</string>
     <string name="hello">Welcome to Finansizums</string>
     <string name="message_invalid_login">Wrong e-mail or password</string>
-    <string name="EXTRA_USERNAME">jsdkfnjksdf</string>
-    <string name="EXTRA_USERMAIL">dsafasdf</string>
+
+
     <string name="error_invalid_email">That is not a valid e-mail address!</string>
     <string name="error_password_length">Passwords must be between 5 and 40 characters!</string>
+
+
+    <string name="message_double_back">Press \'back\' again to exit the app.</string>
+    <string name="tag_fragment_transaction_expense">tag_fragment_transaction_expense</string>
+    <string name="tag_fragment_transaction_income">tag_fragment_transaction_income</string>
+
+
 </resources>

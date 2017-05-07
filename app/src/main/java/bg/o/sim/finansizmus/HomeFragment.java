@@ -1,6 +1,8 @@
 package bg.o.sim.finansizmus;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,7 +21,9 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainFragment extends Fragment {
+import bg.o.sim.finansizmus.reports.ReportFragment;
+
+public class HomeFragment extends Fragment {
 
 //    private HashSet<CategoryExpense> displayedCategories;
     private HashMap<Integer, Integer> colors;
@@ -33,9 +37,15 @@ public class MainFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home, null, false);
 
-
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (fm.findFragmentById(R.id.home_chart_container) == null)
+            ft.add(R.id.home_chart_container, new PieChartFragment(), getString(R.string.tag_fragment_home_chart));
+        if (fm.findFragmentById(R.id.home_report_container) == null)
+            ft.add(R.id.home_report_container, new ReportFragment(), getString(R.string.tag_fragment_home_report));
+        ft.commit();
 
         totalSumButton = (Button) rootView.findViewById(R.id.total_sum_btn);
 
@@ -81,4 +91,9 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).setDrawerCheck(R.id.nav_unchecker);
+    }
 }

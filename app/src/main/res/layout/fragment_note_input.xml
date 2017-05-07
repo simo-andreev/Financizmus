@@ -26,7 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/cancel_button"
+            android:text="@string/cancel"
             android:textColor="@color/colorWhite"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="@drawable/balance_button"/>

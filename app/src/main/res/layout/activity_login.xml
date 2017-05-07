@@ -102,7 +102,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="187dp"
             android:layout_height="wrap_content"
-            android:text="@string/login_btn"
+            android:text="@string/login"
             android:background="@drawable/balance_button"
             android:textSize="20sp"
             android:textColor="@color/colorWhite"/>
@@ -120,7 +120,7 @@
             android:id="@+id/loggin_signup_button"
             android:layout_width="187dp"
             android:layout_height="wrap_content"
-            android:text="@string/sign_up_btn"
+            android:text="@string/register"
             android:layout_marginTop="10dp"
             android:background="@drawable/balance_button"
             android:textSize="20sp"

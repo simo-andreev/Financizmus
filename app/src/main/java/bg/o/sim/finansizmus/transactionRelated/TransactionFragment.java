@@ -23,7 +23,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import bg.o.sim.finansizmus.MainFragment;
+import bg.o.sim.finansizmus.MainActivity;
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.dataManagment.CacheManager;
 import bg.o.sim.finansizmus.dataManagment.DAO;
@@ -150,7 +150,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             @Override
             public void onClick(View v) {
                 DatePickerFragment datePicker = DatePickerFragment.newInstance(TransactionFragment.this, date);
-                datePicker.show(getFragmentManager(), getString(R.string.calendar_fragment_tag));
+                datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
             }
         });
 
@@ -331,15 +331,17 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 case EXPENSE:
                     catTypeRadio.check(R.id.transaction_radio_expense);
                     selectedType = Category.Type.EXPENSE;
+                    ((MainActivity) getActivity()).setDrawerCheck(R.id.nav_expense);
                     break;
                 case INCOME:
                     catTypeRadio.check(R.id.transaction_radio_income);
                     selectedType = Category.Type.INCOME;
+                    ((MainActivity) getActivity()).setDrawerCheck(R.id.nav_income);
                     break;
             }
             catTypeRadio.setVisibility(View.GONE);
             selectedCategory = cat;
-            submitButton.setText(getString(R.string.transaction_add_to) + " " + cat.getName());
+            submitButton.setText(getString(R.string.capitalized_add_to) + " " + cat.getName());
             return true;
         }
         return false;
@@ -387,14 +389,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         //TODO !!! INSERT METHODS IN DAO !!!
 //        dao.addTransaction(transaction, cache.getLoggedUser().getId());
 
-        MainFragment fragment = new MainFragment();
-        Bundle arguments = new Bundle();
-        arguments.putSerializable("TRANSACTION", transaction);
-        fragment.setArguments(arguments);
-        getFragmentManager().beginTransaction()
-                .replace(R.id.main_fragment_frame, fragment, getString(R.string.diagram_fragment_tag))
-                .addToBackStack(getString(R.string.diagram_fragment_tag))
-                .commit();
+        getActivity().onBackPressed();
     }
 
     /**
@@ -515,5 +510,12 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         TransactionFragment t = new TransactionFragment();
         t.selectedType = type;
         return t;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int drawerPosition = selectedType == Category.Type.EXPENSE ? R.id.nav_expense : R.id.nav_income ;
+        ((MainActivity) getActivity()).setDrawerCheck(drawerPosition);
     }
 }

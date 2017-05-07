@@ -3,9 +3,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/main_chart"
-        android:name="bg.o.sim.finansizmus.PieChartFragment"
+    <FrameLayout
+        android:id="@+id/home_chart_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/appbar_height"/>
@@ -57,9 +56,8 @@
 
         </LinearLayout>
 
-        <fragment
-            android:id="@+id/main_report"
-            android:name="bg.o.sim.finansizmus.reports.ReportFragment"
+        <FrameLayout
+            android:id="@+id/home_report_container"
             android:layout_width="match_parent"
             android:layout_height="400dp" />
 

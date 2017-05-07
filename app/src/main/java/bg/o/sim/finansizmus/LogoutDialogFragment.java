@@ -33,14 +33,14 @@ public class LogoutDialogFragment extends DialogFragment {
         alertDialogBuilder.setTitle(getString(R.string.logout_title));
         alertDialogBuilder.setMessage(getString(R.string.logout_message));
 
-        alertDialogBuilder.setNegativeButton(getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
 
-        alertDialogBuilder.setPositiveButton(getString(R.string.logout_button), new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(getString(R.string.logout), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 cache.clearCache();
