@@ -104,7 +104,7 @@ public class DAO {
                     cache.setLoggedUser(user);
                     Intent i = new Intent(activity, MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    Util.toastLong(context, context.getString(R.string.welcome_message) + " " + user.getName());
+                    Util.toastLong(context, context.getString(R.string.message_welcome_back) + " " + user.getName());
                     activity.startActivity(i);
                     activity.finish();
                 }
@@ -168,7 +168,7 @@ public class DAO {
                     cache.setLoggedUser(user);
                     Intent i = new Intent(activity, MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    Util.toastLong(context, context.getString(R.string.hello) + " " + user.getName() + "!");
+                    Util.toastLong(context, context.getString(R.string.message_hello) + " " + user.getName() + "!");
                     activity.startActivity(i);
                     activity.finish();
                 }
@@ -478,7 +478,7 @@ public class DAO {
                 //Fingers crossed, that this Toast never sees the light of day =]
                 //TODO - THIS TOAST HAS SPAT EXCEPTIONS BEFORE. TEST THE HELL OUT OF IT.
                 // yes, I realize the irony in the error-message throwing an error, but whatyagonnado. The joys of a learning experience I guess =]
-                Util.toastLong(context, context.getString(R.string.sql_exception_message));
+                Util.toastLong(context, context.getString(R.string.message_sql_exception));
                 for (String s : TABLES)
                     db.execSQL("DROP TABLE IF EXISTS "+ s);
 

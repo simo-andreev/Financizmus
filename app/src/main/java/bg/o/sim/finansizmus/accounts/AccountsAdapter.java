@@ -87,8 +87,8 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
             @Override
             public void onClick(View v) {
                 fm.beginTransaction()
-                        .replace(R.id.main_fragment_container, FilteredReportFragment.newInstance((Account) account), context.getString(R.string.filtered_report_fragment_tag))
-                        .addToBackStack(context.getString(R.string.filtered_report_fragment_tag))
+                        .replace(R.id.main_fragment_container, FilteredReportFragment.newInstance((Account) account), context.getString(R.string.tag_fragment_filtered_report))
+                        .addToBackStack(context.getString(R.string.tag_fragment_filtered_report))
                         .commit();
             }
         });

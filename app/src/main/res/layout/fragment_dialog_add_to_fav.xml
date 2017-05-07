@@ -25,7 +25,7 @@
 
         <Button
             android:id="@+id/delete_category_button"
-            android:text="@string/delete_btn"
+            android:text="@string/capitalized_delete"
             android:background="@drawable/balance_button"
             android:layout_width="0dp"
             android:layout_weight="1"

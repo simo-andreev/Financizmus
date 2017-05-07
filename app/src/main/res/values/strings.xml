@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Finansizmus</string>
+    <string name="test_text">TEST_TEXT</string>
+    <string name="or_textview">- - OR - -</string>
 
     <!-- TODO - CLEAN STRINGS -->
 
@@ -7,6 +9,7 @@
     <string name="currency">Currency</string>
     <string name="settings">Settings</string>
 
+    
     <!-- EXTRA'S KEYS -->
     <string name="EXTRA_SECTION">EXTRA_SECTION</string>
     <string name="EXTRA_DATE">EXTRA_DATE</string>
@@ -20,6 +23,7 @@
     <string name="EXTRA_TRANSACTION">EXTRA_TRANSACTION</string>
     <string name="EXTRA_USERNAME">EXTRA_USERNAME</string>
     <string name="EXTRA_USERMAIL">EXTRA_USERMAIL</string>
+
 
     <!-- NAVIGATION ITEMS -->
     <string name="nav_item_accounts">Accounts</string>
@@ -35,13 +39,16 @@
     <string name="nav_item_expense">Expense</string>
     <string name="email">Hi, [email address]</string>
 
+
     <!-- TRANSACTION RADIO BUTTONS -->
     <string name="income">income</string>
     <string name="expense">expense</string>
 
+
     <!-- NAV DRAWER ACTIONS -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
 
     <!-- BUTTONS && GENERAL -->
     <string name="cancel">Cancel</string>
@@ -54,6 +61,10 @@
     <string name="capitalized_add_to">ADD TO</string>
     <string name="add">Add</string>
     <string name="total_value_btn">Total: 0.00</string>
+    <string name="set_name">Set name</string>
+    <string name="add_new_account">Add new account</string>
+    <string name="add_new_category">Add new category</string>
+
 
     <!-- FRAGMENT TAGS -->
     <string name="tag_dialog_date_picker">tag_fragment_date_picker</string>
@@ -64,18 +75,23 @@
     <string name="tag_fragment_accounts">tag_fragment_accounts</string>
     <string name="tag_fragment_favourites">tag_fragment_favourites</string>
     <string name="tag_fragment_transaction">tag_fragment_transaction</string>
+    <string name="tag_fragment_transaction_expense">tag_fragment_transaction_expense</string>
+    <string name="tag_fragment_transaction_income">tag_fragment_transaction_income</string>
+    <string name="tag_fragment_filtered_report">filtered_report_tag</string>
 
 
     <!-- MESSAGES -->
-    <string name="transaction_success">Transaction successful!</string>
-    <string name="transaction_failure">Transaction failed!</string>
-    <string name="logout_message">Are you sure you want to log out?</string>
-    <string name="logout_title">Log out!</string>
-    <string name="transaction_select_account">Please select an account!</string>
-    <string name="change_favourite_categories">Change favourite categories:</string>
-    <string name="set_name">Set name</string>
-    <string name="add_new_account">Add new account</string>
-    <string name="add_new_category">Add new category</string>
+    <string name="message_transaction_success">Transaction successful!</string>
+    <string name="message_transaction_failure">Transaction failed!</string>
+    <string name="message_logout_confirm">Are you sure you want to log out?</string>
+    <string name="message_select_account">Please select an account!</string>
+    <string name="message_double_back">Press \'back\' again to exit the app.</string>
+    <string name="message_invalid_login">Wrong e-mail or password</string>
+    <string name="message_hello">Welcome to Finansizums</string>
+    <string name="message_email_taken">Sorry, but this e-mail address is already taken. Please try another =]</string>
+    <string name="message_welcome_back">Welcome back</string>
+    <string name="message_sql_exception">An unexpected error occurred. The app will shortly restart. We are sorry for the inconvenience.</string>
+
 
     <!-- TITLES -->
     <string name="favourite_categories_title">Favourite categories:</string>
@@ -84,44 +100,32 @@
     <string name="add_category_title">Add new category</string>
     <string name="my_accounts_title">My accounts:</string>
     <string name="add_more_accounts_title">Add more accounts:</string>
+    <string name="add_or_delete_category_title">Add to favorite or delete category.</string>
+
 
     <!-- HINTS -->
     <string name="confirm_password_hint">confirm password</string>
     <string name="password_hint">password</string>
     <string name="email_hint">e-mail</string>
-
-    <!-- TEMP -->
     <string name="transaction_input_note">add note ...</string>
-    <string name="title_activity_navigation">NavigationActivity</string>
-    <string name="test_text">TEST_TEXT</string>
-    <string name="note_fragment_tag">Note_input_Fragment</string>
-    <string name="account_name">Account name</string>
-    <string name="acount_value">0.00</string>
-    <string name="or_textview">- - OR - -</string>
-    <string name="filters">Filters</string>
-    <string name="sortby">Sort by</string>
-    <string name="start_date">Start Date</string>
-    <string name="filtered_report_fragment_tag">filtered_report_tag</string>
-    <string name="end_date">End Date</string>
-    <string name="back">return</string>
-    <string name="select_accounts">Select Accounts</string>
-    <string name="to_favorite_btn">TO FAVORITE</string>
-    <string name="delete_btn">DELETE</string>
-    <string name="add_or_delete_category_title">Add to favorite or delete category.</string>
-    <string name="sql_exception_message">An unexpected error occurred. The app will shortly restart. We are sorry for the inconvenience.</string>
-    <string name="welcome_message">Welcome back</string>
-    <string name="message_email_taken">Sorry, but this e-mail address is already taken. Please try another =]</string>
-    <string name="hello">Welcome to Finansizums</string>
-    <string name="message_invalid_login">Wrong e-mail or password</string>
 
 
+    <!-- ERRORS -->
     <string name="error_invalid_email">That is not a valid e-mail address!</string>
     <string name="error_password_length">Passwords must be between 5 and 40 characters!</string>
 
 
-    <string name="message_double_back">Press \'back\' again to exit the app.</string>
-    <string name="tag_fragment_transaction_expense">tag_fragment_transaction_expense</string>
-    <string name="tag_fragment_transaction_income">tag_fragment_transaction_income</string>
-
+    <!-- TEMP --> <!-- TODO -->
+    <string name="note_fragment_tag">Note_input_Fragment</string>
+    <string name="account_name">Account name</string>
+    <string name="acount_value">0.00</string>
+    <string name="filters">Filters</string>
+    <string name="sortby">Sort by</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="back">return</string>
+    <string name="select_accounts">Select Accounts</string>
+    <string name="to_favorite_btn">TO FAVORITE</string>
+    <string name="capitalized_delete">DELETE</string>
 
 </resources>

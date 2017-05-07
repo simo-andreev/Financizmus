@@ -30,8 +30,8 @@ public class LogoutDialogFragment extends DialogFragment {
         cache = CacheManager.getInstance();
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setTitle(getString(R.string.logout_title));
-        alertDialogBuilder.setMessage(getString(R.string.logout_message));
+        alertDialogBuilder.setTitle(getString(R.string.logout));
+        alertDialogBuilder.setMessage(getString(R.string.message_logout_confirm));
 
         alertDialogBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override

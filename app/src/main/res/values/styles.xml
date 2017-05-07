@@ -12,23 +12,6 @@
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
-    <style name="transaction_numpad_row">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:orientation">horizontal</item>
-    </style>
-
-    <style name="transaction_numpad_button">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textSize">@dimen/all_text_size_huge</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:gravity">center_vertical|center_horizontal</item>
-        <item name="android:background">@drawable/orange_button_9</item>
-    </style>
-
     <style name="OverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
         <!-- Required for pre-Lollipop. -->
         <item name="overlapAnchor">false</item>
@@ -42,6 +25,23 @@
 
 
 
+    <style name="TransactionNumpadRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <style name="TransactionNumpadButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/all_text_size_huge</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:background">@drawable/orange_button_9</item>
+    </style>
+
+
 
     <style name="TransactionDetailsTitle">
         <item name="android:layout_height">wrap_content</item>
@@ -49,13 +49,11 @@
         <item name="android:layout_margin">@dimen/all_view_spacing_small</item>
         <item name="android:text">@string/test_text</item>
     </style>
-
     <style name="TransactionDetailsTopBar">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
     </style>
-
     <style name="TransactionDetailsIcon">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
@@ -65,21 +63,18 @@
 
 
 
-
     <style name="PieChartMenuSpacer">
         <item name="android:layout_width">0dp</item>
         <item name="android:clickable">false</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
     </style>
-
     <style name="PieChartMenuRow">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:orientation">horizontal</item>
     </style>
-
     <style name="PieChartMenuItem">
         <item name="android:padding">24dp</item> <!-- TODO check for smaller screens and change if necessary!-->
         <item name="android:layout_width">0dp</item>
