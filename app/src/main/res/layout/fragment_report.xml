@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context="com.vladimircvetanov.finansizmus.com.vladimircvetanov.Finansizmus.reports.ReportFragment" />
+    tools:context="bg.o.sim.finansizmus.reports.ReportFragment" />
 
 
 

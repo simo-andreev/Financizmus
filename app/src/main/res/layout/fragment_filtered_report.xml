@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.vladimircvetanov.finansizmus.com.vladimircvetanov.Finansizmus.reports.FilteredReportFragment">
+    tools:context="bg.o.sim.finansizmus.reports.FilteredReportFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
