@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
+import bg.o.sim.finansizmus.dataManagment.CacheManager;
+
 public class Category implements RowDisplayable, Serializable {
     public enum Type {INCOME, EXPENSE}
 
@@ -54,5 +56,12 @@ public class Category implements RowDisplayable, Serializable {
     }
     public Type getType() {
         return type;
+    }
+
+    public double getSum() {
+        double sum = 0;
+        for(Transaction t : CacheManager.getInstance().getCategoryTransactions(this))
+            sum += t.getSum();
+        return sum;
     }
 }
