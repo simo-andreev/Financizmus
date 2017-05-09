@@ -8,14 +8,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import bg.o.sim.finansizmus.model.DAO;
-
-//TODO - DOCUMENTATION
-//TODO - add 'personal' name input.
-//TODO - extract strings
+import bg.o.sim.finansizmus.utils.Util;
 
 public class RegisterActivity extends AppCompatActivity {
 
-
+    //Input UI fields
     private EditText userName, userEmail, userPass, confirmPass;
     private Button signUp, cancel;
 
@@ -42,8 +39,9 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
 
+                //Save input when transitioning between Register and LoIn activities
                 if (userEmail.getText().length() > 1)
-                    i.putExtra(getString(R.string.EXTRA_USERMAIL), userEmail.getText().toString());
+                    i.putExtra(getString(R.string.EXTRA_USERMAIL), userEmail.getText().toString().trim());
 
                 startActivity(i);
             }
@@ -69,53 +67,47 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void signUp() {
 
-        final String name = userName.getText().toString();
-        final String mail = userEmail.getText().toString();
-        final String pass = userPass.getText().toString();
-        final String confirm = confirmPass.getText().toString();
+        final String name = userName.getText().toString().trim();
+        userName.setText(name);
+        final String mail = userEmail.getText().toString().trim();
+        userEmail.setText(mail);
+        final String pass = userPass.getText().toString().trim();
+        final String confirm = confirmPass.getText().toString().trim();
 
-        //TODO - extract strings
-        //TODO - CHANGE REGEX TO ACCEPT SECOND LEVEL DOMAINS
         //TODO - SET LENGTHS ACCORDING TO CONSTS
 
         if (name.isEmpty()) {
             userName.requestFocus();
-            userName.setError("Empty name");
+            userName.setError(getString(R.string.error_empty_name));
             return;
         }
         if (mail.isEmpty()) {
             userEmail.requestFocus();
-            userEmail.setError("Empty email");
+            userEmail.setError(getString(R.string.error_empty_mail));
             return;
         }
-        if (!mail.matches("^(.+)@(.+)$")) {
+        if (!Util.validEmail(mail)) {
             userEmail.requestFocus();
-            userEmail.setError("enter a valid email address");
+            userEmail.setError(getString(R.string.error_invalid_email));
             userEmail.setText("");
             return;
         }
         if (pass.isEmpty()) {
             userPass.requestFocus();
-            userPass.setError("Empty password");
+            userPass.setError(getString(R.string.error_empty_pass));
             return;
         }
-        if (!pass.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*+=?-]).{8,30}$")) {
+        if (!pass.matches("")) {
             userPass.requestFocus();
-            userPass.setError("Password should contain at least one digit," +
-                    "one special symbol,one small letter,and should be between 8 and 30 symbols. ");
-            return;
-        }
-        if (confirm.isEmpty()) {
-            confirmPass.requestFocus();
-            confirmPass.setError("Empty confirmation");
+            userPass.setError(getString(R.string.error_invalid_pass));
             return;
         }
         if (!pass.equals(confirm)) {
             confirmPass.requestFocus();
-            confirmPass.setError("Different passwords");
+            userPass.setError(getString(R.string.error_mismatch_pass));
+            confirmPass.setError(getString(R.string.error_mismatch_pass));
             confirmPass.setText("");
             return;
-
         }
 
         dao.registerUser(name, mail, pass, this);

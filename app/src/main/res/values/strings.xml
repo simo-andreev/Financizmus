@@ -114,6 +114,11 @@
     <string name="error_invalid_email">That is not a valid e-mail address!</string>
     <string name="error_password_length">Passwords must be between 5 and 40 characters!</string>
     <string name="user_name">user name</string>
+    <string name="error_empty_name">User names can not be empty</string>
+    <string name="error_empty_mail">User e-mail can not be empty</string>
+    <string name="error_empty_pass">Passwords must be atleast 8 characters long</string>
+    <string name="error_invalid_pass">Password should contain at least one digit, one special symbol,one small letter,and should be between 8 and 30 symbols.</string>
+    <string name="error_mismatch_pass">Passwords must match</string>
 
 
     <!-- TEMP & UNSORTED -->
