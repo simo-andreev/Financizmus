@@ -3,7 +3,7 @@ package bg.o.sim.finansizmus.model;
 //TODO - Currently the Db is structured to simulate a server-side Db on the device it is installed,
 //TODO - exemplī grātiā - it holds all Users' data, meaning all registrations and accounts are solely local.
 //TODO - I should research and implement a central server on my VPS, to which the app will then connect, post and receive data
-//TODO - if possible, avoid making it an always-online app, rather require networking only on registration and occasional server-sync.
+//TODO - if possible, avoid making it an always-online app, rather, require networking only on registration and occasional server-sync.
 
 
 //TODO!!! - hash dem passwords boi. The whole plain-text storing, manipulating and transferring of User psswrds thing is pure cancer.
@@ -216,9 +216,9 @@ public class DAO {
         }
         if (id < 0) return;
 
-        cache.addAccount( new Account(name, iconId, id, userId) );
+        cache.addAccount( new Account(name, iconId, id, userId));
+        Log.i("DAO/LOADER: ", "INSERTED ACC: " + name);
     }
-
     public void insertCategory(String name, int iconId, long userId, Category.Type type) {
         if (name == null || name.isEmpty() || iconId <= 0 || userId < 0 || type == null) return;
 
@@ -239,8 +239,8 @@ public class DAO {
         if (id < 0) return;
 
         cache.addCategory( new Category(name, iconId, id, userId, type));
+        Log.i("DAO/LOADER: ", "INSERTED CAT: " + name);
     }
-
     public void insertTransaction(Category cat, Account acc, DateTime date, String note, double sum){
         if (cat == null || acc == null || date == null || note == null || note.length() > 255 || sum <=0) return;
 
@@ -259,7 +259,7 @@ public class DAO {
         long id = -1;
 
         try {
-            id = h.getWritableDatabase().insertWithOnConflict(DbHelper.TABLE_CATEGORY, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+            id = h.getWritableDatabase().insertWithOnConflict(DbHelper.TABLE_TRANSACTION, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
         } catch (SQLiteException e) {
             //See @ previous use of insertWithOnConflict, for info, why this try-catch is here.
         }
@@ -267,6 +267,7 @@ public class DAO {
         if (id < 0) return;
 
         cache.addTransaction(new Transaction(id, userId, cat, acc, date, note, sum));
+        Log.i("DAO/LOADER: ", "INSERTED TRANS: " + sum);
     }
 
     private void loadUserAccounts(long userId) {
@@ -357,10 +358,11 @@ public class DAO {
         while (c.moveToNext()) {
 
             long accFk = c.getLong(indxAccId);
-            if ((acc = cache.getAccount(accFk)) == null) continue;
+            if ((acc = cache.getAccount(accFk)) == null)  Log.e("FFFFFFFFFFFFFFFFFFFF", "GGGGGGGGGGGGGGGGGGGGGGGGG");
+
 
             long catFk = c.getLong(indxCatId);
-            if ((cat = cache.getCategory(catFk)) == null) continue;
+            if ((cat = cache.getCategory(catFk)) == null) Log.e("FFFFFFFFFFFFFFFFFFFF", "FFFFFFFFFFFFFFFFFFFFFFGF");
 
             long id = c.getLong(indxId);
 
@@ -372,6 +374,7 @@ public class DAO {
             double sum = c.getDouble(indxSum);
 
             cache.addTransaction(new Transaction(id, userId, cat, acc, date, note, sum));
+            Log.e("ASDASDASASSDSDDASSADASD", "" + cat.getName());
         }
 
         c.close();
@@ -497,7 +500,7 @@ public class DAO {
 
                 for (String s : CREATE_STATEMENTS) {
                     db.execSQL(s+"S");
-                    Log.e("CREATED ",s);
+                    Log.i("CREATED ",s);
                 }
 
                 db.execSQL("CREATE INDEX user_mail_index ON " + TABLE_USER + " (" + USER_COLUMN_MAIL + ")");

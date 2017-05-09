@@ -69,12 +69,12 @@ public class CacheManager {
 
         if (category.getType() == Category.Type.INCOME && !incomeCategories.containsKey(category.getId())) {
             incomeCategories.put(category.getId(), category);
-            Log.e("CACHED CAT:", category.getName() + " IN INCOME");
+            Log.i("CACHED CAT:", category.getName() + " IN INCOME");
             return true;
         }
         if (category.getType() == Category.Type.EXPENSE && !expenseCategories.containsKey(category.getId())) {
             expenseCategories.put(category.getId(), category);
-            Log.e("CACHED CAT:", category.getName() + " IN EXPENSE");
+            Log.i("CACHED CAT:", category.getName() + " IN EXPENSE");
             return true;
         }
 
@@ -88,23 +88,36 @@ public class CacheManager {
         return true;
     }
 
+    public boolean addTransaction(Transaction t) {
+        if (t == null || t.getAccount() == null || t.getCategory() == null) return false;
+
+        long accId = t.getAccount().getId();
+        long catId = t.getCategory().getId();
+
+        if (!accountTransactions.containsKey(accId) || accountTransactions.get(accId) == null)
+            accountTransactions.put(accId, new ArrayList<Transaction>());
+        if (!categoryTransactions.containsKey(catId) || categoryTransactions.get(catId) == null)
+            categoryTransactions.put(catId, new ArrayList<Transaction>());
+
+        accountTransactions.get(accId).add(t);
+        categoryTransactions.get(catId).add(t);
+
+        //TODO - as-is this returns true without actually verifying that the Transaction was successfully added.
+        Log.i("CACHED TRANS: ", t.getSum() + "$ " + "IN: " + t.getAccount().getName() + " FROM: " + t.getCategory().getName());
+        return true;
+    }
+
     public Category getCategory(long catFk) {
-        return expenseCategories.get(catFk);
+        if (expenseCategories.containsKey(catFk))return expenseCategories.get(catFk);
+        if (incomeCategories.containsKey(catFk))return incomeCategories.get(catFk);
+        return null;
     }
 
     public Account getAccount(long accFk) {
         return accounts.get(accFk);
     }
 
-    public boolean addTransaction(Transaction t) {
-        if (t == null) return false;
 
-        accountTransactions.putIfAbsent(t.getAccount().getId(), new ArrayList<Transaction>()).add(t);
-        categoryTransactions.putIfAbsent(t.getAccount().getId(), new ArrayList<Transaction>()).add(t);
-
-        //TODO - as-is this returns true without actually verifying that the Transaction was successfully added.
-        return true;
-    }
 
     /**
      * Empty all cache collections.
