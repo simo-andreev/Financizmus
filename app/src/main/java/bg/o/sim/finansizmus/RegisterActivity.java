@@ -97,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
             userPass.setError(getString(R.string.error_empty_pass));
             return;
         }
-        if (!pass.matches("")) {
+        if (!Util.validPassword(pass)) {
             userPass.requestFocus();
             userPass.setError(getString(R.string.error_invalid_pass));
             return;
