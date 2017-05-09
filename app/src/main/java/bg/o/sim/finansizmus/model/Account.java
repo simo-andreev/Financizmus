@@ -12,7 +12,7 @@ public class Account implements Serializable, RowDisplayable {
     private String name;
     private int iconId;
 
-    public Account(@NonNull String name, int iconId, long id, long userFk) {
+    protected Account(@NonNull String name, int iconId, long id, long userFk) {
         //TODO - revisit validation
         if (name == null || name.isEmpty())
             throw new IllegalArgumentException("The Section name must be a non-null and not-empty string!");

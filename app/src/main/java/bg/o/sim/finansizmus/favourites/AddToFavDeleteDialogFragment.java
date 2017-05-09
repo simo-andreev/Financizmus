@@ -1,20 +1,6 @@
 package bg.o.sim.finansizmus.favourites;
 
 import android.app.DialogFragment;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.dataManagment.CacheManager;
-import bg.o.sim.finansizmus.dataManagment.DAO;
-import bg.o.sim.finansizmus.model.Category;
-import bg.o.sim.finansizmus.utils.Util;
 
 //TODO - !!! CONSIDER IF FAV_CATEGORY WILL REMAIN AS A FEATURE AND REMOVE OR FIX THIS CLASS !!!
 

@@ -1,4 +1,4 @@
-package bg.o.sim.finansizmus.dataManagment;
+package bg.o.sim.finansizmus.model;
 
 //TODO - Currently the Db is structured to simulate a server-side Db on the device it is installed,
 //TODO - exemplī grātiā - it holds all Users' data, meaning all registrations and accounts are solely local.
@@ -29,10 +29,6 @@ import bg.o.sim.finansizmus.LoginActivity;
 import bg.o.sim.finansizmus.MainActivity;
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.RegisterActivity;
-import bg.o.sim.finansizmus.model.Account;
-import bg.o.sim.finansizmus.model.Category;
-import bg.o.sim.finansizmus.model.Transaction;
-import bg.o.sim.finansizmus.model.User;
 import bg.o.sim.finansizmus.utils.Util;
 
 /**
@@ -150,7 +146,7 @@ public class DAO {
                     // https://issuetracker.google.com/issues/36923483
                     // but our overlords at Google decided that marking that in the method docs or a @Deprecated annot
                     // would make life too easy I guess.
-                    // TODO - reconsider using plain .insert() or check if insertOrThrow() works.
+                    // TODO - reconsider using plain .insert() or check if insertOrThrow() works as documented.
                 }
 
                 if (id == -1) return null;
@@ -178,30 +174,32 @@ public class DAO {
         }.execute();
         return true;
     }
-
     private void addDefaultEntries(User u) {
         long id = u.getId();
-        addCategory("Vehicle", R.mipmap.car, id, Category.Type.EXPENSE);
-        addCategory("Clothes", R.mipmap.clothes,  id, Category.Type.EXPENSE);
-        addCategory("Health", R.mipmap.heart,  id, Category.Type.EXPENSE);
-        addCategory("Travel", R.mipmap.plane,  id, Category.Type.EXPENSE);
-        addCategory("House", R.mipmap.home,  id, Category.Type.EXPENSE);
-        addCategory("Sport", R.mipmap.swimming,  id, Category.Type.EXPENSE);
-        addCategory("Food", R.mipmap.restaurant,  id, Category.Type.EXPENSE);
-        addCategory("Transport", R.mipmap.train,  id, Category.Type.EXPENSE);
-        addCategory("Entertainment", R.mipmap.cocktail,  id, Category.Type.EXPENSE);
-        addCategory("Phone", R.mipmap.phone,  id, Category.Type.EXPENSE);
+        insertCategory("Vehicle", R.mipmap.car, id, Category.Type.EXPENSE);
+        insertCategory("Clothes", R.mipmap.clothes,  id, Category.Type.EXPENSE);
+        insertCategory("Health", R.mipmap.heart,  id, Category.Type.EXPENSE);
+        insertCategory("Travel", R.mipmap.plane,  id, Category.Type.EXPENSE);
+        insertCategory("House", R.mipmap.home,  id, Category.Type.EXPENSE);
+        insertCategory("Sport", R.mipmap.swimming,  id, Category.Type.EXPENSE);
+        insertCategory("Food", R.mipmap.restaurant,  id, Category.Type.EXPENSE);
+        insertCategory("Transport", R.mipmap.train,  id, Category.Type.EXPENSE);
+        insertCategory("Entertainment", R.mipmap.cocktail,  id, Category.Type.EXPENSE);
+        insertCategory("Phone", R.mipmap.phone,  id, Category.Type.EXPENSE);
 
-        addAccount("Cash", R.mipmap.cash, id);
-        addAccount("Debit", R.mipmap.visa, id);
-        addAccount("Credit", R.mipmap.mastercard, id);
+        insertAccount("Cash", R.mipmap.cash, id);
+        insertAccount("Debit", R.mipmap.visa, id);
+        insertAccount("Credit", R.mipmap.mastercard, id);
 
-        addCategory("Salary", R.mipmap.coins,   id, Category.Type.INCOME);
-        addCategory("Savings", R.mipmap.money_box,   id, Category.Type.INCOME);
-        addCategory("Other", R.mipmap.money_bag,   id, Category.Type.INCOME);
+        insertCategory("Salary", R.mipmap.coins,   id, Category.Type.INCOME);
+        insertCategory("Savings", R.mipmap.money_box,   id, Category.Type.INCOME);
+        insertCategory("Other", R.mipmap.money_bag,   id, Category.Type.INCOME);
     }
 
-    private void addAccount(String name, int iconId, long userId) {
+    //TODO -  decide on insertMethod return type.
+    //TODO -- options include : object created / null, bool 'isSuccessful', db row id pk / -1.
+
+    public void insertAccount(String name, int iconId, long userId) {
         if (name == null || name.isEmpty() || iconId <= 0 || userId < 0) return;
 
         ContentValues values = new ContentValues(3);
@@ -217,11 +215,11 @@ public class DAO {
             //See @ previous use of insertWithOnConflict, for info, whi this try-catch is here.
         }
         if (id < 0) return;
-        Account acc = new Account(name, iconId, id, userId);
-        cache.addAccount(acc);
+
+        cache.addAccount( new Account(name, iconId, id, userId) );
     }
 
-    private void addCategory(String name, int iconId, long userId, Category.Type type) {
+    public void insertCategory(String name, int iconId, long userId, Category.Type type) {
         if (name == null || name.isEmpty() || iconId <= 0 || userId < 0 || type == null) return;
 
         ContentValues values = new ContentValues(5);
@@ -235,12 +233,40 @@ public class DAO {
         try {
             id = h.getWritableDatabase().insertWithOnConflict(DbHelper.TABLE_CATEGORY, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
         } catch (SQLiteException e) {
-            //See @ previous use of insertWithOnConflict, for info, whi this try-catch is here.
+            //See @ previous use of insertWithOnConflict, for info, why this try-catch is here.
         }
 
         if (id < 0) return;
-        Category cat = new Category(name, iconId, id, userId, type);
-        cache.addCategory(cat);
+
+        cache.addCategory( new Category(name, iconId, id, userId, type));
+    }
+
+    public void insertTransaction(Category cat, Account acc, DateTime date, String note, double sum){
+        if (cat == null || acc == null || date == null || note == null || note.length() > 255 || sum <=0) return;
+
+        long userId = cache.getLoggedUser().getId();
+        long catId = cat.getId();
+        long accId = acc.getId();
+
+        ContentValues values = new ContentValues(6);
+        values.put(DbHelper.TRANSACTION_COLUMN_USER_FK, userId);
+        values.put(DbHelper.TRANSACTION_COLUMN_CATEGORY_FK, catId);
+        values.put(DbHelper.TRANSACTION_COLUMN_ACCOUNT_FK, accId);
+        values.put(DbHelper.TRANSACTION_COLUMN_DATE, date.getMillis());
+        values.put(DbHelper.TRANSACTION_COLUMN_NOTE, note);
+        values.put(DbHelper.TRANSACTION_COLUMN_SUM, sum);
+
+        long id = -1;
+
+        try {
+            id = h.getWritableDatabase().insertWithOnConflict(DbHelper.TABLE_CATEGORY, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+        } catch (SQLiteException e) {
+            //See @ previous use of insertWithOnConflict, for info, why this try-catch is here.
+        }
+
+        if (id < 0) return;
+
+        cache.addTransaction(new Transaction(id, userId, cat, acc, date, note, sum));
     }
 
     private void loadUserAccounts(long userId) {
@@ -336,16 +362,16 @@ public class DAO {
             long catFk = c.getLong(indxCatId);
             if ((cat = cache.getCategory(catFk)) == null) continue;
 
-            double sum = c.getDouble(indxSum);
-            String note = c.getString(indxNote);
+            long id = c.getLong(indxId);
 
             long timestamp = c.getLong(indxDate);
             DateTime date = new DateTime(timestamp, DateTimeZone.UTC);
 
-            Transaction t = new Transaction(date, sum, note, acc, cat);
-            t.setId(c.getLong(indxId));
+            String note = c.getString(indxNote);
 
-            cache.addTransaction(t);
+            double sum = c.getDouble(indxSum);
+
+            cache.addTransaction(new Transaction(id, userId, cat, acc, date, note, sum));
         }
 
         c.close();

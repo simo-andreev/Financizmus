@@ -4,8 +4,6 @@ import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
-import bg.o.sim.finansizmus.dataManagment.CacheManager;
-
 public class Category implements RowDisplayable, Serializable {
     public enum Type {INCOME, EXPENSE}
 
@@ -16,7 +14,7 @@ public class Category implements RowDisplayable, Serializable {
     private final Type type;
     private int iconId;
 
-    public Category(@NonNull String name, int iconId, long id, long userFk, Type type) {
+    protected Category(@NonNull String name, int iconId, long id, long userFk, Type type) {
         //TODO - VALIDATION!
         this.name = name;
         this.type = type;

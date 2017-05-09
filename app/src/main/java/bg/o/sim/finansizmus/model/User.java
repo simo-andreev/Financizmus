@@ -8,7 +8,7 @@ public class User implements Serializable {
     private String name;
     private long id;
 
-    public User(String email, String name, long id) {
+    protected User(String email, String name, long id) {
         //TODO - VALIDATION
         this.email = email;
         this.name = name;

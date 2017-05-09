@@ -4,7 +4,6 @@ package bg.o.sim.finansizmus;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import bg.o.sim.finansizmus.dataManagment.CacheManager;
-import bg.o.sim.finansizmus.dataManagment.DAO;
+import bg.o.sim.finansizmus.model.CacheManager;
+import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.model.Category;
 
 //TODO get pie-chart working

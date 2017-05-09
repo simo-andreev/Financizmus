@@ -16,22 +16,27 @@ public class Transaction implements Serializable {
     public interface TransactionComparator extends Comparator<Transaction> {}
     private static ArrayList<TransactionComparator> sorters;
 
-    private DateTime date;
-    private double sum;
+    private final long id;
+    private final long userFk;
+
+    private final Category category;
+    private final Account account;
+
+    private final DateTime date;
     private String note;
-    private long id;
-    private long userFk;
+    private final double sum;
 
-    private Account account;
-    private Category category;
 
-    public Transaction(DateTime date, double sum, String note, Account account, Category category) {
+    protected Transaction(long id, long userFk, Category cat, Account acc, DateTime date, String note, double sum) {
+        //TODO - !VALIDATION!
+
+        this.id = id;
+        this.userFk = userFk;
+        this.category = cat;
+        this.account = acc;
         this.date = date;
-        this.sum = sum;
         this.note = note;
-
-        this.account = account;
-        this.category = category;
+        this.sum = sum;
     }
 
     public static ArrayList<TransactionComparator> getComparators() {
@@ -44,36 +49,23 @@ public class Transaction implements Serializable {
         return sorters;
     }
 
-    public DateTime getDate() {
-        return date;
-    }
-
-    public double getSum() {
-        return sum;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
     public long getId() {
         return id;
     }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public long getUserFk() {
         return userFk;
     }
-
-    public void setUserFk(long userFk) {
-        this.userFk = userFk;
-    }
-
     public Account getAccount() {
         return account;
+    }
+    public DateTime getDate() {
+        return date;
+    }
+    public String getNote() {
+        return note;
+    }
+    public double getSum() {
+        return sum;
     }
 
     public

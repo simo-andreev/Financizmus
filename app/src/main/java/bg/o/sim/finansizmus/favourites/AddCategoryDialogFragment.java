@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.dataManagment.DAO;
+import bg.o.sim.finansizmus.model.DAO;
 
 
 public class AddCategoryDialogFragment extends DialogFragment {

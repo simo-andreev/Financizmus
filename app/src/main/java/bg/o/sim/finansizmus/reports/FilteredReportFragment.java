@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +31,8 @@ import java.util.Comparator;
 import java.util.HashSet;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.dataManagment.CacheManager;
-import bg.o.sim.finansizmus.dataManagment.DAO;
+import bg.o.sim.finansizmus.model.CacheManager;
+import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.date.DatePickerFragment;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;

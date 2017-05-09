@@ -21,8 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import bg.o.sim.finansizmus.accounts.AccountsFragment;
-import bg.o.sim.finansizmus.dataManagment.CacheManager;
-import bg.o.sim.finansizmus.dataManagment.DAO;
+import bg.o.sim.finansizmus.model.CacheManager;
+import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.transactionRelated.TransactionFragment;
 import bg.o.sim.finansizmus.utils.Util;

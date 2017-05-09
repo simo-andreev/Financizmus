@@ -25,12 +25,11 @@ import org.joda.time.format.DateTimeFormatter;
 
 import bg.o.sim.finansizmus.MainActivity;
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.dataManagment.CacheManager;
-import bg.o.sim.finansizmus.dataManagment.DAO;
+import bg.o.sim.finansizmus.model.CacheManager;
+import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.date.DatePickerFragment;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;
-import bg.o.sim.finansizmus.model.Transaction;
 import bg.o.sim.finansizmus.utils.Util;
 
 public class TransactionFragment extends Fragment implements DatePickerDialog.OnDateSetListener, NoteInputFragment.NoteCommunicator {
@@ -379,9 +378,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         Account account = (Account) accountSelection.getSelectedItem();
         Category category = selectedCategory;
 
-        Transaction transaction = new Transaction(date, sum, note, account, category);
-        //TODO !!! INSERT METHODS IN DAO !!!
-//        dao.addTransaction(transaction, cache.getLoggedUser().getId());
+        dao.insertTransaction(category, account, date, note, sum);
 
         getActivity().onBackPressed();
     }

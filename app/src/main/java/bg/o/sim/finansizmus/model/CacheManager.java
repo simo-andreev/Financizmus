@@ -1,4 +1,4 @@
-package bg.o.sim.finansizmus.dataManagment;
+package bg.o.sim.finansizmus.model;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.model.Account;
-import bg.o.sim.finansizmus.model.Category;
-import bg.o.sim.finansizmus.model.Transaction;
-import bg.o.sim.finansizmus.model.User;
 
 /**
  * The CacheManager Singleton class handles all operations related to accessing the cache collections.
