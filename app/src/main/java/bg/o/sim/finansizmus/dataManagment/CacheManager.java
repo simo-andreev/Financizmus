@@ -62,7 +62,7 @@ public class CacheManager {
     protected void setLoggedUser(@NonNull User loggedUser) {
         if (loggedUser == null)
             throw new IllegalArgumentException("The loggedUser value MUST be NON NULL!");
-        this.loggedUser = loggedUser;
+        CacheManager.loggedUser = loggedUser;
     }
 
     protected boolean addCategory(Category category) {

@@ -115,7 +115,7 @@ public class ReportFragment extends Fragment {
             if (convertView == null)
                 convertView = inflater.inflate(R.layout.report_list_group, parent, false);
 
-            Category cat = (Category) getGroup(groupPosition);
+            Category cat = getGroup(groupPosition);
 
             ImageView i = (ImageView) convertView.findViewById(R.id.report_group_icon);
             i.setImageResource(cat.getIconId());

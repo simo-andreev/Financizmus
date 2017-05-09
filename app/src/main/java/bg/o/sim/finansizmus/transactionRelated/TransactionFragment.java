@@ -109,7 +109,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
 
         initializeUiObjects();
 
-        dao = dao.getInstance(getActivity());
+        dao = DAO.getInstance(getActivity());
         cache = CacheManager.getInstance();
 
         catTypeRadio.check(R.id.transaction_radio_expense);

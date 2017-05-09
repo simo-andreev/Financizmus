@@ -34,6 +34,6 @@ public class DatePickerFragment extends DialogFragment {
         int month = initialDate.getMonthOfYear() - 1; //the '-1' is there because JodaTime lib starts counting Months at 1 *scoff-scoff*, and Java starts moths at 0.//
         int day = initialDate.getDayOfMonth();
 
-        return new DatePickerDialog(getContext(), listener, year, month, day);
+        return new DatePickerDialog(getActivity(), listener, year, month, day);
     }
 }

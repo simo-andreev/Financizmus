@@ -36,7 +36,7 @@ public class NoteInputFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_note_input, null);
+        View rootView = inflater.inflate(R.layout.fragment_note_input, container, false);
 
         input = (EditText) rootView.findViewById(R.id.note_input_text);
 
