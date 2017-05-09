@@ -238,7 +238,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:background="@drawable/orange_button_9"
+            android:background="@drawable/orange_button"
             android:gravity="center_vertical|center_horizontal"
             android:padding="@dimen/all_view_spacing_small"
 

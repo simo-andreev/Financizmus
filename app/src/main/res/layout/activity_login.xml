@@ -14,7 +14,7 @@
         android:layout_height="96dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:src="@drawable/smartfinance_icon" />
+        android:src="@mipmap/ic_launcher_round" />
 
     <ImageView
         android:layout_width="231dp"

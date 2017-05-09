@@ -38,7 +38,7 @@
         <item name="android:textSize">@dimen/all_text_size_huge</item>
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
-        <item name="android:background">@drawable/orange_button_9</item>
+        <item name="android:background">@drawable/orange_button</item>
     </style>
 
 
@@ -52,18 +52,6 @@
         <item name="android:layout_margin">@dimen/all_view_spacing_small</item>
         <item name="android:text">@string/test_text</item>
     </style>
-    <style name="TransactionDetailsTopBar">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-    </style>
-    <style name="TransactionDetailsIcon">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:adjustViewBounds">true</item>
-        <item name="android:src">@mipmap/ic_launcher_round</item>
-    </style>
-
 
 
     <style name="PieChartMenuSpacer">

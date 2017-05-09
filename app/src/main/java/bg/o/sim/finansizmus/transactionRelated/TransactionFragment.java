@@ -125,12 +125,12 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         switch (selectedType) {
             case EXPENSE:
                 catTypeRadio.check(R.id.transaction_radio_expense);
-                colorizeUI(getActivity(), R.color.colorOrange, R.drawable.orange_button_9);
+                colorizeUI(getActivity(), R.color.colorOrange, R.drawable.orange_button);
                 categorySelection.setAdapter(expenseAdapter);
                 break;
             case INCOME:
                 catTypeRadio.check(R.id.transaction_radio_income);
-                colorizeUI(getActivity(), R.color.colorGreen, R.drawable.green_button_9);
+                colorizeUI(getActivity(), R.color.colorGreen, R.drawable.green_button);
                 categorySelection.setAdapter(incomeAdapter);
                 break;
         }
@@ -158,11 +158,11 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
                     case R.id.transaction_radio_expense:
-                        colorizeUI(getActivity(), R.color.colorOrange, R.drawable.orange_button_9);
+                        colorizeUI(getActivity(), R.color.colorOrange, R.drawable.orange_button);
                         categorySelection.setAdapter(expenseAdapter);
                         break;
                     case R.id.transaction_radio_income:
-                        colorizeUI(getActivity(), R.color.colorGreen, R.drawable.green_button_9);
+                        colorizeUI(getActivity(), R.color.colorGreen, R.drawable.green_button);
                         categorySelection.setAdapter(incomeAdapter);
                         break;
                 }
@@ -189,7 +189,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 b.putString(getString(R.string.EXTRA_NOTE), noteInput.getText().toString());
                 inputFragment.setArguments(b);
 
-                inputFragment.show(getFragmentManager(), getString(R.string.note_fragment_tag));
+                inputFragment.show(getFragmentManager(), getString(R.string.tag_dialog_note_input));
             }
         });
 

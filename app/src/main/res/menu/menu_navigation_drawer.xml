@@ -17,7 +17,7 @@
             android:title="@string/nav_item_expense" />
         <item
             android:id="@+id/nav_calendar"
-            android:icon="@drawable/calendar20"
+            android:icon="@drawable/calendar"
             android:title="@string/nav_item_calendar" />
         <item
             android:id="@+id/nav_unchecker"

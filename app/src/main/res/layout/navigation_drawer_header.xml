@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:text="@string/email"
+        android:text="@string/nav_item_email"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:textSize="@dimen/all_text_size_middle"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
