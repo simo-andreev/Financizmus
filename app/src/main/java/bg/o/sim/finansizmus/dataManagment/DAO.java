@@ -72,14 +72,16 @@ public class DAO {
         if (mail == null || password == null || mail.isEmpty() || password.isEmpty())
             return false;
 
-        String selection = h.USER_COLUMN_MAIL + " = ? AND " + h.USER_COLUMN_PASSWORD + " = ? ";
+        String selection = DbHelper.USER_COLUMN_MAIL + " = ? AND " + DbHelper.USER_COLUMN_PASSWORD + " = ? ";
         String[] selectionArgs = {mail, password};
 
-        Cursor cursor = h.getReadableDatabase().query(h.TABLE_USER, null, selection, selectionArgs, null, null, null);
+        Cursor cursor = h.getReadableDatabase().query(DbHelper.TABLE_USER, null, selection, selectionArgs, null, null, null);
         if (cursor.moveToNext()) {
-            String name = cursor.getString(cursor.getColumnIndex(h.USER_COLUMN_NAME));
-            long id = cursor.getLong(cursor.getColumnIndex(h.USER_COLUMN_ID));
+            String name = cursor.getString(cursor.getColumnIndex(DbHelper.USER_COLUMN_NAME));
+            long id = cursor.getLong(cursor.getColumnIndex(DbHelper.USER_COLUMN_ID));
             User user = new User(mail, name, id);
+
+            cursor.close();
 
             new AsyncTask<User, Void, User>() {
 
@@ -135,14 +137,14 @@ public class DAO {
             @Override
             protected User doInBackground(Void... params) {
                 ContentValues values = new ContentValues(3);
-                values.put(h.USER_COLUMN_MAIL, mail);
-                values.put(h.USER_COLUMN_NAME, name);
-                values.put(h.USER_COLUMN_PASSWORD, password);
+                values.put(DbHelper.USER_COLUMN_MAIL, mail);
+                values.put(DbHelper.USER_COLUMN_NAME, name);
+                values.put(DbHelper.USER_COLUMN_PASSWORD, password);
 
                 long id = -1;
 
                 try{
-                    id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_USER, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+                    id = h.getWritableDatabase().insertWithOnConflict(DbHelper.TABLE_USER, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
                 } catch (SQLiteException e){
                     // From what I gather, insertWithOnConflict is 'obsolete' and doesn't work properly... since at-least 2010...
                     // https://issuetracker.google.com/issues/36923483
@@ -203,14 +205,14 @@ public class DAO {
         if (name == null || name.isEmpty() || iconId <= 0 || userId < 0) return;
 
         ContentValues values = new ContentValues(3);
-        values.put(h.ACCOUNT_COLUMN_NAME, name);
-        values.put(h.ACCOUNT_COLUMN_ICON_ID, iconId);
-        values.put(h.ACCOUNT_COLUMN_USER_FK, userId);
+        values.put(DbHelper.ACCOUNT_COLUMN_NAME, name);
+        values.put(DbHelper.ACCOUNT_COLUMN_ICON_ID, iconId);
+        values.put(DbHelper.ACCOUNT_COLUMN_USER_FK, userId);
 
         long id = -1;
 
         try{
-            id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_ACCOUNT, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+            id = h.getWritableDatabase().insertWithOnConflict(DbHelper.TABLE_ACCOUNT, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
         } catch (SQLiteException e){
             //See @ previous use of insertWithOnConflict, for info, whi this try-catch is here.
         }
@@ -223,15 +225,15 @@ public class DAO {
         if (name == null || name.isEmpty() || iconId <= 0 || userId < 0 || type == null) return;
 
         ContentValues values = new ContentValues(5);
-        values.put(h.CATEGORY_COLUMN_NAME, name);
-        values.put(h.CATEGORY_COLUMN_ICON_ID, iconId);
-        values.put(h.CATEGORY_COLUMN_USER_FK, userId);
-        values.put(h.CATEGORY_COLUMN_IS_EXPENSE, type == Category.Type.EXPENSE ? 1 : 0);
+        values.put(DbHelper.CATEGORY_COLUMN_NAME, name);
+        values.put(DbHelper.CATEGORY_COLUMN_ICON_ID, iconId);
+        values.put(DbHelper.CATEGORY_COLUMN_USER_FK, userId);
+        values.put(DbHelper.CATEGORY_COLUMN_IS_EXPENSE, type == Category.Type.EXPENSE ? 1 : 0);
 
         long id = -1;
 
         try {
-            id = h.getWritableDatabase().insertWithOnConflict(h.TABLE_CATEGORY, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
+            id = h.getWritableDatabase().insertWithOnConflict(DbHelper.TABLE_CATEGORY, null, values, SQLiteDatabase.CONFLICT_ROLLBACK);
         } catch (SQLiteException e) {
             //See @ previous use of insertWithOnConflict, for info, whi this try-catch is here.
         }
@@ -244,18 +246,18 @@ public class DAO {
     private void loadUserAccounts(long userId) {
 
         String[] columns = {
-                h.ACCOUNT_COLUMN_ID,
-                h.ACCOUNT_COLUMN_ICON_ID,
-                h.ACCOUNT_COLUMN_NAME
+                DbHelper.ACCOUNT_COLUMN_ID,
+                DbHelper.ACCOUNT_COLUMN_ICON_ID,
+                DbHelper.ACCOUNT_COLUMN_NAME
         };
 
-        String selection = h.ACCOUNT_COLUMN_USER_FK + " = " + userId;
+        String selection = DbHelper.ACCOUNT_COLUMN_USER_FK + " = " + userId;
 
-        Cursor c = h.getReadableDatabase().query(h.TABLE_ACCOUNT, columns, selection, null, null, null, null);
+        Cursor c = h.getReadableDatabase().query(DbHelper.TABLE_ACCOUNT, columns, selection, null, null, null, null);
 
-        int indxId = c.getColumnIndex(h.ACCOUNT_COLUMN_ID);
-        int indxIcon = c.getColumnIndex(h.ACCOUNT_COLUMN_ICON_ID);
-        int indxName = c.getColumnIndex(h.ACCOUNT_COLUMN_NAME);
+        int indxId = c.getColumnIndex(DbHelper.ACCOUNT_COLUMN_ID);
+        int indxIcon = c.getColumnIndex(DbHelper.ACCOUNT_COLUMN_ICON_ID);
+        int indxName = c.getColumnIndex(DbHelper.ACCOUNT_COLUMN_NAME);
 
         while (c.moveToNext()) {
             long id = c.getLong(indxId);
@@ -266,24 +268,26 @@ public class DAO {
             cache.addAccount(acc);
             Log.wtf("LOADED ACC:", acc.getName());
         }
+
+        c.close();
     }
     private void loadUserCategories(long userId) {
 
         String[] columns = {
-                h.CATEGORY_COLUMN_ID,
-                h.CATEGORY_COLUMN_ICON_ID,
-                h.CATEGORY_COLUMN_NAME,
-                h.CATEGORY_COLUMN_IS_EXPENSE
+                DbHelper.CATEGORY_COLUMN_ID,
+                DbHelper.CATEGORY_COLUMN_ICON_ID,
+                DbHelper.CATEGORY_COLUMN_NAME,
+                DbHelper.CATEGORY_COLUMN_IS_EXPENSE
         };
 
-        String selection = h.CATEGORY_COLUMN_USER_FK + " = " + userId;
+        String selection = DbHelper.CATEGORY_COLUMN_USER_FK + " = " + userId;
 
-        Cursor c = h.getReadableDatabase().query(h.TABLE_CATEGORY, columns, selection, null, null, null, null);
+        Cursor c = h.getReadableDatabase().query(DbHelper.TABLE_CATEGORY, columns, selection, null, null, null, null);
 
-        int indxId = c.getColumnIndex(h.CATEGORY_COLUMN_ID);
-        int indxIcon = c.getColumnIndex(h.CATEGORY_COLUMN_ICON_ID);
-        int indxName = c.getColumnIndex(h.CATEGORY_COLUMN_NAME);
-        int indxIsExp = c.getColumnIndex(h.CATEGORY_COLUMN_IS_EXPENSE);
+        int indxId = c.getColumnIndex(DbHelper.CATEGORY_COLUMN_ID);
+        int indxIcon = c.getColumnIndex(DbHelper.CATEGORY_COLUMN_ICON_ID);
+        int indxName = c.getColumnIndex(DbHelper.CATEGORY_COLUMN_NAME);
+        int indxIsExp = c.getColumnIndex(DbHelper.CATEGORY_COLUMN_IS_EXPENSE);
 
         while (c.moveToNext()) {
 
@@ -297,27 +301,29 @@ public class DAO {
 
             cache.addCategory(cat);
         }
+
+        c.close();
     }
     private void loadUserTransactions(long userId) {
 
         String[] columns = {
-                h.TRANSACTION_COLUMN_ACCOUNT_FK,
-                h.TRANSACTION_COLUMN_CATEGORY_FK,
-                h.TRANSACTION_COLUMN_ID,
-                h.TRANSACTION_COLUMN_DATE,
-                h.TRANSACTION_COLUMN_NOTE,
-                h.TRANSACTION_COLUMN_SUM
+                DbHelper.TRANSACTION_COLUMN_ACCOUNT_FK,
+                DbHelper.TRANSACTION_COLUMN_CATEGORY_FK,
+                DbHelper.TRANSACTION_COLUMN_ID,
+                DbHelper.TRANSACTION_COLUMN_DATE,
+                DbHelper.TRANSACTION_COLUMN_NOTE,
+                DbHelper.TRANSACTION_COLUMN_SUM
         };
-        String selection = h.TRANSACTION_COLUMN_USER_FK + " = " + userId;
+        String selection = DbHelper.TRANSACTION_COLUMN_USER_FK + " = " + userId;
 
-        Cursor c = h.getReadableDatabase().query(h.TABLE_TRANSACTION, columns, selection, null, null, null, null);
+        Cursor c = h.getReadableDatabase().query(DbHelper.TABLE_TRANSACTION, columns, selection, null, null, null, null);
 
-        int indxAccId = c.getColumnIndex(h.TRANSACTION_COLUMN_ACCOUNT_FK);
-        int indxCatId = c.getColumnIndex(h.TRANSACTION_COLUMN_CATEGORY_FK);
-        int indxId = c.getColumnIndex(h.TRANSACTION_COLUMN_ID);
-        int indxDate = c.getColumnIndex(h.TRANSACTION_COLUMN_DATE);
-        int indxNote = c.getColumnIndex(h.TRANSACTION_COLUMN_NOTE);
-        int indxSum = c.getColumnIndex(h.TRANSACTION_COLUMN_SUM);
+        int indxAccId = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_ACCOUNT_FK);
+        int indxCatId = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_CATEGORY_FK);
+        int indxId = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_ID);
+        int indxDate = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_DATE);
+        int indxNote = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_NOTE);
+        int indxSum = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_SUM);
 
         Account acc = null;
         Category cat = null;
@@ -341,6 +347,8 @@ public class DAO {
 
             cache.addTransaction(t);
         }
+
+        c.close();
     }
 
     /**
