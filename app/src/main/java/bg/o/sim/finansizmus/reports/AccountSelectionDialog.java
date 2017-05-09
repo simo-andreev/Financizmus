@@ -30,7 +30,7 @@ public class AccountSelectionDialog extends DialogFragment {
     /**
      * Factory method for AccountSelectionDialog
      * @param selectedAccounts HashSet of Accounts that are already selected
-     * @param communicator AccountSelectionDialog.Communicator instance that will recive the result from this Dialog.
+     * @param communicator AccountSelectionDialog.Communicator instance that will receive the result from this Dialog.
      * @return a new AccountSelectionDialog instance.
      */
     public static AccountSelectionDialog newInstance(HashSet<Account> selectedAccounts, Communicator communicator) {

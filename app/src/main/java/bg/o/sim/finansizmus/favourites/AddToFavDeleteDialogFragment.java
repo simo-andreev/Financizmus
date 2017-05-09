@@ -16,11 +16,6 @@ import bg.o.sim.finansizmus.dataManagment.DAO;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.utils.Util;
 
-
-/**
- * Created by vladimircvetanov on 01.05.17.
- */
-
 //TODO - !!! CONSIDER IF FAV_CATEGORY WILL REMAIN AS A FEATURE AND REMOVE OR FIX THIS CLASS !!!
 
 public class AddToFavDeleteDialogFragment extends DialogFragment {

@@ -49,7 +49,7 @@ public class PieChartFragment extends Fragment {
         Collections.sort(categoriesBySum, new Comparator<Category>() {
             @Override
             public int compare(Category o1, Category o2) {
-                //This might mess up on near-equal sums, but that loss of precision should be aceptable here.
+                //This might mess up on near-equal sums, but that loss of precision should be acceptable here.
                 //Cane be negated by casting to float and checking if diff == 0 || diff < 0
                 return (int) (o1.getSum() - o2.getSum());
             }
@@ -72,7 +72,7 @@ public class PieChartFragment extends Fragment {
         Collections.sort(categoriesBySum, new Comparator<Category>() {
             @Override
             public int compare(Category o1, Category o2) {
-                //This might mess up on near-equal sums, but that loss of precision should be aceptable here.
+                //This might mess up on near-equal sums, but that loss of precision should be acceptable here.
                 //Cane be negated by casting to float and checking if diff == 0 || diff < 0
                 return (int) (o1.getSum() - o2.getSum());
             }

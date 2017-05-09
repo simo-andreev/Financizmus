@@ -21,8 +21,7 @@ public class LogoutDialogFragment extends DialogFragment {
     }
 
     public static LogoutDialogFragment newInstance() {
-        LogoutDialogFragment fragment = new LogoutDialogFragment();
-        return fragment;
+        return new LogoutDialogFragment();
     }
 
     @Override

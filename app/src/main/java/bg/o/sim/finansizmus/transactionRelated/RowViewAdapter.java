@@ -52,9 +52,7 @@ public class RowViewAdapter<T extends RowDisplayable> extends BaseAdapter {
 
         TextView t = (TextView) convertView.findViewById(R.id.account_spinner_text);
         t.setText(item.getName());
-
-        ImageView i = (ImageView) convertView.findViewById(R.id.account_spinner_icon);
-        i.setImageResource(item.getIconId());
+        t.setCompoundDrawablesWithIntrinsicBounds(item.getIconId(), 0, 0 ,0);
 
         return convertView;
     }

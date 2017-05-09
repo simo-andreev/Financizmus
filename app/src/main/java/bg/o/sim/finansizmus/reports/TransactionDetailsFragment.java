@@ -28,11 +28,8 @@ public class TransactionDetailsFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_transaction_details, container, false);
 
-        ImageView accountIcon = (ImageView) rootView.findViewById(R.id.transaction_dialog_source_icon);
-        ImageView categoryIcon = (ImageView) rootView.findViewById(R.id.transaction_dialog_destination_icon);
-
-        TextView accountName = (TextView) rootView.findViewById(R.id.transaction_dialog_source_title);
-        TextView categoryName = (TextView) rootView.findViewById(R.id.transaction_dialog_destination_title);
+        TextView account = (TextView) rootView.findViewById(R.id.transaction_dialog_account);
+        TextView category = (TextView) rootView.findViewById(R.id.transaction_dialog_category);
 
         ImageView directionIndicator = (ImageView) rootView.findViewById(R.id.transaction_dialog_direction_indicator);
 
@@ -43,12 +40,11 @@ public class TransactionDetailsFragment extends DialogFragment {
 
         Button returnButton = (Button) rootView.findViewById(R.id.transaction_dialog_return_button);
 
+        account.setText(t.getAccount().getName());
+        account.setCompoundDrawablesWithIntrinsicBounds(t.getAccount().getIconId(), 0, 0 , 0);
 
-        accountIcon.setImageResource(t.getAccount().getIconId());
-        categoryIcon.setImageResource(t.getCategory().getIconId());
-
-        accountName.setText(t.getAccount().getName());
-        categoryName.setText(t.getCategory().getName());
+        category.setText(t.getCategory().getName());
+        category.setCompoundDrawablesWithIntrinsicBounds(0, 0, t.getCategory().getIconId(), 0);
 
         directionIndicator.setImageResource(t.getCategory().getType() == Category.Type.EXPENSE ? R.mipmap.arrow_out : R.mipmap.arrow_in);
 

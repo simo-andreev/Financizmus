@@ -78,7 +78,6 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
         dao = DAO.getInstance(getActivity());
         cache = CacheManager.getInstance();
 
-        Log.e("ASDDDDDDDDDDDD", "onCreateView: " + (selectedAccounts == null));
         adapter = new ExpandableAccountAdapter(getActivity(), selectedAccounts);
 
         endDateListener = new EndDateSetListener();
@@ -146,7 +145,7 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
         private ArrayMap<Account, ArrayList<Transaction>> dataSet;
         private DateTime startDate, endDate;
 
-        private LayoutInflater inflater;
+        private final LayoutInflater inflater;
 
         private HashSet<Account> selectedAccounts;
 
@@ -300,7 +299,7 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
     }
 
 
-    class StartDateSetListener implements DatePickerDialog.OnDateSetListener {
+    private class StartDateSetListener implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -317,7 +316,7 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
         }
     }
 
-    class EndDateSetListener implements DatePickerDialog.OnDateSetListener {
+    private class EndDateSetListener implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

@@ -48,7 +48,7 @@ public class DAO {
     private DAO(@NonNull Context context) {
         if (context == null)
             throw new IllegalArgumentException("Context MUST ne non-null!!!");
-        this.h = new DbHelper(context);
+        this.h = DbHelper.getInstance(context);
         this.cache = CacheManager.getInstance();
         this.context = context;
     }
@@ -325,8 +325,8 @@ public class DAO {
         int indxNote = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_NOTE);
         int indxSum = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_SUM);
 
-        Account acc = null;
-        Category cat = null;
+        Account acc;
+        Category cat;
 
         while (c.moveToNext()) {
 
@@ -444,7 +444,7 @@ public class DAO {
 
 
         private static DbHelper instance;
-        private Context context;
+        private final Context context;
 
         private DbHelper(Context context) {
             super(context, DB_NAME, null, DB_VERSION);
@@ -493,8 +493,8 @@ public class DAO {
                 Intent intent = new Intent(context, LoginActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-                AlarmManager amgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                amgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 500, pendingIntent);
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 500, pendingIntent);
 
                 System.exit(0);
             }

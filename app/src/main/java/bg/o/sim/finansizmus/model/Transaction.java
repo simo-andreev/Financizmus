@@ -87,7 +87,7 @@ public class Transaction implements Serializable {
      * It sorts by the LogEntry's date in ascending order
      * and returns -1 if the LocalDate property of the 2 dates is identical within a millisecond resolution.
      */
-    public static class TransactionDateComparator implements TransactionComparator {
+    private static class TransactionDateComparator implements TransactionComparator {
 
         @Override
         public int compare(Transaction o1, Transaction o2) {
@@ -115,7 +115,7 @@ public class Transaction implements Serializable {
         }
     }
 
-    public static class TransactionCategoryComparator implements TransactionComparator {
+    private static class TransactionCategoryComparator implements TransactionComparator {
 
         @Override
         public int compare(Transaction o1, Transaction o2) {

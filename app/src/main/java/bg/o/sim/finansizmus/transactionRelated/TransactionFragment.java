@@ -145,7 +145,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
 
         //============onClickListeners=============================================================================//
 
-        /** On date click -> pop-up a DateDialogFragment and let user select different date. */
+        /* On date click -> pop-up a DateDialogFragment and let user select different date. */
         dateDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,8 +173,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         accountSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Account acc = (Account) accountSelection.getItemAtPosition(position);
-                selectedAccount = acc;
+                selectedAccount = (Account) accountSelection.getItemAtPosition(position);
             }
 
             @Override
@@ -186,12 +185,11 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             @Override
             public void onClick(View v) {
                 NoteInputFragment inputFragment = new NoteInputFragment();
-                String note = noteInput.getText().toString();
-                if (note != null && !note.isEmpty()) {
-                    Bundle b = new Bundle();
-                    b.putString(getString(R.string.EXTRA_NOTE), note);
-                    inputFragment.setArguments(b);
-                }
+
+                Bundle b = new Bundle();
+                b.putString(getString(R.string.EXTRA_NOTE), noteInput.getText().toString());
+                inputFragment.setArguments(b);
+
                 inputFragment.show(getFragmentManager(), getString(R.string.note_fragment_tag));
             }
         });
@@ -232,7 +230,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
 
         //=========================================================================================================//
         //------------CALCULATOR_LISTENERS------------------------------------------------------------------//
-        /**
+        /*
          * On arithmetic button pressed -> execute stored {@link TransactionActivity#currentOperation}
          *                              -> save new currentOperation
          */
@@ -251,9 +249,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         plus.setOnClickListener(arithmeticListener);
         minus.setOnClickListener(arithmeticListener);
 
-        /**
-         * Handles input from the numeric buttons and the decimal-point button.
-         */
+        /* Handles input from the numeric buttons and the decimal-point button.*/
         View.OnClickListener numberListener = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -292,9 +288,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             btn.setOnClickListener(numberListener);
         decimal.setOnClickListener(numberListener);
 
-        /**
-         * Deletes a single digit (or the dec. point)
-         */
+        /* Deletes a single digit (or the dec. point)*/
         backspace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -350,9 +344,9 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
     /**
      * Changes the colours and background of UI elements for the TransactionActivity.
      *
-     * @param c           Activity Context.
-     * @param colourID
-     * @param ninePatchID
+     * @param c Activity Context.
+     * @param colourID the @colours value which to use
+     * @param ninePatchID a 9patch image's resource id.
      */
     private void colorizeUI(Context c, int colourID, int ninePatchID) {
         numDisplay.setBackgroundResource(colourID);
@@ -449,8 +443,8 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         return storedNumber;
     }
 
-    @Override
     /** Handles selection from the DatePickerFragment. */
+    @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         date = new DateTime(year, month + 1, dayOfMonth, 0, 0);
         DateTimeFormatter dateFormat = DateTimeFormat.forPattern("d MMMM, YYYY");

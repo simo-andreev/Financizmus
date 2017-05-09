@@ -9,11 +9,11 @@ import bg.o.sim.finansizmus.dataManagment.CacheManager;
 public class Category implements RowDisplayable, Serializable {
     public enum Type {INCOME, EXPENSE}
 
-    private long id;
-    private long userFk;
+    private final long id;
+    private final long userFk;
 
     private String name;
-    private Type type;
+    private final Type type;
     private int iconId;
 
     public Category(@NonNull String name, int iconId, long id, long userFk, Type type) {

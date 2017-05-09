@@ -87,14 +87,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        toolbarTitle = findViewById(R.id.diagram_fragment_link);
-        toolbarTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                fm.beginTransaction().replace(R.id.main_fragment_container, new HomeFragment()).commit();
-            }
-        });
-
         fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {

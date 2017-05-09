@@ -10,12 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.dataManagment.DAO;
-import bg.o.sim.finansizmus.model.Account;
-import bg.o.sim.finansizmus.utils.Util;
 
 
 public class AddCategoryDialogFragment extends DialogFragment {
@@ -41,7 +38,7 @@ public class AddCategoryDialogFragment extends DialogFragment {
 
         dao = DAO.getInstance(getActivity());
         Bundle b = getArguments();
-        String iconKey = "KEY_ICON".toString();
+        String iconKey = "KEY_ICON";
         String listKey = "ROW_DISPLAYABLE_TYPE";
         String list = "";
         int iconId = 0;

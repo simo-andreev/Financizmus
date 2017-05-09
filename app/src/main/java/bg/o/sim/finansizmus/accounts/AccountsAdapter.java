@@ -83,7 +83,8 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
                         .show();
             }
         });
-        holder.rootView.setOnClickListener(new View.OnClickListener() {
+
+        View.OnClickListener reportListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fm.beginTransaction()
@@ -91,7 +92,11 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
                         .addToBackStack(context.getString(R.string.tag_fragment_filtered_report))
                         .commit();
             }
-        });
+        };
+
+        holder.accountImage.setOnClickListener(reportListener);
+        holder.accountName.setOnClickListener(reportListener);
+        holder.accountSum.setOnClickListener(reportListener);
     }
 
     @Override
@@ -101,7 +106,6 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
 
     public static class AccountViewHolder extends RecyclerView.ViewHolder {
 
-        View rootView;
         ImageView accountImage;
         TextView accountName;
         TextView accountSum;
@@ -113,8 +117,6 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
             accountName = (TextView) itemView.findViewById(R.id.account_name);
             accountSum = (TextView) itemView.findViewById(R.id.account_sum);
             accountDelete = (ImageButton) itemView.findViewById(R.id.account_delete);
-
-            rootView = itemView.findViewById(R.id.account_root);
         }
     }
 }
