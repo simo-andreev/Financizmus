@@ -29,8 +29,8 @@ public class CacheManager {
 
     //TODO - if I ever get to the point of optimizing this thing: int[]s should provide better performance than Integer ArrLists.
     /* A collection that maintains a list of all Sections (both Income and Expense) and distributes input accordingly. */
-    private ArrayList<Integer> expenseIcons;
-    private ArrayList<Integer> accountIcons;
+    private int[] expenseIcons;
+    private int[] accountIcons;
 
     private CacheManager() {
         this.accounts = new ConcurrentHashMap<>();
@@ -38,9 +38,6 @@ public class CacheManager {
         this.expenseCategories = new ConcurrentHashMap<>();
         this.accountTransactions = new ConcurrentHashMap<>();
         this.categoryTransactions = new ConcurrentHashMap<>();
-
-        this.accountIcons = new ArrayList<>();
-        this.expenseIcons = new ArrayList<>();
 
         loadIcons();
     }
@@ -153,71 +150,78 @@ public class CacheManager {
     }
 
 
-    public ArrayList<Integer> getExpenseIcons() {
+    public int[] getExpenseIcons() {
         return expenseIcons;
     }
 
-    public ArrayList<Integer> getAccountIcons() {
+    public int[] getAccountIcons() {
         return accountIcons;
     }
 
 
     private void loadIcons() {
-        expenseIcons.add(R.mipmap.car);
-        expenseIcons.add(R.mipmap.clothes);
-        expenseIcons.add(R.mipmap.heart);
-        expenseIcons.add(R.mipmap.plane);
-        expenseIcons.add(R.mipmap.home);
-        expenseIcons.add(R.mipmap.swimming);
-        expenseIcons.add(R.mipmap.restaurant);
-        expenseIcons.add(R.mipmap.train);
-        expenseIcons.add(R.mipmap.cocktail);
-        expenseIcons.add(R.mipmap.phone);
-        expenseIcons.add(R.mipmap.books);
-        expenseIcons.add(R.mipmap.cafe);
-        expenseIcons.add(R.mipmap.cats);
-        expenseIcons.add(R.mipmap.household);
-        expenseIcons.add(R.mipmap.food_and_wine);
-        expenseIcons.add(R.mipmap.wifi);
-        expenseIcons.add(R.mipmap.flowers);
-        expenseIcons.add(R.mipmap.gas);
-        expenseIcons.add(R.mipmap.cleaning);
-        expenseIcons.add(R.mipmap.gifts);
-        expenseIcons.add(R.mipmap.kids);
-        expenseIcons.add(R.mipmap.makeup);
-        expenseIcons.add(R.mipmap.music);
-        expenseIcons.add(R.mipmap.gamming);
-        expenseIcons.add(R.mipmap.hair);
-        expenseIcons.add(R.mipmap.car_service);
-        expenseIcons.add(R.mipmap.doctor);
-        expenseIcons.add(R.mipmap.art);
-        expenseIcons.add(R.mipmap.beach);
-        expenseIcons.add(R.mipmap.bicycle);
-        expenseIcons.add(R.mipmap.bowling);
-        expenseIcons.add(R.mipmap.football);
-        expenseIcons.add(R.mipmap.bus);
-        expenseIcons.add(R.mipmap.taxi);
-        expenseIcons.add(R.mipmap.games);
-        expenseIcons.add(R.mipmap.fitness);
-        expenseIcons.add(R.mipmap.shoes);
-        expenseIcons.add(R.mipmap.dancing);
-        expenseIcons.add(R.mipmap.shopping_bag);
-        expenseIcons.add(R.mipmap.shopping_cart);
-        expenseIcons.add(R.mipmap.tennis);
-        expenseIcons.add(R.mipmap.tent);
-        expenseIcons.add(R.mipmap.hotel);
-        expenseIcons.add(R.mipmap.ping_pong);
-        expenseIcons.add(R.mipmap.rollerblade);
+        int[] tempExpense = {
+                R.mipmap.car,
+                R.mipmap.clothes,
+                R.mipmap.heart,
+                R.mipmap.plane,
+                R.mipmap.home,
+                R.mipmap.swimming,
+                R.mipmap.restaurant,
+                R.mipmap.train,
+                R.mipmap.cocktail,
+                R.mipmap.phone,
+                R.mipmap.books,
+                R.mipmap.cafe,
+                R.mipmap.cats,
+                R.mipmap.household,
+                R.mipmap.food_and_wine,
+                R.mipmap.wifi,
+                R.mipmap.flowers,
+                R.mipmap.gas,
+                R.mipmap.cleaning,
+                R.mipmap.gifts,
+                R.mipmap.kids,
+                R.mipmap.makeup,
+                R.mipmap.music,
+                R.mipmap.gamming,
+                R.mipmap.hair,
+                R.mipmap.car_service,
+                R.mipmap.doctor,
+                R.mipmap.art,
+                R.mipmap.beach,
+                R.mipmap.bicycle,
+                R.mipmap.bowling,
+                R.mipmap.football,
+                R.mipmap.bus,
+                R.mipmap.taxi,
+                R.mipmap.games,
+                R.mipmap.fitness,
+                R.mipmap.shoes,
+                R.mipmap.dancing,
+                R.mipmap.shopping_bag,
+                R.mipmap.shopping_cart,
+                R.mipmap.tennis,
+                R.mipmap.tent,
+                R.mipmap.hotel,
+                R.mipmap.ping_pong,
+                R.mipmap.rollerblade
+        };
 
-        accountIcons.add(R.mipmap.money_box);
-        accountIcons.add(R.mipmap.gift_card);
-        accountIcons.add(R.drawable.accounts);
-        accountIcons.add(R.mipmap.funding);
-        accountIcons.add(R.mipmap.mattress);
-        accountIcons.add(R.mipmap.paypal);
-        accountIcons.add(R.drawable.calculator);
-        accountIcons.add(R.mipmap.safe);
-        accountIcons.add(R.mipmap.coins);
-        accountIcons.add(R.drawable.income);
+        int[] tempAccount = {
+                R.mipmap.money_box,
+                R.mipmap.gift_card,
+                R.drawable.accounts,
+                R.mipmap.funding,
+                R.mipmap.mattress,
+                R.mipmap.paypal,
+                R.drawable.calculator,
+                R.mipmap.safe,
+                R.mipmap.coins,
+                R.drawable.income
+        };
+
+        expenseIcons = tempExpense;
+        accountIcons = tempAccount;
     }
 }

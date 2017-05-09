@@ -58,7 +58,7 @@ public class AccountsFragment extends Fragment {
 
                         AddCategoryDialogFragment dialog = new AddCategoryDialogFragment();
                         Bundle arguments = new Bundle();
-                        int iconId = cache.getAccountIcons().get(position);
+                        int iconId = cache.getAccountIcons()[position];
 
                         arguments.putInt(getString(R.string.EXTRA_ICON), iconId);
                         arguments.putString("ROW_DISPLAYABLE_TYPE", "ACCOUNT");

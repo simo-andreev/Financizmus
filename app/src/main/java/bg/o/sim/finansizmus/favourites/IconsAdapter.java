@@ -16,12 +16,12 @@ import bg.o.sim.finansizmus.R;
 
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconViewHolder>{
 
-    private ArrayList<Integer> additionalIcons;
+    private int[] additionalIcons;
     private Context context;
 
-    public IconsAdapter(ArrayList<Integer> allExpenseIcons, Context context) {
+    public IconsAdapter(int[] allExpenseIcons, Context context) {
         this.context = context;
-        additionalIcons = new ArrayList<Integer> (allExpenseIcons);
+        additionalIcons = allExpenseIcons;
     }
 
     @Override
@@ -33,14 +33,14 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconViewHold
 
     @Override
     public void onBindViewHolder(final IconViewHolder holder, final int position) {
-        final Integer icon = additionalIcons.get(position);
+        final Integer icon = additionalIcons[position];
         holder.image.setImageResource(icon);
         holder.image.setBackground(ContextCompat.getDrawable(context, R.drawable.unselected_icon_background));
     }
 
     @Override
     public int getItemCount() {
-        return additionalIcons.size();
+        return additionalIcons.length;
     }
 
     static class IconViewHolder extends RecyclerView.ViewHolder{
