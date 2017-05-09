@@ -15,6 +15,7 @@ import bg.o.sim.finansizmus.model.DAO;
 
 public class RegisterActivity extends AppCompatActivity {
 
+
     private EditText userName, userEmail, userPass, confirmPass;
     private Button signUp, cancel;
 
@@ -27,27 +28,44 @@ public class RegisterActivity extends AppCompatActivity {
         dao = DAO.getInstance(this);
 
         userName = (EditText) findViewById(R.id.activity_register_name);
-        userEmail = (EditText)findViewById(R.id.activity_register_email);
-        userPass = (EditText)findViewById(R.id.activity_register_pass0);
-        confirmPass = (EditText)findViewById(R.id.activity_register_pass1);
+        userEmail = (EditText) findViewById(R.id.activity_register_email);
+        userPass = (EditText) findViewById(R.id.activity_register_pass0);
+        confirmPass = (EditText) findViewById(R.id.activity_register_pass1);
 
-        signUp = (Button)findViewById(R.id.activity_register_button_register);
-        cancel = (Button)findViewById(R.id.activity_register_button_cancel);
+        signUp = (Button) findViewById(R.id.activity_register_button_register);
+        cancel = (Button) findViewById(R.id.activity_register_button_cancel);
 
+        onNewIntent(getIntent());
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+
+                if (userEmail.getText().length() > 1)
+                    i.putExtra(getString(R.string.EXTRA_USERMAIL), userEmail.getText().toString());
+
+                startActivity(i);
             }
         });
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               signUp();
+                signUp();
             }
         });
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        //Save input when transitioning between Register and LoIn activities
+        Bundle extras = intent.getExtras();
+        final String extraKey = getString(R.string.EXTRA_USERMAIL);
+        if (extras != null && extras.containsKey(extraKey))
+            userEmail.setText(extras.getString(extraKey));
+    }
+
 
     private void signUp() {
 

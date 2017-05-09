@@ -90,6 +90,7 @@
         <item name="android:layout_marginBottom">@dimen/all_view_spacing_standard</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:elevation">@dimen/appbar_elevation</item>
         <item name="android:background">@drawable/balance_button</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textSize">@dimen/all_text_size_large</item>

@@ -12,8 +12,10 @@
         android:roundIcon="@mipmap/smartfinance_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
         <activity
             android:name="bg.o.sim.finansizmus.RegisterActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
         <activity
             android:name="bg.o.sim.finansizmus.MainActivity"
@@ -21,6 +23,7 @@
 
         <activity
             android:name="bg.o.sim.finansizmus.LoginActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
