@@ -127,7 +127,7 @@ public class ReportFragment extends Fragment {
             t2.setText("$" + cat.getSum());
 
             if (cat.getType() == Category.Type.EXPENSE)
-                t2.setTextColor(ContextCompat.getColor(context, R.color.colorOrange));
+                t2.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
             else
                 t2.setTextColor(ContextCompat.getColor(context, R.color.colorGreen));
 

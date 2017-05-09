@@ -54,8 +54,8 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
     @Override
     public void onBindViewHolder(final AccountViewHolder holder, final int position) {
         final RowDisplayable account = accounts.get(position);
-        holder.accountImage.setImageResource(account.getIconId());
-        holder.accountName.setText(account.getName());
+        holder.account.setCompoundDrawablesWithIntrinsicBounds(account.getIconId(),0, 0, 0);
+        holder.account.setText(account.getName());
         //TODO                       v
         holder.accountSum.setText("TEMP");
         holder.accountDelete.setOnClickListener(new View.OnClickListener() {
@@ -94,8 +94,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
             }
         };
 
-        holder.accountImage.setOnClickListener(reportListener);
-        holder.accountName.setOnClickListener(reportListener);
+        holder.account.setOnClickListener(reportListener);
         holder.accountSum.setOnClickListener(reportListener);
     }
 
@@ -106,15 +105,13 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
 
     public static class AccountViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView accountImage;
-        TextView accountName;
+        TextView account;
         TextView accountSum;
         ImageButton accountDelete;
 
         public AccountViewHolder(View itemView) {
             super(itemView);
-            accountImage = (ImageView) itemView.findViewById(R.id.account_image);
-            accountName = (TextView) itemView.findViewById(R.id.account_name);
+            account = (TextView) itemView.findViewById(R.id.account_name);
             accountSum = (TextView) itemView.findViewById(R.id.account_sum);
             accountDelete = (ImageButton) itemView.findViewById(R.id.account_delete);
         }

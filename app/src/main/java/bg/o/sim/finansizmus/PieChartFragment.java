@@ -4,6 +4,7 @@ package bg.o.sim.finansizmus;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.Comparator;
 import bg.o.sim.finansizmus.model.CacheManager;
 import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.model.Category;
+import bg.o.sim.finansizmus.transactionRelated.TransactionFragment;
 
 //TODO get pie-chart working
 
@@ -54,11 +56,26 @@ public class PieChartFragment extends Fragment {
             }
         });
 
+        /* When a Category is 'clicked', opens a Transaction screen with that Category pre-set*/
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getTag() == null || ! (v.getTag() instanceof Category)) return;
+                TransactionFragment fragment = TransactionFragment.getNewInstance((Category) v.getTag());
+                getActivity().getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_fragment_container, fragment, getString(R.string.tag_fragment_transaction))
+                        .addToBackStack(getString(R.string.tag_fragment_transaction))
+                        .commit();
+            }
+        };
+
         menu = new ImageButton[MENU_BUTTON_COUNT];
         for (byte i = 0; i < MENU_BUTTON_COUNT; i++) {
             menu[i] = (ImageButton) rootView.findViewById(getResources().getIdentifier("pie_chart_menu_" + i, "id", getActivity().getPackageName()));
             menu[i].setScaleType(ImageView.ScaleType.FIT_CENTER);
             menu[i].setBackgroundColor(Color.argb(0, 0, 0, 0));
+            menu[i].setOnClickListener(clickListener);
         }
 
         return rootView;
@@ -84,6 +101,7 @@ public class PieChartFragment extends Fragment {
                 menu[i].setClickable(true);
                 c = categoriesBySum.get(i);
                 menu[i].setImageResource(c.getIconId());
+                menu[i].setTag(c);
             } else {
                 menu[i].setVisibility(View.INVISIBLE);
                 menu[i].setClickable(false);

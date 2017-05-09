@@ -118,14 +118,13 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         final RowViewAdapter<Category> incomeAdapter = new RowViewAdapter<>(inflater, cache.getAllIncomeCategories());
         categorySelection.setAdapter(expenseAdapter);
 
-
         if (selectedType == null)
             selectedType = Category.Type.EXPENSE;
 
         switch (selectedType) {
             case EXPENSE:
                 catTypeRadio.check(R.id.transaction_radio_expense);
-                colorizeUI(getActivity(), R.color.colorOrange, R.drawable.orange_button);
+                colorizeUI(getActivity(), R.color.colorRed, R.drawable.orange_button);
                 categorySelection.setAdapter(expenseAdapter);
                 break;
             case INCOME:
@@ -158,7 +157,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
                     case R.id.transaction_radio_expense:
-                        colorizeUI(getActivity(), R.color.colorOrange, R.drawable.orange_button);
+                        colorizeUI(getActivity(), R.color.colorRed, R.drawable.orange_button);
                         categorySelection.setAdapter(expenseAdapter);
                         break;
                     case R.id.transaction_radio_income:
@@ -314,27 +313,25 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
      * @return <code>true</code> if the Fragment has been started <b>with</b> an implicit {@link Category}.
      */
     private boolean checkForCategoryExtra() {
-        Bundle args = getArguments();
-        if (args == null) {
-            return false;
-        }
-        Category cat = (Category) args.getSerializable(getString(R.string.EXTRA_SECTION));
-        if (cat != null) {
-            switch (cat.getType()) {
+//        Bundle args = getArguments();
+//        if (args == null) {
+//            return false;
+//        }
+//        Category cat = (Category) args.getSerializable(getString(R.string.EXTRA_CATEGORY));
+        if (selectedCategory != null) {
+            switch (selectedCategory.getType()) {
                 case EXPENSE:
                     catTypeRadio.check(R.id.transaction_radio_expense);
-                    selectedType = Category.Type.EXPENSE;
                     ((MainActivity) getActivity()).setDrawerCheck(R.id.nav_expense);
                     break;
                 case INCOME:
                     catTypeRadio.check(R.id.transaction_radio_income);
-                    selectedType = Category.Type.INCOME;
                     ((MainActivity) getActivity()).setDrawerCheck(R.id.nav_income);
                     break;
             }
+            selectedType = selectedCategory.getType();
             catTypeRadio.setVisibility(View.GONE);
-            selectedCategory = cat;
-            submitButton.setText(getString(R.string.capitalized_add_to) + " " + cat.getName());
+            submitButton.setText(getString(R.string.capitalized_add_to) + " " + selectedCategory.getName());
             return true;
         }
         return false;
@@ -503,6 +500,20 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         return t;
     }
 
+    /**
+     * Factory method for starting the TransactionFragment with a pre-selected Category.
+     *
+     * @param category the desired {@link Category}
+     * @return a new {@link TransactionFragment} instance.
+     */
+    public static TransactionFragment getNewInstance(Category category) {
+        if (category == null)
+            Log.e("TransactionFragment:", " STARTED WITH A NULL CATEGORY PARAMETER!!!");
+
+        TransactionFragment t = new TransactionFragment();
+        t.selectedCategory = category;
+        return t;
+    }
     @Override
     public void onResume() {
         super.onResume();

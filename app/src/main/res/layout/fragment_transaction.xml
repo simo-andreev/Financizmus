@@ -22,7 +22,7 @@
             android:layout_margin="@dimen/all_view_spacing_standard"
             android:focusable="false"
             android:inputType="date"
-            android:textColor="@color/colorOrange"
+            android:textColor="@color/colorRed"
 
             android:textSize="@dimen/all_text_size_standard" />
 
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/transaction_top_bar"
         android:layout_margin="@dimen/all_view_spacing_standard"
-        android:background="@color/colorOrange"
+        android:background="@color/colorRed"
         android:gravity="end"
 
         android:orientation="horizontal"
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/all_view_spacing_small"
-            android:background="@color/colorOrange"
+            android:background="@color/colorRed"
             android:src="@drawable/ic_action_backspace" />
     </LinearLayout>
 

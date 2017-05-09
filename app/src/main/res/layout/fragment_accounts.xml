@@ -13,7 +13,7 @@
         android:textSize="@dimen/all_text_size_middle"
         android:text="@string/my_accounts_title"
         android:background="@color/colorLightGreen"
-        android:textColor="@color/colorDarkGreen"/>
+        android:textColor="@color/colorGreenDark"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/accounts_list"
@@ -31,7 +31,7 @@
         android:layout_below="@+id/accounts_list"
         android:text="@string/add_more_accounts_title"
         android:background="@color/colorLightGreen"
-        android:textColor="@color/colorDarkGreen"/>
+        android:textColor="@color/colorGreenDark"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/accounts_icons_list"

@@ -1,61 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorDark"
     android:gravity="center"
-    android:orientation="vertical"
     android:padding="@dimen/all_view_spacing_standard"
     tools:context=".LoginActivity">
 
-    <ImageView
-        android:layout_width="@dimen/logo_size_large"
-        android:layout_height="@dimen/logo_size_large"
-        android:layout_gravity="center"
-        android:src="@mipmap/ic_launcher_round" />
-
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/smartfinance" />
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/activity_login_email"
-        style="@style/UserDataInput"
+        <ImageView
+            android:layout_width="@dimen/logo_size_huge"
+            android:layout_height="@dimen/logo_size_huge"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_launcher_plain" />
 
-        android:drawableLeft="@mipmap/ic_email"
-        android:hint="@string/e_mail"
-        android:inputType="textWebEmailAddress"
-        android:maxLength="40" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/logo_text" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/activity_login_pass"
-        style="@style/UserDataInput"
-
-        android:drawableLeft="@mipmap/ic_password"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:maxLength="40" />
-
-
-    <Button
-        android:id="@+id/activity_login_login_button"
-        style="@style/RegisterButton"
-        android:text="@string/login" />
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/or_textview"
-        android:textColor="@color/colorWhite"
-        android:textSize="20sp" />
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/activity_login_register_button"
-        style="@style/RegisterButton"
-        android:text="@string/register" />
+        <EditText
+            android:id="@+id/activity_login_email"
+            style="@style/UserDataInput"
 
+            android:drawableLeft="@mipmap/ic_email"
+            android:hint="@string/e_mail"
+            android:inputType="textWebEmailAddress"
+            android:maxLength="40" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/activity_login_pass"
+            style="@style/UserDataInput"
+
+            android:drawableLeft="@mipmap/ic_password"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:maxLength="40" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/activity_login_login_button"
+            style="@style/ButtonGeneral"
+            android:text="@string/login" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/or_textview"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/activity_login_register_button"
+            style="@style/ButtonGeneral"
+            android:text="@string/register" />
+
+    </LinearLayout>
+</RelativeLayout>

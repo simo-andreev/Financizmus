@@ -14,26 +14,19 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_alignParentBottom="true"
+        android:translationY="400dp"
 
-        android:background="@color/colorLightGreen"
-
-        android:orientation="vertical"
-
-        android:translationY="400dp">
+        android:background="@color/colorDark"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/animation_list_left"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="@dimen/all_view_spacing_standard"
-                android:src="@drawable/navigation_menu" />
+                android:src="@drawable/navigation_menu"
+                style="@style/pull_tab_vertical" />
 
             <Button
                 android:id="@+id/total_sum_btn"
@@ -41,18 +34,14 @@
                 android:layout_height="@dimen/appbar_height"
                 android:layout_gravity="center"
                 android:layout_weight="3"
-                android:background="@drawable/balance_button"
+                android:background="@color/colorGreenDark"
                 android:text="@string/total_value_btn"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/all_text_size_standard" />
 
             <ImageView
-                android:id="@+id/animation_list_right"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="@dimen/all_view_spacing_standard"
-                android:src="@drawable/navigation_menu" />
+                android:src="@drawable/navigation_menu"
+                style="@style/pull_tab_vertical" />
 
         </LinearLayout>
 

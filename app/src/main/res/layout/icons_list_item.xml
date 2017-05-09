@@ -26,7 +26,7 @@
     <ImageButton
         android:id="@+id/add_icon_btn"
         android:src="@mipmap/plus"
-        android:background="@color/colorTransparentWhite"
+        android:background="@color/colorDark"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:padding="15dp"

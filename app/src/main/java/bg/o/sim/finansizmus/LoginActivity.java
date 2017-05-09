@@ -47,14 +47,14 @@ public class LoginActivity extends AppCompatActivity {
                     /* If login pressed- display an "authenticating" dialog while waiting for db queries to finish*/
                     case R.id.activity_login_login_button:
                         if (validateForm()) {
-                            ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-                            progressDialog.setIndeterminate(true);
-                            progressDialog.setMessage("Authenticating...");
-                            progressDialog.show();
+//                            ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+//                            progressDialog.setIndeterminate(true);
+//                            progressDialog.setMessage("Authenticating...");
+//                            progressDialog.show();
 
                             dao.logInUser(userEmail.getText().toString().trim(), userPass.getText().toString().trim(), LoginActivity.this);
 
-                            progressDialog.hide();
+//                            progressDialog.hide();
                         }
 
                         break;

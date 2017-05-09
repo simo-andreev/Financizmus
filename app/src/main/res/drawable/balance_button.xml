@@ -9,7 +9,7 @@
                 android:width="1dip"
                 android:color="@color/colorGreen" />
             <solid
-                android:color="@color/colorDarkGreen" />
+                android:color="@color/colorGreenDark" />
 
         </shape>
     </item>
@@ -19,7 +19,7 @@
                 android:radius="5dip"/>
             <stroke
                 android:width="1dip"
-                android:color="@color/colorDarkGreen"/>
+                android:color="@color/colorGreenDark"/>
             <solid
                 android:color="@color/colorGreen"/>
         </shape>

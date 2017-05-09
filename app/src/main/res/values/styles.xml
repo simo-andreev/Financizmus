@@ -1,11 +1,11 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
+    <!--&lt;!&ndash; Base application theme. &ndash;&gt;-->
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+    <!--</style>-->
 
     <style name="ThemeOverlay.CustomTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:colorBackground">@color/colorGreen</item>
@@ -85,15 +85,22 @@
         <item name="android:textSize">@dimen/all_text_size_standard</item>
     </style>
 
-    <style name="RegisterButton">
+    <style name="ButtonGeneral">
         <item name="android:layout_marginTop">@dimen/all_view_spacing_standard</item>
         <item name="android:layout_marginBottom">@dimen/all_view_spacing_standard</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:elevation">@dimen/appbar_elevation</item>
-        <item name="android:background">@drawable/balance_button</item>
+        <item name="android:elevation">12dp</item>
+        <item name="android:background">@color/colorDarker</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textSize">@dimen/all_text_size_large</item>
+    </style>
+
+    <style name="pull_tab_vertical">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">@dimen/all_view_spacing_standard</item>
     </style>
 
 </resources>
