@@ -13,10 +13,8 @@ import bg.o.sim.finansizmus.model.DAO;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText userEmail;
-    private EditText userPass;
-    private Button logIn;
-    private Button signUp;
+    private EditText userEmail, userPass;
+    private Button logIn, signUp;
 
     private DAO dao;
 
@@ -27,10 +25,10 @@ public class LoginActivity extends AppCompatActivity {
 
         dao = DAO.getInstance(this);
 
-        userEmail = (EditText) findViewById(R.id.loggin_email_insert);
-        userPass = (EditText) findViewById(R.id.loggin_pass_insert);
-        logIn = (Button) findViewById(R.id.loggin_loggin_button);
-        signUp = (Button) findViewById(R.id.loggin_signup_button);
+        userEmail = (EditText) findViewById(R.id.activity_login_email);
+        userPass = (EditText) findViewById(R.id.activity_login_pass);
+        logIn = (Button) findViewById(R.id.activity_login_login_button);
+        signUp = (Button) findViewById(R.id.activity_login_register_button);
 
 
         Bundle extras = getIntent().getExtras();
@@ -48,11 +46,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.loggin_loggin_button:
+                    case R.id.activity_login_login:
                         if (validateForm())
                             dao.logInUser(userEmail.getText().toString(), userPass.getText().toString(), LoginActivity.this);
                         break;
-                    case R.id.loggin_signup_button:
+                    case R.id.activity_login_register:
                         startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                         break;
                 }

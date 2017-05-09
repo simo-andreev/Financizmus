@@ -16,6 +16,7 @@
     <dimen name="all_text_size_large">24sp</dimen>
     <dimen name="all_text_size_huge">36sp</dimen>
     <dimen name="all_text_size_enormous">64sp</dimen>
+
     <dimen name="dropdown_list_preferred_item_height">46dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
@@ -24,5 +25,7 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">136dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="logo_side">40dp</dimen>
+
+    <dimen name="logo_size_large">96dp</dimen>
+
 </resources>
