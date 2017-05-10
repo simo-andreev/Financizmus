@@ -17,6 +17,9 @@ public class CacheManager {
 
     private static User loggedUser;
 
+    //I' not sure how good of an idea using a stored tottal is, but might as well try//
+    private double sum;
+
     private ConcurrentHashMap<Long, Account> accounts;
     private ConcurrentHashMap<Long, Category> incomeCategories;
     private ConcurrentHashMap<Long, Category> expenseCategories;
@@ -40,6 +43,8 @@ public class CacheManager {
         this.categoryTransactions = new ConcurrentHashMap<>();
 
         loadIcons();
+
+        this.sum = 0.0;
     }
 
     public static CacheManager getInstance() {
@@ -99,6 +104,9 @@ public class CacheManager {
         accountTransactions.get(accId).add(t);
         categoryTransactions.get(catId).add(t);
 
+        //Increments the cached total sum. If the transaction is an expense -> decrements.
+        this.sum += t.getSum() * (t.getCategory().getType() == Category.Type.EXPENSE ? -1 : 1);
+
         //TODO - as-is this returns true without actually verifying that the Transaction was successfully added.
         Log.i("CACHED TRANS: ", t.getSum() + "$ " + "IN: " + t.getAccount().getName() + " FROM: " + t.getCategory().getName());
         return true;
@@ -147,6 +155,11 @@ public class CacheManager {
     public ArrayList<Transaction> getCategoryTransactions(Category category) {
         categoryTransactions.putIfAbsent(category.getId(), new ArrayList<Transaction>());
         return new ArrayList<>(categoryTransactions.get(category.getId()));
+    }
+
+
+    public double getCurrentTotal() {
+        return sum;
     }
 
 
@@ -224,4 +237,5 @@ public class CacheManager {
         expenseIcons = tempExpense;
         accountIcons = tempAccount;
     }
+
 }

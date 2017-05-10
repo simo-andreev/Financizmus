@@ -12,7 +12,7 @@
         android:paddingLeft="@dimen/activity_vertical_margin"
         android:textSize="@dimen/all_text_size_middle"
         android:text="@string/my_accounts_title"
-        android:background="@color/colorLightGreen"
+        android:background="@color/colorGreenLight"
         android:textColor="@color/colorGreenDark"/>
 
     <android.support.v7.widget.RecyclerView
@@ -30,7 +30,7 @@
         android:textSize="@dimen/all_text_size_middle"
         android:layout_below="@+id/accounts_list"
         android:text="@string/add_more_accounts_title"
-        android:background="@color/colorLightGreen"
+        android:background="@color/colorGreenLight"
         android:textColor="@color/colorGreenDark"/>
 
     <android.support.v7.widget.RecyclerView

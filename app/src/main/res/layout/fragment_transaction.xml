@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
@@ -88,25 +88,27 @@
 
 
     <TextView
-        android:clickable="true"
-        android:padding="@dimen/all_view_spacing_tiny"
-        android:textAlignment="center"
-        android:background="@color/colorWhite"
-        android:elevation="@dimen/appbar_elevation"
         android:id="@+id/transaction_note_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
         android:layout_below="@id/transaction_number_display"
         android:layout_marginLeft="@dimen/all_view_spacing_standard"
         android:layout_marginRight="@dimen/all_view_spacing_standard"
-        android:hint="@string/transaction_input_note"/>
+        android:background="@color/colorWhite"
+        android:clickable="true"
+        android:elevation="@dimen/appbar_elevation"
+        android:hint="@string/transaction_input_note"
+        android:maxLines="1"
+        android:padding="@dimen/all_view_spacing_tiny"
+        android:textAlignment="center" />
 
     <Spinner
         android:id="@+id/transaction_account_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/transaction_note_input" />
+        android:layout_below="@id/transaction_note_input"
+        android:layout_marginLeft="@dimen/all_view_spacing_standard"
+        android:layout_marginRight="@dimen/all_view_spacing_standard" />
 
     <LinearLayout
         android:id="@+id/transaction_section_selection_layout"
@@ -138,6 +140,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/transaction_account_spinner"
+        android:layout_marginLeft="@dimen/all_view_spacing_standard"
+        android:layout_marginRight="@dimen/all_view_spacing_standard"
         android:orientation="vertical">
 
         <LinearLayout style="@style/TransactionNumpadRow">
@@ -229,7 +233,7 @@
             <TextView
                 android:id="@+id/transaction_numpad_divide"
                 style="@style/TransactionNumpadButton"
-                android:text="÷"/>
+                android:text="÷" />
         </LinearLayout>
 
         <TextView

@@ -8,11 +8,11 @@
 
     <color name="colorWhite">#f9fafc</color>
 
-    <color name="colorLightGreen">#FF62A796</color>
+    <color name="colorGreenLight">#FF62A796</color>
     <color name="colorGreen">#FF008171</color>
     <color name="colorGreenDark">#FF01614C</color>
 
-    <color name="colorLightOrange">#FFFF4848</color>
+    <color name="colorRedLight">#FFFF4848</color>
     <color name="colorRed">#FFB71C1C</color>
     <color name="colorRedDark">#FF910000</color>
 

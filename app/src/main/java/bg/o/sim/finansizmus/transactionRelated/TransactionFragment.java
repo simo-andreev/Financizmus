@@ -157,7 +157,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
                     case R.id.transaction_radio_expense:
-                        colorizeUI(getActivity(), R.color.colorRed, R.drawable.orange_button);
+                        colorizeUI(getActivity(), R.color.colorRedLight, R.drawable.orange_button);
                         categorySelection.setAdapter(expenseAdapter);
                         break;
                     case R.id.transaction_radio_income:

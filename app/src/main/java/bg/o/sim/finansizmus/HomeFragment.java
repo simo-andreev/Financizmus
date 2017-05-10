@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import bg.o.sim.finansizmus.model.CacheManager;
 import bg.o.sim.finansizmus.reports.ReportFragment;
 
 public class HomeFragment extends Fragment {
@@ -73,7 +74,7 @@ public class HomeFragment extends Fragment {
                         return true;
                     default:
                         Interpolator interpolator = new AccelerateDecelerateInterpolator();
-                        v.animate().setInterpolator(interpolator).translationY(translationY[0] < v.getHeight()/2 ? 0 : v.getHeight()-totalSumButton.getHeight());
+                        v.animate().setInterpolator(interpolator).translationY(translationY[0] < v.getHeight()/3 ? 0 : v.getHeight()-totalSumButton.getHeight());
                         return v.onTouchEvent(event);
                 }
             }
@@ -95,5 +96,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((MainActivity) getActivity()).setDrawerCheck(R.id.nav_unchecker);
+
+        totalSumButton.setText("$ " + CacheManager.getInstance().getCurrentTotal());
     }
 }

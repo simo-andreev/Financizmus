@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/all_view_spacing_small"
             android:layout_weight="1"
-            android:background="@color/colorLightGreen"
+            android:background="@color/colorGreenLight"
             android:text="@string/select_accounts"
             android:textColor="@color/colorWhite" />
 
@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/all_view_spacing_small"
             android:layout_weight="1"
-            android:background="@color/colorLightGreen"
+            android:background="@color/colorGreenLight"
             android:hint="@string/sortby"
             android:textAlignment="center" />
     </LinearLayout>

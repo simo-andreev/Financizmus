@@ -50,9 +50,11 @@ public class RowViewAdapter<T extends RowDisplayable> extends BaseAdapter {
 
         T item = dataSet.get(position);
 
-        TextView t = (TextView) convertView.findViewById(R.id.account_spinner_text);
+        TextView t = (TextView) convertView.findViewById(R.id.spinner_transaction_title);
         t.setText(item.getName());
-        t.setCompoundDrawablesWithIntrinsicBounds(item.getIconId(), 0, 0 ,0);
+
+        ImageView i = (ImageView) convertView.findViewById(R.id.spinner_transaction_icon);
+        i.setImageResource(item.getIconId());
 
         return convertView;
     }
