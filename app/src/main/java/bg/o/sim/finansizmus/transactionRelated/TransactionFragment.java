@@ -200,16 +200,15 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             }
         });
 
-        //TODO - REDO listener
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (calculate(OPERATION_NONE) <= 0){
-                    Util.toastLong(getActivity(), "Transactions must have a greater-than-zero value. Thank you :)");
+                    Util.toastShort(getActivity(), "Transactions must have a greater-than-zero value");
                     return;
                 }
                 if (!startedWithCategory) {
-                    numpad.animate().setDuration(600).alpha(0.0F).withEndAction(new Runnable() {
+                    numpad.animate().setDuration(200).alpha(0.0F).withEndAction(new Runnable() {
                         @Override
                         public void run() {
                             backspace.setVisibility(View.INVISIBLE);

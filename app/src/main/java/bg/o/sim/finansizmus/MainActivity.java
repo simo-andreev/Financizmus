@@ -22,8 +22,8 @@ import android.widget.TextView;
 
 import bg.o.sim.finansizmus.accounts.AccountsFragment;
 import bg.o.sim.finansizmus.model.CacheManager;
-import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.model.Category;
+import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.transactionRelated.TransactionFragment;
 import bg.o.sim.finansizmus.utils.Util;
 
@@ -192,7 +192,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    //TODO - think of a more elegant solution to checking the proper NavDrawer item.. seriously...
+    //TODO - think of a more elegant solution for checking the proper NavDrawer item.. seriously...
+
+    /**
+     * Change the 'checked' NavDrawer item bu view id
+     * @param drawerPosition view id of the item to 'check'
+     */
     public void setDrawerCheck(int drawerPosition) {
          /*TODO - validate position exists. Somehow....*/
         if (navigationView != null)

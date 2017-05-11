@@ -19,9 +19,9 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconViewHold
     private int[] additionalIcons;
     private Context context;
 
-    public IconsAdapter(int[] allExpenseIcons, Context context) {
+    public IconsAdapter(int[] iconSet, Context context) {
         this.context = context;
-        additionalIcons = allExpenseIcons;
+        additionalIcons = iconSet;
     }
 
     @Override

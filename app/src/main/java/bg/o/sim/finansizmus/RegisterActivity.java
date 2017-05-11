@@ -74,8 +74,6 @@ public class RegisterActivity extends AppCompatActivity {
         final String pass = userPass.getText().toString().trim();
         final String confirm = confirmPass.getText().toString().trim();
 
-        //TODO - SET LENGTHS ACCORDING TO CONSTS
-
         if (name.isEmpty()) {
             userName.requestFocus();
             userName.setError(getString(R.string.error_empty_name));

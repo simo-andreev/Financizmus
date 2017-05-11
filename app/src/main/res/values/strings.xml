@@ -118,6 +118,7 @@
     <string name="error_empty_pass">Passwords must be atleast 8 characters long</string>
     <string name="error_invalid_pass">Password should contain at least one digit, one special symbol,one small letter,and should be between 8 and 30 symbols.</string>
     <string name="error_mismatch_pass">Passwords must match</string>
+    <string name="title_select_icon">select icon</string>
 
 
     <!-- TEMP & UNSORTED -->

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorDarkless"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/transaction_radio"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/appbar_height"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorDarkish"
+        android:elevation="@dimen/appbar_elevation"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/transaction_radio_expense"
+            style="@style/RadioButtonIncomeExpense"
+            android:button="@drawable/transaction_radio_expense"
+            android:text="@string/expense"
+            android:textColor="@color/colorWhite" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:id="@+id/transaction_radio_income"
+            style="@style/RadioButtonIncomeExpense"
+            android:button="@drawable/transaction_radio_income"
+            android:layoutDirection="rtl"
+            android:text="@string/income"
+            android:textColor="@color/colorWhite" />
+    </RadioGroup>
+
+    <EditText
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/appbar_height"
+        android:layout_margin="@dimen/all_view_spacing_standard"
+        android:text="@string/test_text"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/all_text_size_large" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorDarkish"
+        android:elevation="@dimen/appbar_elevation"
+        android:text="@string/title_select_icon"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_margin="@dimen/all_view_spacing_standard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

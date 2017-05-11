@@ -29,14 +29,13 @@
         <RadioGroup
             android:id="@+id/transaction_radio"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/appbar_height"
             android:layout_alignParentTop="true"
             android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/transaction_radio_expense"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/RadioButtonIncomeExpense"
                 android:button="@drawable/transaction_radio_expense"
                 android:text="@string/expense" />
 
@@ -47,8 +46,7 @@
 
             <RadioButton
                 android:id="@+id/transaction_radio_income"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                style="@style/RadioButtonIncomeExpense"
                 android:button="@drawable/transaction_radio_income"
                 android:layoutDirection="rtl"
                 android:text="@string/income" />
@@ -69,8 +67,7 @@
 
         <TextView
             android:id="@+id/transaction_number_display_text"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            style="@style/RadioButtonIncomeExpense"
             android:gravity="center"
             android:inputType="numberDecimal"
             android:maxLines="1"
@@ -79,8 +76,7 @@
 
         <ImageButton
             android:id="@+id/transaction_number_display_backspace"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            style="@style/RadioButtonIncomeExpense"
             android:layout_marginLeft="@dimen/all_view_spacing_small"
             android:background="@color/colorRed"
             android:src="@drawable/ic_action_backspace" />

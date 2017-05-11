@@ -43,9 +43,8 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/calendar" />
+                android:src="@drawable/calendar"
+                style="@style/RadioButtonIncomeExpense" />
 
             <TextView
                 android:id="@+id/filtered_report_date_start"
@@ -72,9 +71,8 @@
                 android:textColor="@color/colorGreenDark" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/calendar" />
+                android:src="@drawable/calendar"
+                style="@style/RadioButtonIncomeExpense" />
         </LinearLayout>
     </LinearLayout>
 

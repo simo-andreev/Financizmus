@@ -2,6 +2,7 @@ package bg.o.sim.finansizmus;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.utils.Util;
 
 //TODO - DOCUMENTATION
+//TODO - Store some sort of identifier in shPrefs after logIn, to allow automatic log-in on start-up. I'd like to avoid full user credentials, just feels wrong.
 
 public class LoginActivity extends AppCompatActivity {
 

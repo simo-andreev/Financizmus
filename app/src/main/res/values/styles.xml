@@ -103,4 +103,9 @@
         <item name="android:padding">@dimen/all_view_spacing_standard</item>
     </style>
 
+    <style name="RadioButtonIncomeExpense">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
 </resources>

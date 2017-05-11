@@ -112,6 +112,11 @@ public class CacheManager {
         return true;
     }
 
+    //TODO - docs
+    public boolean removeAccount(Account account) {
+        return this.accounts.remove(account.getId()) != null;
+    }
+
     public Category getCategory(long catFk) {
         if (expenseCategories.containsKey(catFk))return expenseCategories.get(catFk);
         if (incomeCategories.containsKey(catFk))return incomeCategories.get(catFk);
@@ -237,5 +242,6 @@ public class CacheManager {
         expenseIcons = tempExpense;
         accountIcons = tempAccount;
     }
+
 
 }

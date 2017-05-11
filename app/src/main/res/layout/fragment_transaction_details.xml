@@ -18,10 +18,9 @@
 
         <ImageView
             android:id="@+id/transaction_dialog_direction_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:src="@mipmap/arrow_out" />
+            android:src="@mipmap/arrow_out"
+            style="@style/RadioButtonIncomeExpense" />
 
         <TextView
             android:id="@+id/transaction_dialog_category"

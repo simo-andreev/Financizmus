@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 import bg.o.sim.finansizmus.model.CacheManager;
 import bg.o.sim.finansizmus.reports.ReportFragment;
+import bg.o.sim.finansizmus.utils.Util;
 
 public class HomeFragment extends Fragment {
 
@@ -83,9 +84,12 @@ public class HomeFragment extends Fragment {
         totalSumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (layout.getTranslationY() != 0){
+                if (layout.getTranslationY() == layout.getHeight() - totalSumButton.getHeight()){
                     Interpolator interpolator = new AccelerateDecelerateInterpolator();
                     layout.animate().setInterpolator(interpolator).translationY(0);
+                } else {
+                    Interpolator interpolator = new AccelerateDecelerateInterpolator();
+                    layout.animate().setInterpolator(interpolator).translationY(layout.getHeight() - totalSumButton.getHeight());
                 }
             }
         });
@@ -96,7 +100,6 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((MainActivity) getActivity()).setDrawerCheck(R.id.nav_unchecker);
-
         totalSumButton.setText("$ " + CacheManager.getInstance().getCurrentTotal());
     }
 }

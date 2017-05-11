@@ -13,42 +13,30 @@ import android.view.ViewGroup;
 import bg.o.sim.finansizmus.MainActivity;
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.model.CacheManager;
-import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.favourites.AddCategoryDialogFragment;
 import bg.o.sim.finansizmus.favourites.IconsAdapter;
 
 public class AccountsFragment extends Fragment {
 
-    private DAO dao;
     private CacheManager cache;
     private Context context;
 
     private RecyclerView accountsList;
     private RecyclerView moreAccountIconsList;
 
-    private AccountsAdapter accountsAdapter;
-    private IconsAdapter iconsAdapter;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_accounts, container, false);
 
         context = getActivity();
         cache = CacheManager.getInstance();
-        dao = DAO.getInstance(context);
 
         accountsList = (RecyclerView) view.findViewById(R.id.accounts_list);
-
-        accountsAdapter = new AccountsAdapter(cache.getAllAccounts(), context, getFragmentManager());
-        accountsList = (RecyclerView) view.findViewById(R.id.accounts_list);
-        accountsList.setAdapter(accountsAdapter);
+        accountsList.setAdapter(new AccountsAdapter(cache.getAllAccounts(), context, getFragmentManager()));
         accountsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        iconsAdapter = new IconsAdapter(cache.getAccountIcons(), context);
         moreAccountIconsList = (RecyclerView) view.findViewById(R.id.accounts_icons_list);
-        moreAccountIconsList.setAdapter(iconsAdapter);
+        moreAccountIconsList.setAdapter(new IconsAdapter(cache.getAccountIcons(), context));
         moreAccountIconsList.setLayoutManager(new GridLayoutManager(getActivity(), 5));
 
         moreAccountIconsList.addOnItemTouchListener(
@@ -65,7 +53,6 @@ public class AccountsFragment extends Fragment {
 
                         dialog.setArguments(arguments);
                         dialog.show(getFragmentManager(), String.valueOf(R.string.tag_dialog_add_category));
-
                     }
                 })
         );

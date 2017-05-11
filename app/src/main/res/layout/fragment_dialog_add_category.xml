@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:minWidth="300dp">
 
     <TextView
-        android:id="@+id/add_category_title"
-        android:text="@string/add_category_title"
+        android:text="@string/test_text"
         android:textSize="@dimen/all_text_size_middle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

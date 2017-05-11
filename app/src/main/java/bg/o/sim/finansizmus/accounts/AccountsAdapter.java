@@ -1,5 +1,6 @@
 package bg.o.sim.finansizmus.accounts;
 
+import android.app.Application;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -58,6 +59,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
         holder.account.setText(account.getName());
         //TODO                       v
         holder.accountSum.setText("TEMP");
+
         holder.accountDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +72,10 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
                             public void onClick(DialogInterface dialog, int which) {
                                 if (!CacheManager.getInstance().getAllAccounts().isEmpty()) {
                                     //TODO !!! DELETE QUERIES IN DAO !!! *note: check details on SQL cascading delete.
-//                                    DAO.getInstance(context).deleteAccount(account);
+//                                  DAO.getInstance(context).deleteAccount(account);
+
+                                    //TODO - REDO - this \/ mess
+                                    CacheManager.getInstance().removeAccount((Account) account);
                                     accounts.remove(account);
                                     AccountsAdapter.this.notifyDataSetChanged();
                                 } else {
@@ -93,6 +98,8 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
                         .commit();
             }
         };
+
+        Application
 
         holder.account.setOnClickListener(reportListener);
         holder.accountSum.setOnClickListener(reportListener);

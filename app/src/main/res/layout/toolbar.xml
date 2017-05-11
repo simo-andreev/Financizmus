@@ -14,9 +14,8 @@
         app:theme="@style/OverflowMenu">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@mipmap/ic_launcher_plain" />
+                android:src="@mipmap/ic_launcher_plain"
+                style="@style/RadioButtonIncomeExpense" />
 
             <ImageView
                 android:layout_width="wrap_content"
