@@ -56,12 +56,7 @@ public class TransactionDetailsFragment extends DialogFragment {
 
         sumView.setText("Sum: " + t.getSum() + " $");
 
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        returnButton.setOnClickListener(v -> dismiss());
 
         return rootView;
     }

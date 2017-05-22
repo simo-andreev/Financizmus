@@ -144,27 +144,21 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         //============onClickListeners=============================================================================//
 
         /* On date click -> pop-up a DateDialogFragment and let user select different date. */
-        dateDisplay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerFragment datePicker = DatePickerFragment.newInstance(TransactionFragment.this, date);
-                datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
-            }
+        dateDisplay.setOnClickListener(v -> {
+            DatePickerFragment datePicker = DatePickerFragment.newInstance(TransactionFragment.this, date);
+            datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
         });
 
-        catTypeRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                switch (checkedId) {
-                    case R.id.transaction_radio_expense:
-                        colorizeUI(getActivity(), R.color.colorRedLight, R.drawable.orange_button);
-                        categorySelection.setAdapter(expenseAdapter);
-                        break;
-                    case R.id.transaction_radio_income:
-                        colorizeUI(getActivity(), R.color.colorGreen, R.drawable.green_button);
-                        categorySelection.setAdapter(incomeAdapter);
-                        break;
-                }
+        catTypeRadio.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.transaction_radio_expense:
+                    colorizeUI(getActivity(), R.color.colorRedLight, R.drawable.orange_button);
+                    categorySelection.setAdapter(expenseAdapter);
+                    break;
+                case R.id.transaction_radio_income:
+                    colorizeUI(getActivity(), R.color.colorGreen, R.drawable.green_button);
+                    categorySelection.setAdapter(incomeAdapter);
+                    break;
             }
         });
 
@@ -179,49 +173,37 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             }
         });
 
-        noteInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NoteInputFragment inputFragment = new NoteInputFragment();
+        noteInput.setOnClickListener(v -> {
+            NoteInputFragment inputFragment = new NoteInputFragment();
 
-                Bundle b = new Bundle();
-                b.putString(getString(R.string.EXTRA_NOTE), noteInput.getText().toString());
-                inputFragment.setArguments(b);
+            Bundle b = new Bundle();
+            b.putString(getString(R.string.EXTRA_NOTE), noteInput.getText().toString());
+            inputFragment.setArguments(b);
 
-                inputFragment.show(getFragmentManager(), getString(R.string.tag_dialog_note_input));
-            }
+            inputFragment.show(getFragmentManager(), getString(R.string.tag_dialog_note_input));
         });
 
-        categorySelection.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedCategory = (Category) categorySelection.getItemAtPosition(position);
+        categorySelection.setOnItemClickListener((parent, view, position, id) -> {
+            selectedCategory = (Category) categorySelection.getItemAtPosition(position);
+            createTransaction();
+        });
+
+        submitButton.setOnClickListener(v -> {
+            if (calculate(OPERATION_NONE) <= 0){
+                Util.toastShort(getActivity(), "Transactions must have a greater-than-zero value");
+                return;
+            }
+            if (!startedWithCategory) {
+                numpad.animate().setDuration(200).alpha(0.0F).withEndAction(() -> {
+                    backspace.setVisibility(View.INVISIBLE);
+                    backspace.setClickable(false);
+                    numpad.setVisibility(View.GONE);
+                    rootView.findViewById(R.id.transaction_section_selection_layout).setAlpha(1F);
+                    rootView.findViewById(R.id.transaction_section_selection_layout).setVisibility(View.VISIBLE);
+                    isNumpadDown = true;
+                });
+            } else {
                 createTransaction();
-            }
-        });
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (calculate(OPERATION_NONE) <= 0){
-                    Util.toastShort(getActivity(), "Transactions must have a greater-than-zero value");
-                    return;
-                }
-                if (!startedWithCategory) {
-                    numpad.animate().setDuration(200).alpha(0.0F).withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            backspace.setVisibility(View.INVISIBLE);
-                            backspace.setClickable(false);
-                            numpad.setVisibility(View.GONE);
-                            rootView.findViewById(R.id.transaction_section_selection_layout).setAlpha(1F);
-                            rootView.findViewById(R.id.transaction_section_selection_layout).setVisibility(View.VISIBLE);
-                            isNumpadDown = true;
-                        }
-                    });
-                } else {
-                    createTransaction();
-                }
             }
         });
 
@@ -231,14 +213,11 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
          * On arithmetic button pressed -> execute stored {@link TransactionActivity#currentOperation}
          *                              -> save new currentOperation
          */
-        View.OnClickListener arithmeticListener = new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (operationPrimed && currentOperation != OPERATION_NONE)
-                    calculate(((TextView) v).getText().charAt(0));
-                currentOperation = ((TextView) v).getText().charAt(0);
-                if (currentOperation != OPERATION_NONE) operationPrimed = false;
-            }
+        View.OnClickListener arithmeticListener = v -> {
+            if (operationPrimed && currentOperation != OPERATION_NONE)
+                calculate(((TextView) v).getText().charAt(0));
+            currentOperation = ((TextView) v).getText().charAt(0);
+            if (currentOperation != OPERATION_NONE) operationPrimed = false;
         };
         equals.setOnClickListener(arithmeticListener);
         divide.setOnClickListener(arithmeticListener);
@@ -247,58 +226,52 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         minus.setOnClickListener(arithmeticListener);
 
         /* Handles input from the numeric buttons and the decimal-point button.*/
-        View.OnClickListener numberListener = new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Block input if maximal number of digits after decimal point has been reached
-                if (operationPrimed && decimalPosition >= MAX_DECIMAL_DEPTH) return;
+        View.OnClickListener numberListener = v -> {
+            //Block input if maximal number of digits after decimal point has been reached
+            if (operationPrimed && decimalPosition >= MAX_DECIMAL_DEPTH) return;
 
-                if (v.getId() == R.id.transaction_numpad_decimal) {
-                    if (!operationPrimed) {
-                        operationPrimed = true;
-                        storedNumber = Double.valueOf(numDisplay.getText().toString());
-                        numDisplay.setText("0.");
-                        decimalPosition = BEFORE_DECIMAL + 1;
-                    } else if (decimalPosition == BEFORE_DECIMAL) {
-                        numDisplay.append(".");
-                        decimalPosition = BEFORE_DECIMAL + 1;
-                    }
-                    return;
-                }
-
-                if (operationPrimed && decimalPosition == BEFORE_DECIMAL && numDisplay.getText().toString().length() >= MAX_NUM_LENGTH) return;
-
+            if (v.getId() == R.id.transaction_numpad_decimal) {
                 if (!operationPrimed) {
                     operationPrimed = true;
                     storedNumber = Double.valueOf(numDisplay.getText().toString());
-                    numDisplay.setText("0");
-                    decimalPosition = BEFORE_DECIMAL;
+                    numDisplay.setText("0.");
+                    decimalPosition = BEFORE_DECIMAL + 1;
+                } else if (decimalPosition == BEFORE_DECIMAL) {
+                    numDisplay.append(".");
+                    decimalPosition = BEFORE_DECIMAL + 1;
                 }
-
-                if (numDisplay.getText().toString().equals("0")) numDisplay.setText("");
-                numDisplay.append(((TextView) v).getText().toString());
-                if (decimalPosition > BEFORE_DECIMAL) decimalPosition++;
-
+                return;
             }
+
+            if (operationPrimed && decimalPosition == BEFORE_DECIMAL && numDisplay.getText().toString().length() >= MAX_NUM_LENGTH) return;
+
+            if (!operationPrimed) {
+                operationPrimed = true;
+                storedNumber = Double.valueOf(numDisplay.getText().toString());
+                numDisplay.setText("0");
+                decimalPosition = BEFORE_DECIMAL;
+            }
+
+            if (numDisplay.getText().toString().equals("0")) numDisplay.setText("");
+            numDisplay.append(((TextView) v).getText().toString());
+            if (decimalPosition > BEFORE_DECIMAL) decimalPosition++;
+
         };
         for (TextView btn : numButtons)
             btn.setOnClickListener(numberListener);
         decimal.setOnClickListener(numberListener);
 
         /* Deletes a single digit (or the dec. point)*/
-        backspace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Get currently displayed String representation and its length
-                String displayText = numDisplay.getText().toString();
-                int length = displayText.length();
+        backspace.setOnClickListener(v -> {
+            //Get currently displayed String representation and its length
+            String displayText = numDisplay.getText().toString();
+            int length = displayText.length();
 
-                //if the 'display' is a single digit long, replaces it with a 0.
-                //else removes last number
-                numDisplay.setText(displayText.matches("^-?[0-9]$") ? "0" : displayText.substring(0, --length));
-                //If las digit was after the decimal point, move tracker one step back.
-                if (decimalPosition != BEFORE_DECIMAL) decimalPosition--;
-            }
+            //if the 'display' is a single digit long, replaces it with a 0.
+            //else removes last number
+            numDisplay.setText(displayText.matches("^-?[0-9]$") ? "0" : displayText.substring(0, --length));
+            //If las digit was after the decimal point, move tracker one step back.
+            if (decimalPosition != BEFORE_DECIMAL) decimalPosition--;
         });
 
         //-------END--CALCULATOR_LISTENERS------------------------------------------------------------------//

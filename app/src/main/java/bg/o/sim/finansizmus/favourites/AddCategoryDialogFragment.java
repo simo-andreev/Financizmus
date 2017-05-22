@@ -1,23 +1,17 @@
 package bg.o.sim.finansizmus.favourites;
 
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.model.CacheManager;
-import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.model.RowDisplayable;
 
@@ -58,16 +52,9 @@ public class AddCategoryDialogFragment extends DialogFragment {
 
         icon.setImageResource(iconId);
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        cancel.setOnClickListener(v -> dismiss());
 
-        addCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        addCategory.setOnClickListener(v -> {
 //                if (categoryName.getText().length() == 0) {
 //                    categoryName.requestFocus();
 //                    categoryName.setError("Name cannot be empty!");
@@ -77,7 +64,6 @@ public class AddCategoryDialogFragment extends DialogFragment {
 //                        dao.insertCategory(name, iconId, CacheManager.getInstance(), );
 //                    dismiss();
 //                }
-            }
         });
         return view;
     }

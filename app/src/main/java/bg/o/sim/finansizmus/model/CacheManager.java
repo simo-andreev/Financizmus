@@ -97,9 +97,9 @@ public class CacheManager {
         long catId = t.getCategory().getId();
 
         if (!accountTransactions.containsKey(accId) || accountTransactions.get(accId) == null)
-            accountTransactions.put(accId, new ArrayList<Transaction>());
+            accountTransactions.put(accId, new ArrayList<>());
         if (!categoryTransactions.containsKey(catId) || categoryTransactions.get(catId) == null)
-            categoryTransactions.put(catId, new ArrayList<Transaction>());
+            categoryTransactions.put(catId, new ArrayList<>());
 
         accountTransactions.get(accId).add(t);
         categoryTransactions.get(catId).add(t);
@@ -153,12 +153,12 @@ public class CacheManager {
     }
 
     public ArrayList<Transaction> getAccountTransactions(Account account) {
-        accountTransactions.putIfAbsent(account.getId(), new ArrayList<Transaction>());
+        accountTransactions.putIfAbsent(account.getId(), new ArrayList<>());
         return accountTransactions.get(account.getId());
     }
 
     public ArrayList<Transaction> getCategoryTransactions(Category category) {
-        categoryTransactions.putIfAbsent(category.getId(), new ArrayList<Transaction>());
+        categoryTransactions.putIfAbsent(category.getId(), new ArrayList<>());
         return new ArrayList<>(categoryTransactions.get(category.getId()));
     }
 

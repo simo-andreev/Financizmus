@@ -153,12 +153,9 @@ public class ReportFragment extends Fragment {
             TextView t2 = (TextView) convertView.findViewById(R.id.report_item_date);
             t2.setText(trans.getDate().toString("dd/MM/YY"));
 
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TransactionDetailsFragment fragment = TransactionDetailsFragment.newInstance(trans);
-                    fragment.show(getFragmentManager(), "TransactionDetails");
-                }
+            convertView.setOnClickListener(v -> {
+                TransactionDetailsFragment fragment = TransactionDetailsFragment.newInstance(trans);
+                fragment.show(getFragmentManager(), "TransactionDetails");
             });
 
             return convertView;

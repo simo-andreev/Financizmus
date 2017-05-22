@@ -46,19 +46,11 @@ public class NoteInputFragment extends DialogFragment {
         cancel = (Button) rootView.findViewById(R.id.note_input_cancel);
         submit = (Button) rootView.findViewById(R.id.note_input_submit);
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        cancel.setOnClickListener(v -> dismiss());
 
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                communicator.setNote(input.getText().toString());
-                dismiss();
-            }
+        submit.setOnClickListener(v -> {
+            communicator.setNote(input.getText().toString());
+            dismiss();
         });
         
         return rootView;

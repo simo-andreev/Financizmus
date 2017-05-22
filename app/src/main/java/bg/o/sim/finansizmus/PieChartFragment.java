@@ -4,7 +4,6 @@ package bg.o.sim.finansizmus;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,27 +46,21 @@ public class PieChartFragment extends Fragment {
 
         categoriesBySum = new ArrayList<>(cache.getAllExpenseCategories());
 
-        Collections.sort(categoriesBySum, new Comparator<Category>() {
-            @Override
-            public int compare(Category o1, Category o2) {
-                //This might mess up on near-equal sums, but that loss of precision should be acceptable here.
-                //Cane be negated by casting to float and checking if diff == 0 || diff < 0
-                return (int) (o1.getSum() - o2.getSum());
-            }
+        Collections.sort(categoriesBySum, (o1, o2) -> {
+            //This might mess up on near-equal sums, but that loss of precision should be acceptable here.
+            //Cane be negated by casting to float and checking if diff == 0 || diff < 0
+            return (int) (o1.getSum() - o2.getSum());
         });
 
         /* When a Category is 'clicked', opens a Transaction screen with that Category pre-set*/
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getTag() == null || ! (v.getTag() instanceof Category)) return;
-                TransactionFragment fragment = TransactionFragment.getNewInstance((Category) v.getTag());
-                getActivity().getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.main_fragment_container, fragment, getString(R.string.tag_fragment_transaction))
-                        .addToBackStack(getString(R.string.tag_fragment_transaction))
-                        .commit();
-            }
+        View.OnClickListener clickListener = v -> {
+            if (v.getTag() == null || ! (v.getTag() instanceof Category)) return;
+            TransactionFragment fragment = TransactionFragment.getNewInstance((Category) v.getTag());
+            getActivity().getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_fragment_container, fragment, getString(R.string.tag_fragment_transaction))
+                    .addToBackStack(getString(R.string.tag_fragment_transaction))
+                    .commit();
         };
 
         menu = new ImageButton[MENU_BUTTON_COUNT];
@@ -85,13 +78,10 @@ public class PieChartFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Collections.sort(categoriesBySum, new Comparator<Category>() {
-            @Override
-            public int compare(Category o1, Category o2) {
-                //This might mess up on near-equal sums, but that loss of precision should be acceptable here.
-                //Cane be negated by casting to float and checking if diff == 0 || diff < 0
-                return (int) (o1.getSum() - o2.getSum());
-            }
+        Collections.sort(categoriesBySum, (o1, o2) -> {
+            //This might mess up on near-equal sums, but that loss of precision should be acceptable here.
+            //Cane be negated by casting to float and checking if diff == 0 || diff < 0
+            return (int) (o1.getSum() - o2.getSum());
         });
 
         for (byte i = 0; i < MENU_BUTTON_COUNT; i++) {

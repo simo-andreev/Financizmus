@@ -79,19 +79,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userProfile.setText("Hi, " + cache.getLoggedUser().getEmail());
 
         LinearLayout header = (LinearLayout) headerView.findViewById(R.id.header);
-        header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-                drawer.closeDrawer(GravityCompat.START);
-            }
+        header.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+            drawer.closeDrawer(GravityCompat.START);
         });
 
-        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                //TODO - CHANGE DRAWER ITEMS OR WHATEVER
-            }
+        fm.addOnBackStackChangedListener(() -> {
+            //TODO - CHANGE DRAWER ITEMS OR WHATEVER
         });
     }
 
@@ -145,12 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.doubleBackToExitPressedOnce = true;
         Util.toastLong(this, getString(R.string.message_double_back));
 
-        Runnable delay = new Runnable() {
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        };
+        Runnable delay = () -> doubleBackToExitPressedOnce = false;
         new Handler().postDelayed(delay, 2000);
     }
 

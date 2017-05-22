@@ -54,18 +54,10 @@ public class AccountSelectionDialog extends DialogFragment {
         cancel = (Button) rootView.findViewById(R.id.account_selection_cancel);
         submit = (Button) rootView.findViewById(R.id.account_selection_submit);
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                communicator.setAccounts(selectedAccounts);
-                dismiss();
-            }
+        cancel.setOnClickListener(v -> dismiss());
+        submit.setOnClickListener(v -> {
+            communicator.setAccounts(selectedAccounts);
+            dismiss();
         });
 
 
@@ -78,7 +70,7 @@ public class AccountSelectionDialog extends DialogFragment {
 
     class CustomListAdapter extends BaseAdapter {
 
-        ArrayList<Account> data = new ArrayList<Account>(CacheManager.getInstance().getAllAccounts());
+        ArrayList<Account> data = new ArrayList<>(CacheManager.getInstance().getAllAccounts());
         private LayoutInflater inflater;
 
         @Override
@@ -112,16 +104,13 @@ public class AccountSelectionDialog extends DialogFragment {
             ImageView i = (ImageView) convertView.findViewById(R.id.account_selection_icon);
             i.setImageResource(acc.getIconId());
 
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (check.isChecked())
-                        selectedAccounts.remove(acc);
-                    else
-                        selectedAccounts.add(acc);
+            convertView.setOnClickListener(v -> {
+                if (check.isChecked())
+                    selectedAccounts.remove(acc);
+                else
+                    selectedAccounts.add(acc);
 
-                    check.setChecked(!check.isChecked());
-                }
+                check.setChecked(!check.isChecked());
             });
             return convertView;
         }

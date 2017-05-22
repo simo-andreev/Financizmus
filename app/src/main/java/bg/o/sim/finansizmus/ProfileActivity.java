@@ -1,13 +1,6 @@
 package bg.o.sim.finansizmus;
 
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-
-import bg.o.sim.finansizmus.utils.Util;
 
 //TODO - ! REVAMP OR REPLACE INTO/WITH SETTINGS ?
 public class ProfileActivity extends AppCompatActivity {

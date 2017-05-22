@@ -34,24 +34,16 @@ public class RegisterActivity extends AppCompatActivity {
 
         onNewIntent(getIntent());
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+        cancel.setOnClickListener(v -> {
+            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
 
-                //Save input when transitioning between Register and LoIn activities
-                if (userEmail.getText().length() > 1)
-                    i.putExtra(getString(R.string.EXTRA_USERMAIL), userEmail.getText().toString().trim());
+            //Save input when transitioning between Register and LoIn activities
+            if (userEmail.getText().length() > 1)
+                i.putExtra(getString(R.string.EXTRA_USERMAIL), userEmail.getText().toString().trim());
 
-                startActivity(i);
-            }
+            startActivity(i);
         });
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signUp();
-            }
-        });
+        signUp.setOnClickListener(v -> signUp());
     }
 
     @Override
@@ -84,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
             userEmail.setError(getString(R.string.error_empty_mail));
             return;
         }
-        if (!Util.validEmail(mail)) {
+        if (Util.validEmail(mail)) {
             userEmail.requestFocus();
             userEmail.setError(getString(R.string.error_invalid_email));
             userEmail.setText("");

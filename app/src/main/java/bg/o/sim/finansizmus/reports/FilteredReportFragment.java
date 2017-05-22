@@ -86,32 +86,23 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
 
         startDateView = (TextView) rootView.findViewById(R.id.filtered_report_date_start);
         startDateView.setText(startDate.toString(LONG_DATE_FORMAT));
-        startDateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerFragment datePicker = DatePickerFragment.newInstance(startDateListener, startDate);
-                datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
-            }
+        startDateView.setOnClickListener(v -> {
+            DatePickerFragment datePicker = DatePickerFragment.newInstance(startDateListener, startDate);
+            datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
         });
         endDateView = (TextView) rootView.findViewById(R.id.filtered_report_date_end);
         endDateView.setText(endDate.toString(LONG_DATE_FORMAT));
-        endDateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerFragment datePicker = DatePickerFragment.newInstance(endDateListener, endDate);
-                datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
-            }
+        endDateView.setOnClickListener(v -> {
+            DatePickerFragment datePicker = DatePickerFragment.newInstance(endDateListener, endDate);
+            datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
         });
 
         list = (ExpandableListView) rootView.findViewById(R.id.filtered_report_list);
         list.setAdapter(adapter);
 
-        filterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AccountSelectionDialog dialog = AccountSelectionDialog.newInstance(selectedAccounts, FilteredReportFragment.this);
-                dialog.show(getFragmentManager(), "Account Selection Tag");
-            }
+        filterButton.setOnClickListener(v -> {
+            AccountSelectionDialog dialog = AccountSelectionDialog.newInstance(selectedAccounts, FilteredReportFragment.this);
+            dialog.show(getFragmentManager(), "Account Selection Tag");
         });
 
         sortSpinner = (Spinner) rootView.findViewById(R.id.filtered_report_sort_spinner);
@@ -238,12 +229,9 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
             sum.setText("$ " + trans.getSum());
             date.setText(trans.getDate().toString(SHORT_DATE_FORMAT));
 
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TransactionDetailsFragment fragment = TransactionDetailsFragment.newInstance(trans);
-                    fragment.show(getFragmentManager(), "TransactionDetails");
-                }
+            convertView.setOnClickListener(v -> {
+                TransactionDetailsFragment fragment = TransactionDetailsFragment.newInstance(trans);
+                fragment.show(getFragmentManager(), "TransactionDetails");
             });
 
             return convertView;

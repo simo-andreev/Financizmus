@@ -21,9 +21,6 @@
 
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
 
     <style name="TransactionNumpadRow">
         <item name="android:layout_width">match_parent</item>

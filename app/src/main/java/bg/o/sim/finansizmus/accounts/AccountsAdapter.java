@@ -1,6 +1,5 @@
 package bg.o.sim.finansizmus.accounts;
 
-import android.app.Application;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
 
     AccountsAdapter(ArrayList<Account> accountsList, Context context, FragmentManager fm) {
         this.context = context;
-        this.accounts = new ArrayList<RowDisplayable>(accountsList);
+        this.accounts = new ArrayList<>(accountsList);
         this.fm = fm;
     }
 
@@ -60,46 +58,34 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
         //TODO                       v
         holder.accountSum.setText("TEMP");
 
-        holder.accountDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(context)
-                        .setIcon(account.getIconId())
-                        .setTitle(account.getName())
-                        .setMessage("Are you sure you want to DELETE this account? \n This can't be undone!")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (!CacheManager.getInstance().getAllAccounts().isEmpty()) {
-                                    //TODO !!! DELETE QUERIES IN DAO !!! *note: check details on SQL cascading delete.
+        holder.accountDelete.setOnClickListener(v -> new AlertDialog.Builder(context)
+                .setIcon(account.getIconId())
+                .setTitle(account.getName())
+                .setMessage("Are you sure you want to DELETE this account? \n This can't be undone!")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!CacheManager.getInstance().getAllAccounts().isEmpty()) {
+                            //TODO !!! DELETE QUERIES IN DAO !!! *note: check details on SQL cascading delete.
 //                                  DAO.getInstance(context).deleteAccount(account);
 
-                                    //TODO - REDO - this \/ mess
-                                    CacheManager.getInstance().removeAccount((Account) account);
-                                    accounts.remove(account);
-                                    AccountsAdapter.this.notifyDataSetChanged();
-                                } else {
-                                    Util.toastLong(context, "You can`t be without accounts!");
-                                }
+                            //TODO - REDO - this \/ mess
+                            CacheManager.getInstance().removeAccount((Account) account);
+                            accounts.remove(account);
+                            AccountsAdapter.this.notifyDataSetChanged();
+                        } else {
+                            Util.toastLong(context, "You can`t be without accounts!");
+                        }
 
-                            }
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
-            }
-        });
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show());
 
-        View.OnClickListener reportListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fm.beginTransaction()
-                        .replace(R.id.main_fragment_container, FilteredReportFragment.newInstance((Account) account), context.getString(R.string.tag_fragment_filtered_report))
-                        .addToBackStack(context.getString(R.string.tag_fragment_filtered_report))
-                        .commit();
-            }
-        };
-
-        Application
+        View.OnClickListener reportListener = v -> fm.beginTransaction()
+                .replace(R.id.main_fragment_container, FilteredReportFragment.newInstance((Account) account), context.getString(R.string.tag_fragment_filtered_report))
+                .addToBackStack(context.getString(R.string.tag_fragment_filtered_report))
+                .commit();
 
         holder.account.setOnClickListener(reportListener);
         holder.accountSum.setOnClickListener(reportListener);

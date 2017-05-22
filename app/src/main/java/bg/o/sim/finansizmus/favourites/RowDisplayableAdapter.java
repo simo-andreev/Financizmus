@@ -1,21 +1,5 @@
 package bg.o.sim.finansizmus.favourites;
 
-import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-
-
-import java.util.ArrayList;
-
-import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.model.RowDisplayable;
-import bg.o.sim.finansizmus.utils.Util;
-
 //TODO - !!! CONSIDER IF FAV_CATEGORY WILL REMAIN AS A FEATURE AND REMOVE OR FIX THIS CLASS !!!
 
 public class RowDisplayableAdapter /*extends RecyclerView.Adapter<RowDisplayableAdapter.IconViewHolder>*/{

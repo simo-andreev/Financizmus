@@ -1,8 +1,6 @@
 package bg.o.sim.finansizmus;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -41,36 +39,33 @@ public class LoginActivity extends AppCompatActivity {
 
         onNewIntent(getIntent());
 
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
+        View.OnClickListener listener = v -> {
+            switch (v.getId()) {
 
-                    /* If login pressed- display an "authenticating" dialog while waiting for db queries to finish*/
-                    case R.id.activity_login_login_button:
-                        if (validateForm()) {
+                /* If login pressed- display an "authenticating" dialog while waiting for db queries to finish*/
+                case R.id.activity_login_login_button:
+                    if (validateForm()) {
 //                            ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
 //                            progressDialog.setIndeterminate(true);
 //                            progressDialog.setMessage("Authenticating...");
 //                            progressDialog.show();
 
-                            dao.logInUser(userEmail.getText().toString().trim(), userPass.getText().toString().trim(), LoginActivity.this);
+                        dao.logInUser(userEmail.getText().toString().trim(), userPass.getText().toString().trim(), LoginActivity.this);
 
 //                            progressDialog.hide();
-                        }
+                    }
 
-                        break;
+                    break;
 
-                    /* If register pressed- start RegisterActivity with the e-mail input*/
-                    case R.id.activity_login_register_button:
-                        Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
-                        //TODO - [Y/n] pass 'this' to RegisterActivity to allow saving e-mail onBackPressed?
-                        if (userEmail.getText().length() > 1)
-                            i.putExtra(getString(R.string.EXTRA_USERMAIL), userEmail.getText().toString().trim());
+                /* If register pressed- start RegisterActivity with the e-mail input*/
+                case R.id.activity_login_register_button:
+                    Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+                    //TODO - [Y/n] pass 'this' to RegisterActivity to allow saving e-mail onBackPressed?
+                    if (userEmail.getText().length() > 1)
+                        i.putExtra(getString(R.string.EXTRA_USERMAIL), userEmail.getText().toString().trim());
 
-                        startActivity(i);
-                        break;
-                }
+                    startActivity(i);
+                    break;
             }
         };
 
@@ -94,32 +89,26 @@ public class LoginActivity extends AppCompatActivity {
         if (doubleBackToExitPressedOnce)
             this.finishAffinity();
         else {
-            this.doubleBackToExitPressedOnce = true;
+            doubleBackToExitPressedOnce = true;
             Util.toastLong(this, getString(R.string.message_double_back));
 
-            Runnable delay = new Runnable() {
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce = false;
-                }
-            };
+            Runnable delay = () -> doubleBackToExitPressedOnce = false;
             new Handler().postDelayed(delay, 2000);
         }
     }
 
 
-    //TODO - inspect, improve, implement,
     /**
      * Confirm if input conforms to min/max length and pass a regex-ing
      * @return <code>true</code> if the input fields' data is in a valid format.
      */
     private boolean validateForm() {
-        if (userEmail.getText().length() < Util.MIN_LENGTH_EMAIL || userEmail.getText().length() > Util.MAX_LENGTH_EMAIL || !Util.validEmail(userEmail.getText().toString().trim())) {
+        if (!Util.validEmail(userEmail.getText().toString().trim())) {
             userEmail.requestFocus();
             userEmail.setError(getString(R.string.error_invalid_email));
             return false;
         }
-        if (userPass.getText().length() < Util.MIN_LENGTH_PASSWORD || userPass.getText().length() > Util.MAX_LENGTH_PASSWORD) {
+        if (!Util.validPassword(userPass.getText().toString())) {
             userPass.requestFocus();
             userPass.setError(getString(R.string.error_password_length));
             return false;

@@ -17,11 +17,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_alignParentTop="true"
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/all_view_spacing_standard"
             android:focusable="false"
-            android:inputType="date"
             android:textColor="@color/colorRed"
 
             android:textSize="@dimen/all_text_size_standard" />
@@ -30,7 +28,6 @@
             android:id="@+id/transaction_radio"
             android:layout_width="match_parent"
             android:layout_height="@dimen/appbar_height"
-            android:layout_alignParentTop="true"
             android:orientation="horizontal">
 
             <RadioButton
@@ -69,7 +66,6 @@
             android:id="@+id/transaction_number_display_text"
             style="@style/RadioButtonIncomeExpense"
             android:gravity="center"
-            android:inputType="numberDecimal"
             android:maxLines="1"
             android:text="0"
             android:textSize="@dimen/all_text_size_huge" />

@@ -63,7 +63,6 @@ public class DAO {
      * @param activity LogInActivity instance for visualizations.
      * @return <code>true</code> if logIn successful. <code>false</code> if logIn fails.
      */
-    @Nullable
     public boolean logInUser(String mail, String password, final LoginActivity activity) {
         if (mail == null || password == null || mail.isEmpty() || password.isEmpty())
             return false;
@@ -123,7 +122,6 @@ public class DAO {
      * @param password User's password.
      * @return <code>false</code> if e-mail is already taken, <code>true</code> otherwise.
      */
-    @Nullable
     public boolean registerUser(final String name, final String mail, final String password, final RegisterActivity activity){
         if (name == null || mail == null || password == null || name.isEmpty() || mail.isEmpty() || password.isEmpty())
             return false;

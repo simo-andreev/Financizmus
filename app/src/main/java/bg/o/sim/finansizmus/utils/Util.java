@@ -1,6 +1,7 @@
 package bg.o.sim.finansizmus.utils;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -53,8 +54,7 @@ public abstract class Util {
      * @return <code>true</code> if e-mail passed is valid.
      */
     public static boolean validEmail(String mail) {
-        if (mail == null || mail.length() < MIN_LENGTH_EMAIL || mail.length() > MAX_LENGTH_EMAIL) return false;
-        return Util.emailRFC822.matcher(mail).matches();
+       return mail != null && Util.emailRFC822.matcher(mail).matches();
     }
 
     /**
@@ -63,7 +63,6 @@ public abstract class Util {
      * @return <code>true</code> if passPattern passed fulfils requirements.
      */
     public static boolean validPassword(String pass){
-        if (pass == null || pass.length() < MIN_LENGTH_PASSWORD || pass.length() > MAX_LENGTH_PASSWORD) return false;
-        return passPattern.matcher(pass).matches();
+        return pass != null passPattern.matcher(pass).matches();
     }
 }

@@ -40,20 +40,17 @@ public class AccountsFragment extends Fragment {
         moreAccountIconsList.setLayoutManager(new GridLayoutManager(getActivity(), 5));
 
         moreAccountIconsList.addOnItemTouchListener(
-                new RecyclerItemClickListener(context, moreAccountIconsList, new RecyclerItemClickListener.OnItemClickListener() {
+                new RecyclerItemClickListener(context, moreAccountIconsList, (view1, position) -> {
 
-                    @Override public void onItemClick(View view, int position) {
+                    AddCategoryDialogFragment dialog = new AddCategoryDialogFragment();
+                    Bundle arguments = new Bundle();
+                    int iconId = cache.getAccountIcons()[position];
 
-                        AddCategoryDialogFragment dialog = new AddCategoryDialogFragment();
-                        Bundle arguments = new Bundle();
-                        int iconId = cache.getAccountIcons()[position];
+                    arguments.putInt(getString(R.string.EXTRA_ICON), iconId);
+                    arguments.putString("ROW_DISPLAYABLE_TYPE", "ACCOUNT");
 
-                        arguments.putInt(getString(R.string.EXTRA_ICON), iconId);
-                        arguments.putString("ROW_DISPLAYABLE_TYPE", "ACCOUNT");
-
-                        dialog.setArguments(arguments);
-                        dialog.show(getFragmentManager(), String.valueOf(R.string.tag_dialog_add_category));
-                    }
+                    dialog.setArguments(arguments);
+                    dialog.show(getFragmentManager(), String.valueOf(R.string.tag_dialog_add_category));
                 })
         );
         return view;

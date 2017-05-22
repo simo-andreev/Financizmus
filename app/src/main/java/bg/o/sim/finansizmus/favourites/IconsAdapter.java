@@ -10,8 +10,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 
-import java.util.ArrayList;
-
 import bg.o.sim.finansizmus.R;
 
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconViewHolder>{
