@@ -63,6 +63,6 @@ public abstract class Util {
      * @return <code>true</code> if passPattern passed fulfils requirements.
      */
     public static boolean validPassword(String pass){
-        return pass != null passPattern.matcher(pass).matches();
+        return pass != null && passPattern.matcher(pass).matches();
     }
 }
