@@ -7,12 +7,11 @@ import java.io.Serializable;
 public class Account implements Serializable, RowDisplayable {
 
     private long id;
-    private long userFk;
 
     private String name;
     private int iconId;
 
-    protected Account(@NonNull String name, int iconId, long id, long userFk) {
+    protected Account(@NonNull String name, int iconId, long id) {
         //TODO - revisit validation
         if (name == null || name.isEmpty())
             throw new IllegalArgumentException("The Section name must be a non-null and not-empty string!");
@@ -23,7 +22,6 @@ public class Account implements Serializable, RowDisplayable {
         this.iconId = iconId;
 
         this.id = id;
-        this.userFk = userFk;
     }
 
     @Override

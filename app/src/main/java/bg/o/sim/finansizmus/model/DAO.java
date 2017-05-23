@@ -37,13 +37,11 @@ public class DAO {
 
     private static DAO instance;
     private DbHelper h;
-    private Context context;
 
     private DAO(@NonNull Context context) {
         if (context == null)
             throw new IllegalArgumentException("Context MUST ne non-null!!!");
         this.h = DbHelper.getInstance(context);
-        this.context = context;
     }
 
     public static DAO getInstance(Context context) {
@@ -74,8 +72,10 @@ public class DAO {
             String name = cursor.getString(cursor.getColumnIndex(DbHelper.USER_COLUMN_NAME));
             long id = cursor.getLong(cursor.getColumnIndex(DbHelper.USER_COLUMN_ID));
 
+            if (id < 0) return null;
+
             user = new User(mail, name, id);
-            return Cacher.setLoggedUser(user);
+            Cacher.setLoggedUser(user);
         }
 
         cursor.close();
@@ -131,7 +131,7 @@ public class DAO {
                     Cacher.setLoggedUser(user);
                     Intent i = new Intent(activity, MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    Util.toastLong(context, context.getString(R.string.message_hello) + " " + user.getName() + "!");
+                    Util.toastLong(activity, activity.getString(R.string.message_hello) + " " + user.getName() + "!");
                     activity.startActivity(i);
                     activity.finish();
                 }
@@ -181,7 +181,7 @@ public class DAO {
         }
         if (id < 0) return;
 
-        Cacher.addAccount( new Account(name, iconId, id, userId));
+        Cacher.addAccount( new Account(name, iconId, id));
         Log.i("DAO/LOADER: ", "INSERTED ACC: " + name);
     }
     public void insertCategory(String name, int iconId, long userId, Category.Type type) {
@@ -203,7 +203,7 @@ public class DAO {
 
         if (id < 0) return;
 
-        Cacher.addCategory( new Category(name, iconId, id, userId, type));
+        Cacher.addCategory( new Category(name, iconId, id, type));
         Log.i("DAO/LOADER: ", "INSERTED CAT: " + name);
     }
     public void insertTransaction(Category cat, Account acc, DateTime date, String note, double sum){

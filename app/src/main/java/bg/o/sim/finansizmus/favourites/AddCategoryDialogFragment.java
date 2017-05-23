@@ -19,22 +19,12 @@ import bg.o.sim.finansizmus.model.RowDisplayable;
 //TODO - extract Strings
 public class AddCategoryDialogFragment extends DialogFragment {
 
-    private ImageView icon;
-
-    private EditText categoryName;
-
-    private Button addCategory;
-    private Button cancel;
-
-    private DAO dao;
     private int iconId;
 
-    private Class type;
 
     public static AddCategoryDialogFragment getInstance(@IdRes int iconId, Class<? extends RowDisplayable> c) {
         AddCategoryDialogFragment f = new AddCategoryDialogFragment();
         f.iconId = iconId;
-        f.type = c;
         return f;
     }
 
@@ -43,12 +33,9 @@ public class AddCategoryDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_add_category, container, false);
 
-        dao = DAO.getInstance(getActivity());
-
-        icon = (ImageView) view.findViewById(R.id.add_category_icon);
-        categoryName = (EditText) view.findViewById(R.id.add_category_name);
-        cancel = (Button) view.findViewById(R.id.cancel_addition);
-        addCategory = (Button) view.findViewById(R.id.start_addition);
+        ImageView icon = (ImageView) view.findViewById(R.id.add_category_icon);
+        Button cancel = (Button) view.findViewById(R.id.cancel_addition);
+        Button addCategory = (Button) view.findViewById(R.id.start_addition);
 
         icon.setImageResource(iconId);
 

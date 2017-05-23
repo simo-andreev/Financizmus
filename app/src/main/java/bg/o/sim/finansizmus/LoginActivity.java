@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
 
     //Input fields and UI buttons
     private EditText userEmail, userPass;
-    private Button logIn, signUp;
 
     private ProgressDialog progressDialog;
     private LoaderReceiver loaderReceiver;
@@ -43,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
 
         userEmail = (EditText) findViewById(R.id.activity_login_email);
         userPass = (EditText) findViewById(R.id.activity_login_pass);
-        logIn = (Button) findViewById(R.id.activity_login_login_button);
-        signUp = (Button) findViewById(R.id.activity_login_register_button);
+        Button logIn = (Button) findViewById(R.id.activity_login_login_button);
+        Button signUp = (Button) findViewById(R.id.activity_login_register_button);
 
         onNewIntent(getIntent());
 

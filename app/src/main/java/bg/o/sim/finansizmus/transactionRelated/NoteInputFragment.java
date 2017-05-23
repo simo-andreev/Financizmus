@@ -20,7 +20,6 @@ public class NoteInputFragment extends DialogFragment {
     }
 
     private EditText input;
-    private Button cancel, submit;
     private NoteCommunicator communicator;
 
     @Override
@@ -43,8 +42,8 @@ public class NoteInputFragment extends DialogFragment {
         Bundle args = getArguments();
         if (args != null) input.setText(args.getString(getString(R.string.EXTRA_NOTE),""));
 
-        cancel = (Button) rootView.findViewById(R.id.note_input_cancel);
-        submit = (Button) rootView.findViewById(R.id.note_input_submit);
+        Button cancel = (Button) rootView.findViewById(R.id.note_input_cancel);
+        Button submit = (Button) rootView.findViewById(R.id.note_input_submit);
 
         cancel.setOnClickListener(v -> dismiss());
 

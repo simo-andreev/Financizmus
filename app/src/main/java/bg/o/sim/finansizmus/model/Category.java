@@ -8,20 +8,18 @@ public class Category implements RowDisplayable, Serializable {
     public enum Type {INCOME, EXPENSE}
 
     private final long id;
-    private final long userFk;
 
     private String name;
     private final Type type;
     private int iconId;
 
-    protected Category(@NonNull String name, int iconId, long id, long userFk, Type type) {
+    protected Category(@NonNull String name, int iconId, long id, Type type) {
         //TODO - VALIDATION!
         this.name = name;
         this.type = type;
         this.iconId = iconId;
 
         this.id = id;
-        this.userFk = userFk;
     }
 
     @Override

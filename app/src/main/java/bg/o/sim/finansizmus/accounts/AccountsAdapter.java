@@ -62,22 +62,19 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
                 .setIcon(account.getIconId())
                 .setTitle(account.getName())
                 .setMessage("Are you sure you want to DELETE this account? \n This can't be undone!")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (!Cacher.getAllAccounts().isEmpty()) {
-                            //TODO !!! DELETE QUERIES IN DAO !!! *note: check details on SQL cascading delete.
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    if (!Cacher.getAllAccounts().isEmpty()) {
+                        //TODO !!! DELETE QUERIES IN DAO !!! *note: check details on SQL cascading delete.
 //                                  DAO.getInstance(context).deleteAccount(account);
 
-                            //TODO - REDO - this \/ mess
-                            Cacher.removeAccount((Account) account);
-                            accounts.remove(account);
-                            AccountsAdapter.this.notifyDataSetChanged();
-                        } else {
-                            Util.toastLong(context, "You can`t be without accounts!");
-                        }
-
+                        //TODO - REDO - this \/ mess
+                        Cacher.removeAccount((Account) account);
+                        accounts.remove(account);
+                        AccountsAdapter.this.notifyDataSetChanged();
+                    } else {
+                        Util.toastLong(context, "You can`t be without accounts!");
                     }
+
                 })
                 .setNegativeButton("No", null)
                 .show());

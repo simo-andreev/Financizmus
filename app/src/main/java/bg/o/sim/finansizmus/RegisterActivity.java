@@ -3,7 +3,6 @@ package bg.o.sim.finansizmus;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -14,7 +13,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     //Input UI fields
     private EditText userName, userEmail, userPass, confirmPass;
-    private Button signUp, cancel;
 
     private DAO dao;
 
@@ -29,8 +27,8 @@ public class RegisterActivity extends AppCompatActivity {
         userPass = (EditText) findViewById(R.id.activity_register_pass0);
         confirmPass = (EditText) findViewById(R.id.activity_register_pass1);
 
-        signUp = (Button) findViewById(R.id.activity_register_button_register);
-        cancel = (Button) findViewById(R.id.activity_register_button_cancel);
+        Button signUp = (Button) findViewById(R.id.activity_register_button_register);
+        Button cancel = (Button) findViewById(R.id.activity_register_button_cancel);
 
         onNewIntent(getIntent());
 

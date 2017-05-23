@@ -23,8 +23,6 @@ import bg.o.sim.finansizmus.model.Account;
 public class AccountSelectionDialog extends DialogFragment {
 
     private HashSet<Account> selectedAccounts;
-    private ListView listView;
-    private Button cancel, submit;
     private Communicator communicator;
 
     /**
@@ -45,14 +43,14 @@ public class AccountSelectionDialog extends DialogFragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account_selection, container, false);
 
-        listView = (ListView) rootView.findViewById(R.id.account_selection_list);
+        ListView listView = (ListView) rootView.findViewById(R.id.account_selection_list);
         final CustomListAdapter listAdapter = new CustomListAdapter();
         listAdapter.inflater = inflater;
 
         listView.setAdapter(listAdapter);
 
-        cancel = (Button) rootView.findViewById(R.id.account_selection_cancel);
-        submit = (Button) rootView.findViewById(R.id.account_selection_submit);
+        Button cancel = (Button) rootView.findViewById(R.id.account_selection_cancel);
+        Button submit = (Button) rootView.findViewById(R.id.account_selection_submit);
 
         cancel.setOnClickListener(v -> dismiss());
         submit.setOnClickListener(v -> {

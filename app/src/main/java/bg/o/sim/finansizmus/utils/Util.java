@@ -1,7 +1,6 @@
 package bg.o.sim.finansizmus.utils;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 

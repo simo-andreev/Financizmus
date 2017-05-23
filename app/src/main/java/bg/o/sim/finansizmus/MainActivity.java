@@ -30,11 +30,7 @@ import bg.o.sim.finansizmus.utils.Util;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
-    private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-
-    private TextView userProfile;
-    private View headerView;
 
     private FragmentManager fm;
     private boolean doubleBackToExitPressedOnce = false;
@@ -49,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -66,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .addToBackStack(tag)
                     .commit();
         }
-        headerView = navigationView.getHeaderView(0);
-        userProfile = (TextView) headerView.findViewById(R.id.user_profile_link);
+        View headerView = navigationView.getHeaderView(0);
+        TextView userProfile = (TextView) headerView.findViewById(R.id.user_profile_link);
         userProfile.setText("Hi, " + Cacher.getLoggedUser().getEmail());
 
         LinearLayout header = (LinearLayout) headerView.findViewById(R.id.header);

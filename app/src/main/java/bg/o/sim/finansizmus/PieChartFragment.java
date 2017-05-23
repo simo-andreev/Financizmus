@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import bg.o.sim.finansizmus.model.Cacher;
-import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.transactionRelated.TransactionFragment;
 

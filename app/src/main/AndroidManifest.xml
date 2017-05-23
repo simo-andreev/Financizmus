@@ -11,23 +11,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
         <activity
             android:name=".RegisterActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".LoginActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
         <activity
             android:name=".ProfileActivity"
             android:screenOrientation="portrait" />
@@ -35,7 +41,7 @@
         <service
             android:name=".model.LoaderService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="false"/>
     </application>
 
 </manifest>

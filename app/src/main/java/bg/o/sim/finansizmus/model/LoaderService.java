@@ -58,7 +58,7 @@ public class LoaderService extends Service {
             return;
         }
 
-        if (loadedAccounts && loadedAccounts) {
+        if (loadedAccounts && loadedCategories) {
             loadTransactions();
         }
     }
@@ -117,7 +117,7 @@ public class LoaderService extends Service {
                 int icon = c.getInt(indxIcon);
                 String name = c.getString(indxName);
 
-                Account acc = new Account(name, icon, id, userId);
+                Account acc = new Account(name, icon, id);
                 Cacher.addAccount(acc);
             }
 
@@ -157,7 +157,7 @@ public class LoaderService extends Service {
                 String name = c.getString(indxName);
                 Category.Type type = c.getInt(indxIsExp) == 1 ? Category.Type.EXPENSE : Category.Type.INCOME;
 
-                Category cat = new Category(name, icon, id, userId, type);
+                Category cat = new Category(name, icon, id, type);
 
                 Cacher.addCategory(cat);
             }

@@ -32,7 +32,6 @@ import java.util.HashSet;
 
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.model.Cacher;
-import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.date.DatePickerFragment;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;
@@ -42,11 +41,9 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
     private static final DateTimeFormatter LONG_DATE_FORMAT = DateTimeFormat.forPattern("d MMMM, YYYY");
     private static final DateTimeFormatter SHORT_DATE_FORMAT = DateTimeFormat.forPattern("d MMM, YYYY");
 
-    private Button filterButton;
     private Spinner sortSpinner;
     private TextView startDateView, endDateView;
     private DateTime startDate, endDate;
-    private ExpandableListView list;
     private ExpandableAccountAdapter adapter;
     private HashSet<Account> selectedAccounts;
 
@@ -76,7 +73,7 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
         endDateListener = new EndDateSetListener();
         startDateListener = new StartDateSetListener();
 
-        filterButton = (Button) rootView.findViewById(R.id.filtered_report_filters_button);
+        Button filterButton = (Button) rootView.findViewById(R.id.filtered_report_filters_button);
 
         startDateView = (TextView) rootView.findViewById(R.id.filtered_report_date_start);
         startDateView.setText(startDate.toString(LONG_DATE_FORMAT));
@@ -91,7 +88,7 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
             datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
         });
 
-        list = (ExpandableListView) rootView.findViewById(R.id.filtered_report_list);
+        ExpandableListView list = (ExpandableListView) rootView.findViewById(R.id.filtered_report_list);
         list.setAdapter(adapter);
 
         filterButton.setOnClickListener(v -> {

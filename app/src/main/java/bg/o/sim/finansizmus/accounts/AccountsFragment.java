@@ -13,28 +13,22 @@ import android.view.ViewGroup;
 import bg.o.sim.finansizmus.MainActivity;
 import bg.o.sim.finansizmus.R;
 import bg.o.sim.finansizmus.model.Cacher;
-import bg.o.sim.finansizmus.model.Cacher;
 import bg.o.sim.finansizmus.favourites.AddCategoryDialogFragment;
 import bg.o.sim.finansizmus.favourites.IconsAdapter;
 
 public class AccountsFragment extends Fragment {
 
-    private Context context;
-
-    private RecyclerView accountsList;
-    private RecyclerView moreAccountIconsList;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accounts, container, false);
 
-        context = getActivity();
+        Context context = getActivity();
 
-        accountsList = (RecyclerView) view.findViewById(R.id.accounts_list);
+        RecyclerView accountsList = (RecyclerView) view.findViewById(R.id.accounts_list);
         accountsList.setAdapter(new AccountsAdapter(Cacher.getAllAccounts(), context, getFragmentManager()));
         accountsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        moreAccountIconsList = (RecyclerView) view.findViewById(R.id.accounts_icons_list);
+        RecyclerView moreAccountIconsList = (RecyclerView) view.findViewById(R.id.accounts_icons_list);
         moreAccountIconsList.setAdapter(new IconsAdapter(Cacher.getAccountIcons(), context));
         moreAccountIconsList.setLayoutManager(new GridLayoutManager(getActivity(), 5));
 
