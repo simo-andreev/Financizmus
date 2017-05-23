@@ -16,15 +16,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.model.CacheManager;
+import bg.o.sim.finansizmus.model.Cacher;
 import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.model.Transaction;
 
 public class ReportFragment extends Fragment {
-
-    private DAO dao;
-    private CacheManager cache;
 
     private ExpandableListView expandableListView;
     private ExpandableListAdapter listAdapter;
@@ -33,9 +30,6 @@ public class ReportFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_report, container, false);
-
-        dao = DAO.getInstance(getActivity());
-        cache = CacheManager.getInstance();
 
         expandableListView = (ExpandableListView) v.findViewById(R.id.inquiry_expandable_list);
 
@@ -81,7 +75,7 @@ public class ReportFragment extends Fragment {
         @Override
         public int getChildrenCount(int groupPosition) {
             Category cat = getGroup(groupPosition);
-            return cache.getCategoryTransactions(cat).size();
+            return Cacher.getCategoryTransactions(cat).size();
         }
 
         @Override
@@ -92,7 +86,7 @@ public class ReportFragment extends Fragment {
         @Override
         public Transaction getChild(int groupPosition, int childPosition) {
             Category cat = getGroup(groupPosition);
-            return cache.getCategoryTransactions(cat).get(childPosition);
+            return Cacher.getCategoryTransactions(cat).get(childPosition);
         }
 
         @Override
@@ -168,8 +162,8 @@ public class ReportFragment extends Fragment {
 
         protected void loadFromCache() {
             groups = new ArrayList<>();
-            groups.addAll(cache.getAllExpenseCategories());
-            groups.addAll(cache.getAllIncomeCategories());
+            groups.addAll(Cacher.getAllExpenseCategories());
+            groups.addAll(Cacher.getAllIncomeCategories());
         }
 
         @Override

@@ -61,7 +61,7 @@ public class AddCategoryDialogFragment extends DialogFragment {
 //                } else {
 //                    String name = categoryName.getText().toString();
 //                    if (type == Category.class)
-//                        dao.insertCategory(name, iconId, CacheManager.getInstance(), );
+//                        dao.insertCategory(name, iconId, Cacher.getInstance(), );
 //                    dismiss();
 //                }
         });

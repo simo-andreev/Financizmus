@@ -23,6 +23,8 @@ public abstract class Util {
 
     //Tag for Logging purposes
     private static final String TAG = "UTIL";
+    public static final String EXTRA_USER_OBJECT = "USER_OBJECT";
+    public static final String BROADCAST_LOADING_FINISH = "LOADING_FINISH";
 
 
     /**Display a long-lasting {@link Toast}*/

@@ -12,13 +12,13 @@ import android.view.ViewGroup;
 
 import bg.o.sim.finansizmus.MainActivity;
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.model.CacheManager;
+import bg.o.sim.finansizmus.model.Cacher;
+import bg.o.sim.finansizmus.model.Cacher;
 import bg.o.sim.finansizmus.favourites.AddCategoryDialogFragment;
 import bg.o.sim.finansizmus.favourites.IconsAdapter;
 
 public class AccountsFragment extends Fragment {
 
-    private CacheManager cache;
     private Context context;
 
     private RecyclerView accountsList;
@@ -29,14 +29,13 @@ public class AccountsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_accounts, container, false);
 
         context = getActivity();
-        cache = CacheManager.getInstance();
 
         accountsList = (RecyclerView) view.findViewById(R.id.accounts_list);
-        accountsList.setAdapter(new AccountsAdapter(cache.getAllAccounts(), context, getFragmentManager()));
+        accountsList.setAdapter(new AccountsAdapter(Cacher.getAllAccounts(), context, getFragmentManager()));
         accountsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         moreAccountIconsList = (RecyclerView) view.findViewById(R.id.accounts_icons_list);
-        moreAccountIconsList.setAdapter(new IconsAdapter(cache.getAccountIcons(), context));
+        moreAccountIconsList.setAdapter(new IconsAdapter(Cacher.getAccountIcons(), context));
         moreAccountIconsList.setLayoutManager(new GridLayoutManager(getActivity(), 5));
 
         moreAccountIconsList.addOnItemTouchListener(
@@ -44,7 +43,7 @@ public class AccountsFragment extends Fragment {
 
                     AddCategoryDialogFragment dialog = new AddCategoryDialogFragment();
                     Bundle arguments = new Bundle();
-                    int iconId = cache.getAccountIcons()[position];
+                    int iconId = Cacher.getAccountIcons()[position];
 
                     arguments.putInt(getString(R.string.EXTRA_ICON), iconId);
                     arguments.putString("ROW_DISPLAYABLE_TYPE", "ACCOUNT");

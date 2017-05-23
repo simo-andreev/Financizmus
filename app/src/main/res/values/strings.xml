@@ -119,6 +119,7 @@
     <string name="error_invalid_pass">Password should contain at least one digit, one special symbol,one small letter,and should be between 8 and 30 symbols.</string>
     <string name="error_mismatch_pass">Passwords must match</string>
     <string name="title_select_icon">select icon</string>
+    <string name="error_invalid_login">Wrong e-mail and/or password</string>
 
 
     <!-- TEMP & UNSORTED -->

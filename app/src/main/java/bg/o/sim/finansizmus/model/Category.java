@@ -55,7 +55,7 @@ public class Category implements RowDisplayable, Serializable {
 
     public double getSum() {
         double sum = 0;
-        for(Transaction t : CacheManager.getInstance().getCategoryTransactions(this))
+        for(Transaction t : Cacher.getCategoryTransactions(this))
             sum += t.getSum();
         return sum;
     }

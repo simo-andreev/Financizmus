@@ -4,14 +4,12 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -25,7 +23,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import bg.o.sim.finansizmus.MainActivity;
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.model.CacheManager;
+import bg.o.sim.finansizmus.model.Cacher;
 import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.date.DatePickerFragment;
 import bg.o.sim.finansizmus.model.Account;
@@ -35,7 +33,6 @@ import bg.o.sim.finansizmus.utils.Util;
 public class TransactionFragment extends Fragment implements DatePickerDialog.OnDateSetListener, NoteInputFragment.NoteCommunicator {
 
     private DAO dao;
-    private CacheManager cache;
 
     private boolean startedWithCategory;
 
@@ -109,13 +106,12 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         initializeUiObjects();
 
         dao = DAO.getInstance(getActivity());
-        cache = CacheManager.getInstance();
 
         catTypeRadio.check(R.id.transaction_radio_expense);
         startedWithCategory = checkForCategoryExtra();
 
-        final RowViewAdapter<Category> expenseAdapter = new RowViewAdapter<>(inflater, cache.getAllExpenseCategories());
-        final RowViewAdapter<Category> incomeAdapter = new RowViewAdapter<>(inflater, cache.getAllIncomeCategories());
+        final RowViewAdapter<Category> expenseAdapter = new RowViewAdapter<>(inflater, Cacher.getAllExpenseCategories());
+        final RowViewAdapter<Category> incomeAdapter = new RowViewAdapter<>(inflater, Cacher.getAllIncomeCategories());
         categorySelection.setAdapter(expenseAdapter);
 
         if (selectedType == null)
@@ -134,7 +130,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 break;
         }
 
-        accountSelection.setAdapter(new RowViewAdapter<>(inflater, cache.getAllAccounts()));
+        accountSelection.setAdapter(new RowViewAdapter<>(inflater, Cacher.getAllAccounts()));
 
         //Show the current date in a "d MMMM, YYYY" format.
         date = DateTime.now();

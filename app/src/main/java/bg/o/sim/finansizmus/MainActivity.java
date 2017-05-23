@@ -21,17 +21,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import bg.o.sim.finansizmus.accounts.AccountsFragment;
-import bg.o.sim.finansizmus.model.CacheManager;
+import bg.o.sim.finansizmus.model.Cacher;
 import bg.o.sim.finansizmus.model.Category;
-import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.transactionRelated.TransactionFragment;
 import bg.o.sim.finansizmus.utils.Util;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    private DAO dao;
-    private CacheManager cache;
 
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -39,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private TextView userProfile;
     private View headerView;
-    private View toolbarTitle;
 
     private FragmentManager fm;
     private boolean doubleBackToExitPressedOnce = false;
@@ -48,9 +43,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        dao = DAO.getInstance(this);
-        cache = CacheManager.getInstance();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -76,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         headerView = navigationView.getHeaderView(0);
         userProfile = (TextView) headerView.findViewById(R.id.user_profile_link);
-        userProfile.setText("Hi, " + cache.getLoggedUser().getEmail());
+        userProfile.setText("Hi, " + Cacher.getLoggedUser().getEmail());
 
         LinearLayout header = (LinearLayout) headerView.findViewById(R.id.header);
         header.setOnClickListener(v -> {

@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
             userEmail.setError(getString(R.string.error_empty_mail));
             return;
         }
-        if (Util.validEmail(mail)) {
+        if (!Util.validEmail(mail)) {
             userEmail.requestFocus();
             userEmail.setError(getString(R.string.error_invalid_email));
             userEmail.setText("");

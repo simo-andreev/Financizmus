@@ -23,7 +23,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 
 import bg.o.sim.finansizmus.LoginActivity;
 import bg.o.sim.finansizmus.MainActivity;
@@ -39,13 +38,11 @@ public class DAO {
     private static DAO instance;
     private DbHelper h;
     private Context context;
-    private CacheManager cache;
 
     private DAO(@NonNull Context context) {
         if (context == null)
             throw new IllegalArgumentException("Context MUST ne non-null!!!");
         this.h = DbHelper.getInstance(context);
-        this.cache = CacheManager.getInstance();
         this.context = context;
     }
 
@@ -56,16 +53,18 @@ public class DAO {
     }
 
     /**
-     * Checks the SQLite Db for a {@link User} entry, matching the parameters. If one is found, it loads the user's data and proceeds to MainActivity.
+     * Checks the SQLite Db for a {@link User} entry, matching the parameters. If one is found, //TODO - fill in doc
      *
      * @param mail     User e-mail.
      * @param password User password.
-     * @param activity LogInActivity instance for visualizations.
-     * @return <code>true</code> if logIn successful. <code>false</code> if logIn fails.
+     * @return <code>null</code> if logIn unsuccessful. User instance otherwise.
      */
-    public boolean logInUser(String mail, String password, final LoginActivity activity) {
+    @Nullable
+    public User logInUser(String mail, String password) {
         if (mail == null || password == null || mail.isEmpty() || password.isEmpty())
-            return false;
+            return null;
+
+        User user = null;
 
         String selection = DbHelper.USER_COLUMN_MAIL + " = ? AND " + DbHelper.USER_COLUMN_PASSWORD + " = ? ";
         String[] selectionArgs = {mail, password};
@@ -74,45 +73,13 @@ public class DAO {
         if (cursor.moveToNext()) {
             String name = cursor.getString(cursor.getColumnIndex(DbHelper.USER_COLUMN_NAME));
             long id = cursor.getLong(cursor.getColumnIndex(DbHelper.USER_COLUMN_ID));
-            User user = new User(mail, name, id);
 
-            cursor.close();
-
-            new AsyncTask<User, Void, User>() {
-
-                @Override
-                protected void onPreExecute() {
-                    //TODO - display loading "circlet" in activity
-                }
-
-                @Override
-                protected User doInBackground(User... params) {
-                    long id = params[0].getId();
-
-                    loadUserAccounts(id);
-                    loadUserCategories(id);
-                    loadUserTransactions(id);
-
-                    return params[0];
-                }
-
-                @Override
-                protected void onPostExecute(User user) {
-                    cache.setLoggedUser(user);
-                    Intent i = new Intent(activity, MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    Util.toastLong(context, context.getString(R.string.message_welcome_back) + " " + user.getName());
-                    activity.startActivity(i);
-                    activity.finish();
-                }
-            }.execute(user);
-
-            return true;
-
-        } else {
-            Util.toastShort(context, context.getString(R.string.message_invalid_login));
-            return false;
+            user = new User(mail, name, id);
+            return Cacher.setLoggedUser(user);
         }
+
+        cursor.close();
+        return user;
     }
 
     /**
@@ -161,7 +128,7 @@ public class DAO {
                 if (user == null)
                     Util.toastLong(activity, activity.getString(R.string.message_email_taken));
                 else{
-                    cache.setLoggedUser(user);
+                    Cacher.setLoggedUser(user);
                     Intent i = new Intent(activity, MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     Util.toastLong(context, context.getString(R.string.message_hello) + " " + user.getName() + "!");
@@ -195,7 +162,7 @@ public class DAO {
     }
 
     //TODO -  decide on insertMethod return type.
-    //TODO -- options include : object created / null, bool 'isSuccessful', db row id pk / -1.
+    //TODO -- options include : object created / null, bool 'isSuccessful', db id / -1.
 
     public void insertAccount(String name, int iconId, long userId) {
         if (name == null || name.isEmpty() || iconId <= 0 || userId < 0) return;
@@ -214,7 +181,7 @@ public class DAO {
         }
         if (id < 0) return;
 
-        cache.addAccount( new Account(name, iconId, id, userId));
+        Cacher.addAccount( new Account(name, iconId, id, userId));
         Log.i("DAO/LOADER: ", "INSERTED ACC: " + name);
     }
     public void insertCategory(String name, int iconId, long userId, Category.Type type) {
@@ -236,13 +203,13 @@ public class DAO {
 
         if (id < 0) return;
 
-        cache.addCategory( new Category(name, iconId, id, userId, type));
+        Cacher.addCategory( new Category(name, iconId, id, userId, type));
         Log.i("DAO/LOADER: ", "INSERTED CAT: " + name);
     }
     public void insertTransaction(Category cat, Account acc, DateTime date, String note, double sum){
         if (cat == null || acc == null || date == null || note == null || note.length() > 255 || sum <=0) return;
 
-        long userId = cache.getLoggedUser().getId();
+        long userId = Cacher.getLoggedUser().getId();
         long catId = cat.getId();
         long accId = acc.getId();
 
@@ -264,124 +231,15 @@ public class DAO {
 
         if (id < 0) return;
 
-        cache.addTransaction(new Transaction(id, userId, cat, acc, date, note, sum));
+        Cacher.addTransaction(new Transaction(id, userId, cat, acc, date, note, sum));
         Log.i("DAO/LOADER: ", "INSERTED TRANS: " + sum);
     }
 
-    private void loadUserAccounts(long userId) {
-
-        String[] columns = {
-                DbHelper.ACCOUNT_COLUMN_ID,
-                DbHelper.ACCOUNT_COLUMN_ICON_ID,
-                DbHelper.ACCOUNT_COLUMN_NAME
-        };
-
-        String selection = DbHelper.ACCOUNT_COLUMN_USER_FK + " = " + userId;
-
-        Cursor c = h.getReadableDatabase().query(DbHelper.TABLE_ACCOUNT, columns, selection, null, null, null, null);
-
-        int indxId = c.getColumnIndex(DbHelper.ACCOUNT_COLUMN_ID);
-        int indxIcon = c.getColumnIndex(DbHelper.ACCOUNT_COLUMN_ICON_ID);
-        int indxName = c.getColumnIndex(DbHelper.ACCOUNT_COLUMN_NAME);
-
-        while (c.moveToNext()) {
-            long id = c.getLong(indxId);
-            int icon = c.getInt(indxIcon);
-            String name = c.getString(indxName);
-
-            Account acc = new Account(name, icon, id, userId);
-            cache.addAccount(acc);
-            Log.wtf("LOADED ACC:", acc.getName());
-        }
-
-        c.close();
-    }
-    private void loadUserCategories(long userId) {
-
-        String[] columns = {
-                DbHelper.CATEGORY_COLUMN_ID,
-                DbHelper.CATEGORY_COLUMN_ICON_ID,
-                DbHelper.CATEGORY_COLUMN_NAME,
-                DbHelper.CATEGORY_COLUMN_IS_EXPENSE
-        };
-
-        String selection = DbHelper.CATEGORY_COLUMN_USER_FK + " = " + userId;
-
-        Cursor c = h.getReadableDatabase().query(DbHelper.TABLE_CATEGORY, columns, selection, null, null, null, null);
-
-        int indxId = c.getColumnIndex(DbHelper.CATEGORY_COLUMN_ID);
-        int indxIcon = c.getColumnIndex(DbHelper.CATEGORY_COLUMN_ICON_ID);
-        int indxName = c.getColumnIndex(DbHelper.CATEGORY_COLUMN_NAME);
-        int indxIsExp = c.getColumnIndex(DbHelper.CATEGORY_COLUMN_IS_EXPENSE);
-
-        while (c.moveToNext()) {
-
-            long id = c.getLong(indxId);
-            int icon = c.getInt(indxIcon);
-            String name = c.getString(indxName);
-            Category.Type type = c.getInt(indxIsExp) == 1 ? Category.Type.EXPENSE : Category.Type.INCOME;
-
-            Category cat = new Category(name, icon, id, userId, type);
-            Log.wtf("LOADED CAT:", cat.getName());
-
-            cache.addCategory(cat);
-        }
-
-        c.close();
-    }
-    private void loadUserTransactions(long userId) {
-
-        String[] columns = {
-                DbHelper.TRANSACTION_COLUMN_ACCOUNT_FK,
-                DbHelper.TRANSACTION_COLUMN_CATEGORY_FK,
-                DbHelper.TRANSACTION_COLUMN_ID,
-                DbHelper.TRANSACTION_COLUMN_DATE,
-                DbHelper.TRANSACTION_COLUMN_NOTE,
-                DbHelper.TRANSACTION_COLUMN_SUM
-        };
-        String selection = DbHelper.TRANSACTION_COLUMN_USER_FK + " = " + userId;
-
-        Cursor c = h.getReadableDatabase().query(DbHelper.TABLE_TRANSACTION, columns, selection, null, null, null, null);
-
-        int indxAccId = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_ACCOUNT_FK);
-        int indxCatId = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_CATEGORY_FK);
-        int indxId = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_ID);
-        int indxDate = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_DATE);
-        int indxNote = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_NOTE);
-        int indxSum = c.getColumnIndex(DbHelper.TRANSACTION_COLUMN_SUM);
-
-        Account acc;
-        Category cat;
-
-        while (c.moveToNext()) {
-
-            long accFk = c.getLong(indxAccId);
-            if ((acc = cache.getAccount(accFk)) == null)  Log.e("FFFFFFFFFFFFFFFFFFFF", "GGGGGGGGGGGGGGGGGGGGGGGGG");
-
-
-            long catFk = c.getLong(indxCatId);
-            if ((cat = cache.getCategory(catFk)) == null) Log.e("FFFFFFFFFFFFFFFFFFFF", "FFFFFFFFFFFFFFFFFFFFFFGF");
-
-            long id = c.getLong(indxId);
-
-            long timestamp = c.getLong(indxDate);
-            DateTime date = new DateTime(timestamp, DateTimeZone.UTC);
-
-            String note = c.getString(indxNote);
-
-            double sum = c.getDouble(indxSum);
-
-            cache.addTransaction(new Transaction(id, userId, cat, acc, date, note, sum));
-            Log.e("ASDASDASASSDSDDASSADASD", "" + cat.getName());
-        }
-
-        c.close();
-    }
 
     /**
      * Singleton {@link SQLiteOpenHelper} implementation class.
      */
-    private static class DbHelper extends SQLiteOpenHelper {
+    static class DbHelper extends SQLiteOpenHelper {
 
         //DataBase version const:
         private static final int DB_VERSION = 5;
@@ -390,11 +248,11 @@ public class DAO {
         private static final String DB_NAME = "finansizmus.db";
 
         //Table name consts
-        private static final String TABLE_USER = "user";
-        private static final String TABLE_ACCOUNT = "account";
-        private static final String TABLE_CATEGORY = "category";
-        private static final String TABLE_TRANSACTION = "transaction_table"; //3 hours...... 3 FUCKING hours of debugging and repetitive head injuries, because 'transaction' is not a valid SQL table name. fml  (ノಠ益ಠ)ノ彡┻━┻
-        private static final String[] TABLES = {TABLE_USER, TABLE_ACCOUNT, TABLE_CATEGORY, TABLE_TRANSACTION};
+        protected static final @TableName String TABLE_USER = "user";
+        protected static final @TableName String TABLE_ACCOUNT = "account";
+        protected static final @TableName String TABLE_CATEGORY = "category";
+        protected static final @TableName String TABLE_TRANSACTION = "transaction_table"; //3 hours...... 3 FUCKING hours of debugging and repetitive head injuries, because 'transaction' is not a valid SQL table name. fml  (ノಠ益ಠ)ノ彡┻━┻
+        protected static final String[] TABLES = {TABLE_USER, TABLE_ACCOUNT, TABLE_CATEGORY, TABLE_TRANSACTION};
         //Common column name consts for easier editing
         private static final String COMMON_COLUMN_ID = "_id";
         private static final String COMMON_COLUMN_USER_FK = "userFK";
@@ -408,24 +266,25 @@ public class DAO {
         private static final String USER_COLUMN_MAIL = "mail";
         private static final String USER_COLUMN_PASSWORD = "password";
         //ACCOUNT columns:
-        private static final String ACCOUNT_COLUMN_ID = COMMON_COLUMN_ID;
-        private static final String ACCOUNT_COLUMN_USER_FK = COMMON_COLUMN_USER_FK;
-        private static final String ACCOUNT_COLUMN_ICON_ID = COMMON_COLUMN_ICON_ID;
-        private static final String ACCOUNT_COLUMN_NAME = COMMON_COLUMN_NAME;
+        protected static final String ACCOUNT_COLUMN_ID = COMMON_COLUMN_ID;
+        protected static final String ACCOUNT_COLUMN_USER_FK = COMMON_COLUMN_USER_FK;
+        protected static final String ACCOUNT_COLUMN_ICON_ID = COMMON_COLUMN_ICON_ID;
+        protected static final String ACCOUNT_COLUMN_NAME = COMMON_COLUMN_NAME;
+        protected static final String[] ACCOUNT_QUERY_COLUMNS = { ACCOUNT_COLUMN_ID, ACCOUNT_COLUMN_ICON_ID, ACCOUNT_COLUMN_NAME};
         //CATEGORY columns:
-        private static final String CATEGORY_COLUMN_ID = COMMON_COLUMN_ID;
-        private static final String CATEGORY_COLUMN_USER_FK = COMMON_COLUMN_USER_FK;
-        private static final String CATEGORY_COLUMN_ICON_ID = COMMON_COLUMN_ICON_ID;
-        private static final String CATEGORY_COLUMN_NAME = COMMON_COLUMN_NAME;
-        private static final String CATEGORY_COLUMN_IS_EXPENSE = "isExpense";
+        protected static final String CATEGORY_COLUMN_ID = COMMON_COLUMN_ID;
+        protected static final String CATEGORY_COLUMN_USER_FK = COMMON_COLUMN_USER_FK;
+        protected static final String CATEGORY_COLUMN_ICON_ID = COMMON_COLUMN_ICON_ID;
+        protected static final String CATEGORY_COLUMN_NAME = COMMON_COLUMN_NAME;
+        protected static final String CATEGORY_COLUMN_IS_EXPENSE = "isExpense";
         //TRANSACTION columns:
-        private static final String TRANSACTION_COLUMN_ID = COMMON_COLUMN_ID;
-        private static final String TRANSACTION_COLUMN_USER_FK = COMMON_COLUMN_USER_FK;
-        private static final String TRANSACTION_COLUMN_CATEGORY_FK = "categoryFK";
-        private static final String TRANSACTION_COLUMN_ACCOUNT_FK = "accountFK";
-        private static final String TRANSACTION_COLUMN_DATE = "date";
-        private static final String TRANSACTION_COLUMN_NOTE = "note";
-        private static final String TRANSACTION_COLUMN_SUM = "sum";
+        protected static final String TRANSACTION_COLUMN_ID = COMMON_COLUMN_ID;
+        protected static final String TRANSACTION_COLUMN_USER_FK = COMMON_COLUMN_USER_FK;
+        protected static final String TRANSACTION_COLUMN_CATEGORY_FK = "categoryFK";
+        protected static final String TRANSACTION_COLUMN_ACCOUNT_FK = "accountFK";
+        protected static final String TRANSACTION_COLUMN_DATE = "date";
+        protected static final String TRANSACTION_COLUMN_NOTE = "note";
+        protected static final String TRANSACTION_COLUMN_SUM = "sum";
 
         //CREATE TABLE statements
         private static final String CREATE_USER = "CREATE TABLE " + TABLE_USER +
@@ -484,7 +343,7 @@ public class DAO {
          * @param context Context instance required for SQLiteOpenHelper constructor.
          * @return Singleton instance of the DbHelper.
          */
-        private static DbHelper getInstance(@NonNull Context context) {
+        protected static DbHelper getInstance(@NonNull Context context) {
             if (context == null)
                 throw new IllegalArgumentException("Context MUST ne non-null!!!");
             if (instance == null)

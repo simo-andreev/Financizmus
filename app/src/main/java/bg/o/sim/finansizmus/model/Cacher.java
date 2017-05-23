@@ -9,61 +9,53 @@ import java.util.concurrent.ConcurrentHashMap;
 import bg.o.sim.finansizmus.R;
 
 /**
- * The CacheManager Singleton class handles all operations related to accessing the cache collections.
+ * The Cacher abstract class handles all operations related to accessing the cache collections. All of that is done in a static manner with a bunch of "volatile" thrown in for flavour.
  */
-public class CacheManager {
+public abstract class Cacher {
 
-    private static CacheManager instance;
-
-    private static User loggedUser;
+    private static volatile User loggedUser;
 
     //I' not sure how good of an idea using a stored tottal is, but might as well try//
-    private double sum;
+    private static volatile double sum;
 
-    private ConcurrentHashMap<Long, Account> accounts;
-    private ConcurrentHashMap<Long, Category> incomeCategories;
-    private ConcurrentHashMap<Long, Category> expenseCategories;
+    private static volatile ConcurrentHashMap<Long, Account> accounts;
+    private static volatile  ConcurrentHashMap<Long, Category> incomeCategories;
+    private static volatile  ConcurrentHashMap<Long, Category> expenseCategories;
 
     //Using 2 collections might be redundant 'double' storage of data,
     //but is should make it easier to fetch data for a single Category OR a single Account
-    private ConcurrentHashMap<Long, ArrayList<Transaction>> accountTransactions;  //<AccountId - Transactions>
-    private ConcurrentHashMap<Long, ArrayList<Transaction>> categoryTransactions; //<CategoryId - Transactions>
+    private static volatile ConcurrentHashMap<Long, ArrayList<Transaction>> accountTransactions;  //<AccountId - Transactions>
+    private static volatile  ConcurrentHashMap<Long, ArrayList<Transaction>> categoryTransactions; //<CategoryId - Transactions>
 
 
     //TODO - if I ever get to the point of optimizing this thing: int[]s should provide better performance than Integer ArrLists.
     /* A collection that maintains a list of all Sections (both Income and Expense) and distributes input accordingly. */
-    private int[] expenseIcons;
-    private int[] accountIcons;
+    private static volatile int[] expenseIcons;
+    private static volatile int[] accountIcons;
 
-    private CacheManager() {
-        this.accounts = new ConcurrentHashMap<>();
-        this.incomeCategories = new ConcurrentHashMap<>();
-        this.expenseCategories = new ConcurrentHashMap<>();
-        this.accountTransactions = new ConcurrentHashMap<>();
-        this.categoryTransactions = new ConcurrentHashMap<>();
+    static{
+        if (accounts == null) accounts = new ConcurrentHashMap<>();
+        if (incomeCategories == null) incomeCategories = new ConcurrentHashMap<>();
+        if (expenseCategories == null) expenseCategories = new ConcurrentHashMap<>();
+        if (accountTransactions == null) accountTransactions = new ConcurrentHashMap<>();
+        if (categoryTransactions == null) categoryTransactions = new ConcurrentHashMap<>();
 
         loadIcons();
 
-        this.sum = 0.0;
+        sum = 0.0;
     }
 
-    public static CacheManager getInstance() {
-        if (instance == null)
-            instance = new CacheManager();
-        return instance;
-    }
-
-    public User getLoggedUser() {
+    public static User getLoggedUser() {
         return loggedUser;
     }
 
-    protected void setLoggedUser(@NonNull User loggedUser) {
+    protected static User setLoggedUser(@NonNull User loggedUser) {
         if (loggedUser == null)
             throw new IllegalArgumentException("The loggedUser value MUST be NON NULL!");
-        CacheManager.loggedUser = loggedUser;
+        return Cacher.loggedUser = loggedUser;
     }
 
-    protected boolean addCategory(Category category) {
+    protected static boolean addCategory(Category category) {
         if (category == null){
             Log.e("CACHE ADD CATEGORY: ", "CATEGORY == NULL");
             return false;
@@ -83,14 +75,14 @@ public class CacheManager {
         return false;
     }
 
-    protected boolean addAccount(Account acc) {
+    protected static boolean addAccount(Account acc) {
         if (acc == null || accounts.containsKey(acc.getId()))
             return false;
         accounts.put(acc.getId(), acc);
         return true;
     }
 
-    public boolean addTransaction(Transaction t) {
+    public static boolean addTransaction(Transaction t) {
         if (t == null || t.getAccount() == null || t.getCategory() == null) return false;
 
         long accId = t.getAccount().getId();
@@ -105,7 +97,7 @@ public class CacheManager {
         categoryTransactions.get(catId).add(t);
 
         //Increments the cached total sum. If the transaction is an expense -> decrements.
-        this.sum += t.getSum() * (t.getCategory().getType() == Category.Type.EXPENSE ? -1 : 1);
+        sum += t.getSum() * (t.getCategory().getType() == Category.Type.EXPENSE ? -1 : 1);
 
         //TODO - as-is this returns true without actually verifying that the Transaction was successfully added.
         Log.i("CACHED TRANS: ", t.getSum() + "$ " + "IN: " + t.getAccount().getName() + " FROM: " + t.getCategory().getName());
@@ -113,17 +105,17 @@ public class CacheManager {
     }
 
     //TODO - docs
-    public boolean removeAccount(Account account) {
-        return this.accounts.remove(account.getId()) != null;
+    public static boolean removeAccount(Account account) {
+        return accounts.remove(account.getId()) != null;
     }
 
-    public Category getCategory(long catFk) {
+    public static Category getCategory(long catFk) {
         if (expenseCategories.containsKey(catFk))return expenseCategories.get(catFk);
         if (incomeCategories.containsKey(catFk))return incomeCategories.get(catFk);
         return null;
     }
 
-    public Account getAccount(long accFk) {
+    public static Account getAccount(long accFk) {
         return accounts.get(accFk);
     }
 
@@ -132,52 +124,52 @@ public class CacheManager {
     /**
      * Empty all cache collections.
      */
-    public void clearCache() {
-        this.accounts = new ConcurrentHashMap<>();
-        this.incomeCategories = new ConcurrentHashMap<>();
-        this.expenseCategories = new ConcurrentHashMap<>();
-        this.accountTransactions = new ConcurrentHashMap<>();
-        this.categoryTransactions = new ConcurrentHashMap<>();
+    public static void clearCache() {
+        accounts = new ConcurrentHashMap<>();
+        incomeCategories = new ConcurrentHashMap<>();
+        expenseCategories = new ConcurrentHashMap<>();
+        accountTransactions = new ConcurrentHashMap<>();
+        categoryTransactions = new ConcurrentHashMap<>();
     }
 
-    public ArrayList<Account> getAllAccounts() {
+    public static ArrayList<Account> getAllAccounts() {
         return new ArrayList<>(accounts.values());
     }
 
-    public ArrayList<Category> getAllExpenseCategories() {
+    public static  ArrayList<Category> getAllExpenseCategories() {
         return new ArrayList<>(expenseCategories.values());
     }
 
-    public ArrayList<Category> getAllIncomeCategories() {
+    public static  ArrayList<Category> getAllIncomeCategories() {
         return new ArrayList<>(incomeCategories.values());
     }
 
-    public ArrayList<Transaction> getAccountTransactions(Account account) {
+    public static  ArrayList<Transaction> getAccountTransactions(Account account) {
         accountTransactions.putIfAbsent(account.getId(), new ArrayList<>());
         return accountTransactions.get(account.getId());
     }
 
-    public ArrayList<Transaction> getCategoryTransactions(Category category) {
+    public static  ArrayList<Transaction> getCategoryTransactions(Category category) {
         categoryTransactions.putIfAbsent(category.getId(), new ArrayList<>());
         return new ArrayList<>(categoryTransactions.get(category.getId()));
     }
 
 
-    public double getCurrentTotal() {
+    public static  double getCurrentTotal() {
         return sum;
     }
 
 
-    public int[] getExpenseIcons() {
+    public static  int[] getExpenseIcons() {
         return expenseIcons;
     }
 
-    public int[] getAccountIcons() {
+    public static  int[] getAccountIcons() {
         return accountIcons;
     }
 
 
-    private void loadIcons() {
+    private static void loadIcons() {
         int[] tempExpense = {
                 R.mipmap.car,
                 R.mipmap.clothes,

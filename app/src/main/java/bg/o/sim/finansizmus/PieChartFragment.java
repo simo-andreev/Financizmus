@@ -14,9 +14,8 @@ import com.github.mikephil.charting.charts.PieChart;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
-import bg.o.sim.finansizmus.model.CacheManager;
+import bg.o.sim.finansizmus.model.Cacher;
 import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.transactionRelated.TransactionFragment;
@@ -27,9 +26,6 @@ public class PieChartFragment extends Fragment {
 
     private static final byte MENU_BUTTON_COUNT = 12;
 
-    private DAO dao;
-    private CacheManager cache;
-
     private PieChart chart;
     private ImageButton[] menu;
 
@@ -39,12 +35,9 @@ public class PieChartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pie_chart, container, false);
 
-        dao = DAO.getInstance(getActivity());
-        cache = CacheManager.getInstance();
-
         chart = (PieChart) rootView.findViewById(R.id.pie_chart_chart);
 
-        categoriesBySum = new ArrayList<>(cache.getAllExpenseCategories());
+        categoriesBySum = new ArrayList<>(Cacher.getAllExpenseCategories());
 
         Collections.sort(categoriesBySum, (o1, o2) -> {
             //This might mess up on near-equal sums, but that loss of precision should be acceptable here.

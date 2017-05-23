@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 
 import java.util.HashMap;
 
-import bg.o.sim.finansizmus.model.CacheManager;
+import bg.o.sim.finansizmus.model.Cacher;
 import bg.o.sim.finansizmus.reports.ReportFragment;
 
 public class HomeFragment extends Fragment {
@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((MainActivity) getActivity()).setDrawerCheck(R.id.nav_unchecker);
-        totalSumButton.setText("$ " + CacheManager.getInstance().getCurrentTotal());
+        totalSumButton.setText("$ " + Cacher.getCurrentTotal());
     }
 
     private class layoutDragListener implements View.OnTouchListener {

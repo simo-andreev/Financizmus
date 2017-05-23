@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.model.CacheManager;
+import bg.o.sim.finansizmus.model.Cacher;
 import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.RowDisplayable;
 import bg.o.sim.finansizmus.reports.FilteredReportFragment;
@@ -65,12 +65,12 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (!CacheManager.getInstance().getAllAccounts().isEmpty()) {
+                        if (!Cacher.getAllAccounts().isEmpty()) {
                             //TODO !!! DELETE QUERIES IN DAO !!! *note: check details on SQL cascading delete.
 //                                  DAO.getInstance(context).deleteAccount(account);
 
                             //TODO - REDO - this \/ mess
-                            CacheManager.getInstance().removeAccount((Account) account);
+                            Cacher.removeAccount((Account) account);
                             accounts.remove(account);
                             AccountsAdapter.this.notifyDataSetChanged();
                         } else {
