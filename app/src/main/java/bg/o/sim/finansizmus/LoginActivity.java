@@ -17,6 +17,8 @@ import bg.o.sim.finansizmus.model.LoaderService;
 import bg.o.sim.finansizmus.model.User;
 import bg.o.sim.finansizmus.utils.Util;
 
+import static bg.o.sim.finansizmus.utils.Const.EXTRA_USERMAIL;
+
 //TODO - DOCUMENTATION
 //TODO - Store some sort of identifier in shPrefs after logIn, to allow automatic log-in on start-up. I'd like to avoid full user credentials, just feels wrong.
 
@@ -78,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
                     //TODO - [Y/n] pass 'this' to RegisterActivity to allow saving e-mail onBackPressed?
                     if (userEmail.getText().length() > 1)
-                        i.putExtra(getString(R.string.EXTRA_USERMAIL), userEmail.getText().toString().trim());
+                        i.putExtra(EXTRA_USERMAIL, userEmail.getText().toString().trim());
 
                     startActivity(i);
                     break;
@@ -94,9 +96,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         //Save input when transitioning between Register and LoIn activities
         Bundle extras = intent.getExtras();
-        final String extraKey = getString(R.string.EXTRA_USERMAIL);
-        if (extras != null && extras.containsKey(extraKey))
-            userEmail.setText(extras.getString(extraKey));
+        if (extras != null && extras.containsKey(EXTRA_USERMAIL))
+            userEmail.setText(extras.getString(EXTRA_USERMAIL));
     }
 
     /**Require 2 consecutive presses of the back-button within 2 sec of each-other in order to close app.*/

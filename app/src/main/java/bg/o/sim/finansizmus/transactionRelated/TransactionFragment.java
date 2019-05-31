@@ -30,6 +30,8 @@ import bg.o.sim.finansizmus.model.Account;
 import bg.o.sim.finansizmus.model.Category;
 import bg.o.sim.finansizmus.utils.Util;
 
+import static bg.o.sim.finansizmus.utils.Const.EXTRA_NOTE;
+
 public class TransactionFragment extends Fragment implements DatePickerDialog.OnDateSetListener, NoteInputFragment.NoteCommunicator {
 
     private DAO dao;
@@ -173,7 +175,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             NoteInputFragment inputFragment = new NoteInputFragment();
 
             Bundle b = new Bundle();
-            b.putString(getString(R.string.EXTRA_NOTE), noteInput.getText().toString());
+            b.putString(EXTRA_NOTE, noteInput.getText().toString());
             inputFragment.setArguments(b);
 
             inputFragment.show(getFragmentManager(), getString(R.string.tag_dialog_note_input));

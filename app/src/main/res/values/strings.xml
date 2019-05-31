@@ -1,5 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY applciationName "Finansizmus">
+]>
+
 <resources>
-    <string name="app_name">Finansizmus</string>
+
+    <string name="app_name">&applciationName;</string>
     <string name="test_text">TEST_TEXT</string>
     <string name="or_textview">- - OR - -</string>
 
@@ -8,17 +14,6 @@
     <!-- OVERFLOW MENU -->
     <string name="currency">Currency</string>
     <string name="settings">Settings</string>
-
-    
-    <!-- EXTRA'S KEYS -->
-    <string name="EXTRA_DATE">EXTRA_DATE</string>
-    <string name="EXTRA_ICON">EXTRA_ICON</string>
-    <string name="EXTRA_NOTE">EXTRA_NOTE</string>
-    <string name="EXTRA_ACCOUNT">EXTRA_ACCOUNT</string>
-    <string name="EXTRA_CATEGORY">EXTRA_CATEGORY</string>
-    <string name="EXTRA_TRANSACTION">EXTRA_TRANSACTION</string>
-    <string name="EXTRA_USERNAME">EXTRA_USERNAME</string>
-    <string name="EXTRA_USERMAIL">EXTRA_USERMAIL</string>
 
 
     <!-- NAVIGATION ITEMS -->
@@ -82,7 +77,6 @@
     <string name="tag_fragment_filtered_report">filtered_report_tag</string>
 
 
-
     <!-- MESSAGES & TOASTIES -->
     <string name="message_transaction_success">Transaction successful!</string>
     <string name="message_transaction_failure">Transaction failed!</string>
@@ -92,7 +86,7 @@
     <string name="message_invalid_login">Wrong e-mail or password</string>
     <string name="message_email_taken">Sorry, but this e-mail address is already taken.</string>
     <string name="message_welcome_back">Welcome back</string>
-    <string name="message_hello">Welcome to Finansizums</string>
+    <string name="message_hello">Welcome to &applciationName;</string>
     <string name="message_sql_exception">An unexpected error occurred. The app will shortly restart. We are sorry for the inconvenience.</string>
 
 
@@ -115,7 +109,7 @@
     <string name="user_name">user name</string>
     <string name="error_empty_name">User names can not be empty</string>
     <string name="error_empty_mail">User e-mail can not be empty</string>
-    <string name="error_empty_pass">Passwords must be atleast 8 characters long</string>
+    <string name="error_empty_pass">Passwords must be at-least 8 characters long</string>
     <string name="error_invalid_pass">Password should contain at least one digit, one special symbol,one small letter,and should be between 8 and 30 symbols.</string>
     <string name="error_mismatch_pass">Passwords must match</string>
     <string name="title_select_icon">select icon</string>

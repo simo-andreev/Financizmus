@@ -16,6 +16,8 @@ import bg.o.sim.finansizmus.model.Cacher;
 import bg.o.sim.finansizmus.favourites.AddCategoryDialogFragment;
 import bg.o.sim.finansizmus.favourites.IconsAdapter;
 
+import static bg.o.sim.finansizmus.utils.Const.EXTRA_ICON;
+
 public class AccountsFragment extends Fragment {
 
     @Override
@@ -39,7 +41,7 @@ public class AccountsFragment extends Fragment {
                     Bundle arguments = new Bundle();
                     int iconId = Cacher.getAccountIcons()[position];
 
-                    arguments.putInt(getString(R.string.EXTRA_ICON), iconId);
+                    arguments.putInt(EXTRA_ICON, iconId);
                     arguments.putString("ROW_DISPLAYABLE_TYPE", "ACCOUNT");
 
                     dialog.setArguments(arguments);

@@ -7,7 +7,7 @@ import android.widget.Toast;
 import java.util.regex.Pattern;
 
 /**
- * Abstract Class that holds a number of utility static methods na consts.
+ * Abstract Class that holds a number of utility static methods na constants.
  */
 public abstract class Util {
 

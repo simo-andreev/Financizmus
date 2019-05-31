@@ -12,6 +12,8 @@ import android.widget.EditText;
 
 import bg.o.sim.finansizmus.R;
 
+import static bg.o.sim.finansizmus.utils.Const.EXTRA_NOTE;
+
 
 public class NoteInputFragment extends DialogFragment {
 
@@ -40,7 +42,7 @@ public class NoteInputFragment extends DialogFragment {
         input = (EditText) rootView.findViewById(R.id.note_input_text);
 
         Bundle args = getArguments();
-        if (args != null) input.setText(args.getString(getString(R.string.EXTRA_NOTE),""));
+        if (args != null) input.setText(args.getString(EXTRA_NOTE,""));
 
         Button cancel = (Button) rootView.findViewById(R.id.note_input_cancel);
         Button submit = (Button) rootView.findViewById(R.id.note_input_submit);

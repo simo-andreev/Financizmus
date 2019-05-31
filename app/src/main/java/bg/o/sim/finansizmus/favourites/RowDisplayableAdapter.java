@@ -26,7 +26,7 @@ public class RowDisplayableAdapter /*extends RecyclerView.Adapter<RowDisplayable
 //    public void onBindViewHolder(final RowDisplayableAdapter.IconViewHolder holder, final int position) {
 //        final RowDisplayable categoryExpense = categories.get(position);
 //        holder.image.setImageResource(categoryExpense.getIconId());
-//        holder.image.setBackground(ContextCompat.getDrawable(context, R.drawable.fav_icon_backgroud));
+//        holder.image.setBackground(ContextCompat.getDrawable(context, R.drawable.fav_icon_background));
 //
 //        holder.image.setOnClickListener(new View.OnClickListener() {
 //            @Override

@@ -6,7 +6,7 @@ package bg.o.sim.finansizmus.model;
 //TODO - if possible, avoid making it an always-online app, rather, require networking only on registration and occasional server-sync.
 
 
-//TODO!!! - hash dem passwords boi. The whole plain-text storing, manipulating and transferring of User psswrds thing is pure cancer.
+//TODO!!! - hash dem passwords boi. The whole plain-text storing, manipulating and transferring of User passwords thing is pure cancer.
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -109,7 +109,7 @@ public class DAO {
                 } catch (SQLiteException e){
                     // From what I gather, insertWithOnConflict is 'obsolete' and doesn't work properly... since at-least 2010...
                     // https://issuetracker.google.com/issues/36923483
-                    // but our overlords at Google decided that marking that in the method docs or a @Deprecated annot
+                    // but our overlords at Google decided that marking that in the method docs or a @Deprecated annotation
                     // would make life too easy I guess.
                     // TODO - reconsider using plain .insert() or check if insertOrThrow() works as documented.
                 }

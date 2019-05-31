@@ -15,7 +15,7 @@ public abstract class Cacher {
 
     private static volatile User loggedUser;
 
-    //I' not sure how good of an idea using a stored tottal is, but might as well try//
+    //I' not sure how good of an idea using a stored total is, but might as well try//
     private static volatile double sum;
 
     private static volatile ConcurrentHashMap<Long, Account> accounts;

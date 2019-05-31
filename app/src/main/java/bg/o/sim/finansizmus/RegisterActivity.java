@@ -9,6 +9,8 @@ import android.widget.EditText;
 import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.utils.Util;
 
+import static bg.o.sim.finansizmus.utils.Const.EXTRA_USERMAIL;
+
 public class RegisterActivity extends AppCompatActivity {
 
     //Input UI fields
@@ -37,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             //Save input when transitioning between Register and LoIn activities
             if (userEmail.getText().length() > 1)
-                i.putExtra(getString(R.string.EXTRA_USERMAIL), userEmail.getText().toString().trim());
+                i.putExtra(EXTRA_USERMAIL, userEmail.getText().toString().trim());
 
             startActivity(i);
         });
@@ -49,9 +51,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         //Save input when transitioning between Register and LoIn activities
         Bundle extras = intent.getExtras();
-        final String extraKey = getString(R.string.EXTRA_USERMAIL);
-        if (extras != null && extras.containsKey(extraKey))
-            userEmail.setText(extras.getString(extraKey));
+        if (extras != null && extras.containsKey(EXTRA_USERMAIL))
+            userEmail.setText(extras.getString(EXTRA_USERMAIL));
     }
 
 
