@@ -73,22 +73,22 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
         endDateListener = new EndDateSetListener();
         startDateListener = new StartDateSetListener();
 
-        Button filterButton = (Button) rootView.findViewById(R.id.filtered_report_filters_button);
+        Button filterButton = rootView.findViewById(R.id.filtered_report_filters_button);
 
-        startDateView = (TextView) rootView.findViewById(R.id.filtered_report_date_start);
+        startDateView = rootView.findViewById(R.id.filtered_report_date_start);
         startDateView.setText(startDate.toString(LONG_DATE_FORMAT));
         startDateView.setOnClickListener(v -> {
             DatePickerFragment datePicker = DatePickerFragment.newInstance(startDateListener, startDate);
             datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
         });
-        endDateView = (TextView) rootView.findViewById(R.id.filtered_report_date_end);
+        endDateView = rootView.findViewById(R.id.filtered_report_date_end);
         endDateView.setText(endDate.toString(LONG_DATE_FORMAT));
         endDateView.setOnClickListener(v -> {
             DatePickerFragment datePicker = DatePickerFragment.newInstance(endDateListener, endDate);
             datePicker.show(getFragmentManager(), getString(R.string.tag_dialog_date_picker));
         });
 
-        ExpandableListView list = (ExpandableListView) rootView.findViewById(R.id.filtered_report_list);
+        ExpandableListView list = rootView.findViewById(R.id.filtered_report_list);
         list.setAdapter(adapter);
 
         filterButton.setOnClickListener(v -> {
@@ -96,7 +96,7 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
             dialog.show(getFragmentManager(), "Account Selection Tag");
         });
 
-        sortSpinner = (Spinner) rootView.findViewById(R.id.filtered_report_sort_spinner);
+        sortSpinner = rootView.findViewById(R.id.filtered_report_sort_spinner);
         sortSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, Transaction.getComparators()));
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -187,9 +187,9 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
 
             Account acc = getGroup(groupPosition);
 
-            ImageView icon = (ImageView) convertView.findViewById(R.id.report_group_icon);
-            TextView title = (TextView) convertView.findViewById(R.id.report_group_title);
-            TextView sum = (TextView) convertView.findViewById(R.id.report_group_sum);
+            ImageView icon = convertView.findViewById(R.id.report_group_icon);
+            TextView title = convertView.findViewById(R.id.report_group_title);
+            TextView sum = convertView.findViewById(R.id.report_group_sum);
 
             icon.setImageResource(acc.getIconId());
             title.setText(acc.getName());
@@ -210,10 +210,10 @@ public class FilteredReportFragment extends Fragment implements AccountSelection
 
             final Transaction trans = getChild(groupPosition, childPosition);
 
-            ImageView icon = (ImageView) convertView.findViewById(R.id.report_item_icon);
-            TextView title = (TextView) convertView.findViewById(R.id.report_item_title);
-            TextView sum = (TextView) convertView.findViewById(R.id.report_item_sum);
-            TextView date = (TextView) convertView.findViewById(R.id.report_item_date);
+            ImageView icon = convertView.findViewById(R.id.report_item_icon);
+            TextView title = convertView.findViewById(R.id.report_item_title);
+            TextView sum = convertView.findViewById(R.id.report_item_sum);
+            TextView date = convertView.findViewById(R.id.report_item_date);
 
             icon.setImageResource(trans.getCategory().getIconId());
             title.setText(trans.getCategory().getName());

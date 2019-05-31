@@ -26,11 +26,11 @@ public class AccountsFragment extends Fragment {
 
         Context context = getActivity();
 
-        RecyclerView accountsList = (RecyclerView) view.findViewById(R.id.accounts_list);
+        RecyclerView accountsList = view.findViewById(R.id.accounts_list);
         accountsList.setAdapter(new AccountsAdapter(Cacher.getAllAccounts(), context, getFragmentManager()));
         accountsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        RecyclerView moreAccountIconsList = (RecyclerView) view.findViewById(R.id.accounts_icons_list);
+        RecyclerView moreAccountIconsList = view.findViewById(R.id.accounts_icons_list);
         moreAccountIconsList.setAdapter(new IconsAdapter(Cacher.getAccountIcons(), context));
         moreAccountIconsList.setLayoutManager(new GridLayoutManager(getActivity(), 5));
 

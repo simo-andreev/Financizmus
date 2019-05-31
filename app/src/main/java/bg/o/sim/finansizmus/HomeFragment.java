@@ -28,7 +28,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        reportLayout = (LinearLayout) rootView.findViewById(R.id.report_layout);
+        reportLayout = rootView.findViewById(R.id.report_layout);
 
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
             ft.add(R.id.home_report_container, new ReportFragment(), getString(R.string.tag_fragment_home_report));
         ft.commit();
 
-        totalSumButton = (Button) rootView.findViewById(R.id.total_sum_btn);
+        totalSumButton = rootView.findViewById(R.id.total_sum_btn);
 
 
         reportLayout.setOnTouchListener(new layoutDragListener());

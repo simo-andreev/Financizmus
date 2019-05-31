@@ -42,10 +42,10 @@ public class LoginActivity extends AppCompatActivity {
 
         dao = DAO.getInstance(this);
 
-        userEmail = (EditText) findViewById(R.id.activity_login_email);
-        userPass = (EditText) findViewById(R.id.activity_login_pass);
-        Button logIn = (Button) findViewById(R.id.activity_login_login_button);
-        Button signUp = (Button) findViewById(R.id.activity_login_register_button);
+        userEmail = findViewById(R.id.activity_login_email);
+        userPass = findViewById(R.id.activity_login_pass);
+        Button logIn = findViewById(R.id.activity_login_login_button);
+        Button signUp = findViewById(R.id.activity_login_register_button);
 
         onNewIntent(getIntent());
 

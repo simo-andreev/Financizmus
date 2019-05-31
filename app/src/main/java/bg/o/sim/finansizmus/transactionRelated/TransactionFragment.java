@@ -419,32 +419,32 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
      * Moved all the .findViewById([...]) methods here, because the onCreateView was getting a bit cluttered.
      */
     private void initializeUiObjects() {
-        catTypeRadio = (RadioGroup) rootView.findViewById(R.id.transaction_radio);
-        dateDisplay = (TextView) rootView.findViewById(R.id.transaction_date_display);
+        catTypeRadio = rootView.findViewById(R.id.transaction_radio);
+        dateDisplay = rootView.findViewById(R.id.transaction_date_display);
 
-        noteInput = (TextView) rootView.findViewById(R.id.transaction_note_input);
-        accountSelection = (Spinner) rootView.findViewById(R.id.transaction_account_spinner);
+        noteInput = rootView.findViewById(R.id.transaction_note_input);
+        accountSelection = rootView.findViewById(R.id.transaction_account_spinner);
 
         numDisplayBase = rootView.findViewById(R.id.transaction_number_display);
-        numDisplay = (TextView) rootView.findViewById(R.id.transaction_number_display_text);
-        backspace = (ImageButton) rootView.findViewById(R.id.transaction_number_display_backspace);
+        numDisplay = rootView.findViewById(R.id.transaction_number_display_text);
+        backspace = rootView.findViewById(R.id.transaction_number_display_backspace);
 
         numpad = rootView.findViewById(R.id.transaction_numpad);
 
         //Seeing as they act almost identically, put all numeric buttons in an array for easier manipulation.
         numButtons = new TextView[10];
         for (int i = 0; i <= 9; i++)
-            numButtons[i] = (TextView) rootView.findViewById(getResources().getIdentifier("transaction_numpad_" + i, "id", getActivity().getPackageName()));
+            numButtons[i] = rootView.findViewById(getResources().getIdentifier("transaction_numpad_" + i, "id", getActivity().getPackageName()));
 
-        decimal = (TextView) rootView.findViewById(R.id.transaction_numpad_decimal);
-        equals = (TextView) rootView.findViewById(R.id.transaction_numpad_equals);
-        divide = (TextView) rootView.findViewById(R.id.transaction_numpad_divide);
-        multiply = (TextView) rootView.findViewById(R.id.transaction_numpad_multiply);
-        plus = (TextView) rootView.findViewById(R.id.transaction_numpad_plus);
-        minus = (TextView) rootView.findViewById(R.id.transaction_numpad_minus);
+        decimal = rootView.findViewById(R.id.transaction_numpad_decimal);
+        equals = rootView.findViewById(R.id.transaction_numpad_equals);
+        divide = rootView.findViewById(R.id.transaction_numpad_divide);
+        multiply = rootView.findViewById(R.id.transaction_numpad_multiply);
+        plus = rootView.findViewById(R.id.transaction_numpad_plus);
+        minus = rootView.findViewById(R.id.transaction_numpad_minus);
 
-        categorySelection = (ListView) rootView.findViewById(R.id.transaction_account_selection);
-        submitButton = (TextView) rootView.findViewById(R.id.transaction_submit_btn);
+        categorySelection = rootView.findViewById(R.id.transaction_account_selection);
+        submitButton = rootView.findViewById(R.id.transaction_submit_btn);
     }
 
 

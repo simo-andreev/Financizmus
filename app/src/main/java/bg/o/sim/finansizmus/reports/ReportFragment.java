@@ -30,7 +30,7 @@ public class ReportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_report, container, false);
 
-        expandableListView = (ExpandableListView) v.findViewById(R.id.inquiry_expandable_list);
+        expandableListView = v.findViewById(R.id.inquiry_expandable_list);
 
         listAdapter = new ExpandableListAdapter(getActivity());
         expandableListView.setAdapter(listAdapter);
@@ -110,13 +110,13 @@ public class ReportFragment extends Fragment {
 
             Category cat = getGroup(groupPosition);
 
-            ImageView i = (ImageView) convertView.findViewById(R.id.report_group_icon);
+            ImageView i = convertView.findViewById(R.id.report_group_icon);
             i.setImageResource(cat.getIconId());
 
-            TextView t1 = (TextView) convertView.findViewById(R.id.report_group_title);
+            TextView t1 = convertView.findViewById(R.id.report_group_title);
             t1.setText(cat.getName());
 
-            TextView t2 = (TextView) convertView.findViewById(R.id.report_group_sum);
+            TextView t2 = convertView.findViewById(R.id.report_group_sum);
             t2.setText("$" + cat.getSum());
 
             if (cat.getType() == Category.Type.EXPENSE)
@@ -134,16 +134,16 @@ public class ReportFragment extends Fragment {
 
             final Transaction trans = getChild(groupPosition, childPosition);
 
-            ImageView i = (ImageView) convertView.findViewById(R.id.report_item_icon);
+            ImageView i = convertView.findViewById(R.id.report_item_icon);
             i.setImageResource(trans.getAccount().getIconId());
 
-            TextView t0 = (TextView) convertView.findViewById(R.id.report_item_title);
+            TextView t0 = convertView.findViewById(R.id.report_item_title);
             t0.setText(trans.getAccount().getName());
 
-            TextView t1 = (TextView) convertView.findViewById(R.id.report_item_sum);
+            TextView t1 = convertView.findViewById(R.id.report_item_sum);
             t1.setText("$" + trans.getSum());
 
-            TextView t2 = (TextView) convertView.findViewById(R.id.report_item_date);
+            TextView t2 = convertView.findViewById(R.id.report_item_date);
             t2.setText(trans.getDate().toString("dd/MM/YY"));
 
             convertView.setOnClickListener(v -> {

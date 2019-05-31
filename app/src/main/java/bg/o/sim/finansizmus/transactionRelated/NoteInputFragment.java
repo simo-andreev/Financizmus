@@ -39,13 +39,13 @@ public class NoteInputFragment extends DialogFragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_note_input, container, false);
 
-        input = (EditText) rootView.findViewById(R.id.note_input_text);
+        input = rootView.findViewById(R.id.note_input_text);
 
         Bundle args = getArguments();
         if (args != null) input.setText(args.getString(EXTRA_NOTE,""));
 
-        Button cancel = (Button) rootView.findViewById(R.id.note_input_cancel);
-        Button submit = (Button) rootView.findViewById(R.id.note_input_submit);
+        Button cancel = rootView.findViewById(R.id.note_input_cancel);
+        Button submit = rootView.findViewById(R.id.note_input_submit);
 
         cancel.setOnClickListener(v -> dismiss());
 

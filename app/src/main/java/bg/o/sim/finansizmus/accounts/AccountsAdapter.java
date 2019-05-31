@@ -101,9 +101,9 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
 
         public AccountViewHolder(View itemView) {
             super(itemView);
-            account = (TextView) itemView.findViewById(R.id.account_name);
-            accountSum = (TextView) itemView.findViewById(R.id.account_sum);
-            accountDelete = (ImageButton) itemView.findViewById(R.id.account_delete);
+            account = itemView.findViewById(R.id.account_name);
+            accountSum = itemView.findViewById(R.id.account_sum);
+            accountDelete = itemView.findViewById(R.id.account_delete);
         }
     }
 }

@@ -33,9 +33,9 @@ public class AddCategoryDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_add_category, container, false);
 
-        ImageView icon = (ImageView) view.findViewById(R.id.add_category_icon);
-        Button cancel = (Button) view.findViewById(R.id.cancel_addition);
-        Button addCategory = (Button) view.findViewById(R.id.start_addition);
+        ImageView icon = view.findViewById(R.id.add_category_icon);
+        Button cancel = view.findViewById(R.id.cancel_addition);
+        Button addCategory = view.findViewById(R.id.start_addition);
 
         icon.setImageResource(iconId);
 

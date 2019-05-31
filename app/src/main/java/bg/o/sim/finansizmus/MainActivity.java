@@ -40,16 +40,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.main_navigation_drawer);
+        navigationView = findViewById(R.id.main_navigation_drawer);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
 
@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .commit();
         }
         View headerView = navigationView.getHeaderView(0);
-        TextView userProfile = (TextView) headerView.findViewById(R.id.user_profile_link);
+        TextView userProfile = headerView.findViewById(R.id.user_profile_link);
         userProfile.setText("Hi, " + Cacher.getLoggedUser().getEmail());
 
-        LinearLayout header = (LinearLayout) headerView.findViewById(R.id.header);
+        LinearLayout header = headerView.findViewById(R.id.header);
         header.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, ProfileActivity.class));
             drawer.closeDrawer(GravityCompat.START);

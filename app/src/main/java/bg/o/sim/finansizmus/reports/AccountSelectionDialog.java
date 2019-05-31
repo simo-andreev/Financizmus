@@ -43,14 +43,14 @@ public class AccountSelectionDialog extends DialogFragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account_selection, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.account_selection_list);
+        ListView listView = rootView.findViewById(R.id.account_selection_list);
         final CustomListAdapter listAdapter = new CustomListAdapter();
         listAdapter.inflater = inflater;
 
         listView.setAdapter(listAdapter);
 
-        Button cancel = (Button) rootView.findViewById(R.id.account_selection_cancel);
-        Button submit = (Button) rootView.findViewById(R.id.account_selection_submit);
+        Button cancel = rootView.findViewById(R.id.account_selection_cancel);
+        Button submit = rootView.findViewById(R.id.account_selection_submit);
 
         cancel.setOnClickListener(v -> dismiss());
         submit.setOnClickListener(v -> {
@@ -93,13 +93,13 @@ public class AccountSelectionDialog extends DialogFragment {
 
             final Account acc = getItem(position);
 
-            TextView line = (TextView) convertView.findViewById(R.id.account_selection_name);
+            TextView line = convertView.findViewById(R.id.account_selection_name);
             line.setText(acc.getName());
 
-            final CheckBox check = (CheckBox) convertView.findViewById(R.id.account_selection_checkbox);
+            final CheckBox check = convertView.findViewById(R.id.account_selection_checkbox);
             check.setChecked(selectedAccounts.contains(acc));
 
-            ImageView i = (ImageView) convertView.findViewById(R.id.account_selection_icon);
+            ImageView i = convertView.findViewById(R.id.account_selection_icon);
             i.setImageResource(acc.getIconId());
 
             convertView.setOnClickListener(v -> {

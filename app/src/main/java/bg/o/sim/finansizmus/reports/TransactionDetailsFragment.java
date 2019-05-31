@@ -28,17 +28,17 @@ public class TransactionDetailsFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_transaction_details, container, false);
 
-        TextView account = (TextView) rootView.findViewById(R.id.transaction_dialog_account);
-        TextView category = (TextView) rootView.findViewById(R.id.transaction_dialog_category);
+        TextView account = rootView.findViewById(R.id.transaction_dialog_account);
+        TextView category = rootView.findViewById(R.id.transaction_dialog_category);
 
-        ImageView directionIndicator = (ImageView) rootView.findViewById(R.id.transaction_dialog_direction_indicator);
+        ImageView directionIndicator = rootView.findViewById(R.id.transaction_dialog_direction_indicator);
 
-        TextView noteView = (TextView) rootView.findViewById(R.id.transaction_dialog_note);
+        TextView noteView = rootView.findViewById(R.id.transaction_dialog_note);
 
-        TextView dateView = (TextView) rootView.findViewById(R.id.transaction_dialog_date);
-        TextView sumView = (TextView) rootView.findViewById(R.id.transaction_dialog_sum);
+        TextView dateView = rootView.findViewById(R.id.transaction_dialog_date);
+        TextView sumView = rootView.findViewById(R.id.transaction_dialog_sum);
 
-        Button returnButton = (Button) rootView.findViewById(R.id.transaction_dialog_return_button);
+        Button returnButton = rootView.findViewById(R.id.transaction_dialog_return_button);
 
         account.setText(t.getAccount().getName());
         account.setCompoundDrawablesWithIntrinsicBounds(t.getAccount().getIconId(), 0, 0 , 0);

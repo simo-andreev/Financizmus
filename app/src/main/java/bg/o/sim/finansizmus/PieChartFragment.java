@@ -34,7 +34,7 @@ public class PieChartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pie_chart, container, false);
 
-        chart = (PieChart) rootView.findViewById(R.id.pie_chart_chart);
+        chart = rootView.findViewById(R.id.pie_chart_chart);
 
         categoriesBySum = new ArrayList<>(Cacher.getAllExpenseCategories());
 
@@ -57,7 +57,7 @@ public class PieChartFragment extends Fragment {
 
         menu = new ImageButton[MENU_BUTTON_COUNT];
         for (byte i = 0; i < MENU_BUTTON_COUNT; i++) {
-            menu[i] = (ImageButton) rootView.findViewById(getResources().getIdentifier("pie_chart_menu_" + i, "id", getActivity().getPackageName()));
+            menu[i] = rootView.findViewById(getResources().getIdentifier("pie_chart_menu_" + i, "id", getActivity().getPackageName()));
             menu[i].setScaleType(ImageView.ScaleType.FIT_CENTER);
             menu[i].setBackgroundColor(Color.argb(0, 0, 0, 0));
             menu[i].setOnClickListener(clickListener);

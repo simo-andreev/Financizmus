@@ -24,13 +24,13 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         dao = DAO.getInstance(this);
 
-        userName = (EditText) findViewById(R.id.activity_register_name);
-        userEmail = (EditText) findViewById(R.id.activity_register_email);
-        userPass = (EditText) findViewById(R.id.activity_register_pass0);
-        confirmPass = (EditText) findViewById(R.id.activity_register_pass1);
+        userName = findViewById(R.id.activity_register_name);
+        userEmail = findViewById(R.id.activity_register_email);
+        userPass = findViewById(R.id.activity_register_pass0);
+        confirmPass = findViewById(R.id.activity_register_pass1);
 
-        Button signUp = (Button) findViewById(R.id.activity_register_button_register);
-        Button cancel = (Button) findViewById(R.id.activity_register_button_cancel);
+        Button signUp = findViewById(R.id.activity_register_button_register);
+        Button cancel = findViewById(R.id.activity_register_button_cancel);
 
         onNewIntent(getIntent());
 

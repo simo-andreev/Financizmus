@@ -49,8 +49,8 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconViewHold
 
         IconViewHolder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.image);
-            addButton = (ImageButton) itemView.findViewById(R.id.add_icon_btn);
+            image = itemView.findViewById(R.id.image);
+            addButton = itemView.findViewById(R.id.add_icon_btn);
             this.viewGroup = itemView.findViewById(R.id.viewGroup);
         }
     }
