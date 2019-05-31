@@ -8,11 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import bg.o.sim.finansizmus.R;
-import bg.o.sim.finansizmus.model.DAO;
 import bg.o.sim.finansizmus.model.RowDisplayable;
 
 
